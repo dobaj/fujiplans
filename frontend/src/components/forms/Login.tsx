@@ -26,10 +26,9 @@ export default function LoginForm() {
     setLoading(true);
     e.preventDefault();
     try {
-      const { data } = await axios.post("/users/login", info);
+      const { data } = await axios.post("/users/login/", info);
       const { access_token, user } = data;
       dispatch(setToken(access_token));
-      console.log(user)
       dispatch(addUser(user));
       router.push("/home");
     } catch (error) {

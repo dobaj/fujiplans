@@ -21,6 +21,7 @@ def verify_jwt(func):
         # Split the Bearer token and extract the token part
         token = auth_header.split(' ')[1] if len(
             auth_header.split(' ')) == 2 else None
+        
         if not token:
             return JsonResponse({"msg": "Token is required"}, status=401)
 
@@ -28,7 +29,7 @@ def verify_jwt(func):
             # Decode JWT using the secret key
             payload = jwt.decode(token, ajwt_secret, algorithms="HS256")
         except jwt.ExpiredSignatureError:
-            return JsonResponse({"msg": "Access token expired"}, status=401)
+            return JsonResponse({"msg": "Access token expired"}, status=403)
         except jwt.InvalidTokenError:
             return JsonResponse({"msg": "Invalid token"}, status=401)
 

@@ -2,13 +2,33 @@
 import React from 'react'
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import useCustomFetch from '@/hooks/useCustomFetch';
+import useLogout from '@/hooks/useLogout';
 
 export default function Page() {
-  const { token } = useSelector((state: RootState) => state.token);
+  // const { token } = useSelector((state: RootState) => state.token);
+  const customFetch = useCustomFetch()
+  const logout = useLogout();
+  
+  async function test() {
+    try {
+      const res = await customFetch("/users", "get");
+      console.log(res)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const { user } = useSelector((state: RootState) => state.user);
-  console.log(user)
-  console.log(token)
-  return (<main>
-    <h1>WELCOME BACK {user?.name}!!!</h1>
-  </main>)
+  return (
+    <main>
+      <h1>WELCOME BACK {user?.name}!!!</h1>
+      <button onClick={() => test()} className="border rounded-md px-[1rem]">
+        hello
+      </button>
+      <button onClick={() => logout()} className="border rounded-md px-[1rem]">
+        logout
+      </button>
+    </main>
+  );
 }

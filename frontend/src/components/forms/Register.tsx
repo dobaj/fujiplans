@@ -29,7 +29,7 @@ export default function Register() {
     try {
       setLoading(true);
       e.preventDefault();
-      const { data } = await axios.post("/users/register", info);
+      const { data } = await axios.post("/users/register/", info);
 
       dispatch(setToken(data.access_token));
       dispatch(addUser(data.user));
