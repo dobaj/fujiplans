@@ -1,7 +1,11 @@
-import React from 'react'
+import Register from "../../../components/forms/Register";
 
-export default function page() {
+export default function Page() {
   return (
-    <div>page</div>
-  )
+    <main className="h-screen w-screen flex justify-center items-center">
+      <div className="w-[300px]">
+        <Register />
+      </div>
+    </main>
+  );
 }

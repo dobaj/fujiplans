@@ -71,7 +71,7 @@ class RegisterView(View):
         try:
             data = json.loads(req.body)
 
-            if not data.get('email') or not data.get('password'):
+            if not data.get('email') or not data.get('password') or not data.get('name'):
                 return JsonResponse({'message': 'Please fill out all fields!'}, status=400)
 
             if User.objects.filter(email=data['email']).exists():
@@ -79,7 +79,7 @@ class RegisterView(View):
 
             password = make_password(data['password'])
 
-            user = User.objects.create(email=data['email'], password=password)
+            user = User.objects.create(email=data['email'], name=data['name'],password=password)
 
             user.save()
 
