@@ -5,8 +5,8 @@ import axios from "@/utils/axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { setToken } from "@/redux/features/tokenSlice";
-import { addUser } from "@/redux/features/userSlice";
+import { setToken } from "@/redux/slices/tokenSlice";
+import { addUser } from "@/redux/slices/userSlice";
 
 type Registerinfo = {
   email: string;

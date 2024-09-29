@@ -1,6 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-const initialState = {
+interface TokenState {
+  token: string | null;
+  tokenLoading: boolean;
+}
+
+const initialState: TokenState = {
   token: null,
   tokenLoading: true,
 };
@@ -9,13 +14,13 @@ export const tokenSlice = createSlice({
   name: "token",
   initialState,
   reducers: {
-    setToken: (state, action) => {
+    setToken: (state, action: PayloadAction<string | null>) => {
       state.token = action.payload;
     },
     logout: (state) => {
       state.token = null;
     },
-    setTokenLoading: (state, action) => {
+    setTokenLoading: (state, action: PayloadAction<boolean>) => {
       state.tokenLoading = action.payload;
     },
   },

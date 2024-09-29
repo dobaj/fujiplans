@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import tokenReducer from "./features/tokenSlice";
-import userReducer from "./features/userSlice";
+import tokenReducer from "./slices/tokenSlice";
+import userReducer from "./slices/userSlice";
 
 // Create the store
 export const store = configureStore({

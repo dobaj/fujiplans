@@ -51,10 +51,12 @@ class LoginView(View):
                 {'message': 'Login successful', 'access_token': access_token, 'user': {
                     '_id': user._id,
                     'email': user.email,
+                    'name': user.name
                 }}, status=200)
 
-            res.set_cookie(key='refresh_token', value=refresh_token,
-                           max_age=60*60*24*365, httponly=True, samesite='Strict')
+            one_year = 60 * 60 * 24 * 365
+
+            res.set_cookie(key='refresh_token', value=refresh_token, max_age=one_year, httponly=True, samesite='Strict')
 
             return res
 
@@ -93,10 +95,13 @@ class RegisterView(View):
                 {'message': 'User registered successfully', 'access_token': access_token,'user': {
                     '_id': user._id,
                     'email': user.email,
+                    'name': user.name
                 }}, status=200)
 
+            one_year = 60 * 60 * 24 * 365
+
             #remove secure = True for safari in development, remember to add bakc secure = True
-            res.set_cookie(key='refresh_token', value=refresh_token, max_age=60*60*24*365, httponly=True, samesite='Strict')
+            res.set_cookie(key='refresh_token', value=refresh_token, max_age=one_year, httponly=True, samesite='Strict')
 
             return res
 
