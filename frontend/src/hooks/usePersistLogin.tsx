@@ -19,7 +19,7 @@ export default function usePersistLogin({
   const { tokenLoading } = useSelector((state: RootState) => state.token);
 
   useEffect(() => {
-
+    
     let ignore = false;
 
     async function verifyRefresh() {
@@ -43,8 +43,6 @@ export default function usePersistLogin({
 
     if (!token) {
       verifyRefresh();
-    } else {
-      dispatch(setTokenLoading(false));
     }
 
     return () => {
