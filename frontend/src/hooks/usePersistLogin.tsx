@@ -5,7 +5,8 @@ import { useSelector } from "react-redux";
 import useRefreshToken from "./useRefreshToken";
 import { RootState } from "@/redux/store";
 import { useDispatch } from "react-redux";
-import { setToken, setTokenLoading } from "@/redux/slices/tokenSlice";
+import { setTokenLoading } from "@/redux/slices/tokenSlice";
+import { setToken } from "@/redux/slices/tokenSlice";
 
 export default function usePersistLogin({
   children,
@@ -15,20 +16,21 @@ export default function usePersistLogin({
   const { refreshToken } = useRefreshToken();
   const { token } = useSelector((state: RootState) => state.token);
   const dispatch = useDispatch();
+  const { tokenLoading } = useSelector((state: RootState) => state.token);
 
   useEffect(() => {
+
     let ignore = false;
 
     async function verifyRefresh() {
       try {
         const newToken = await refreshToken();
         if (!ignore) {
-          // Only update state if not ignored
           dispatch(setToken(newToken));
         }
       } catch (error) {
         if (error instanceof Error) {
-          console.log(error.message);
+          console.log(error);
         } else {
           console.log("An unknown error occurred:", error);
         }
@@ -41,12 +43,14 @@ export default function usePersistLogin({
 
     if (!token) {
       verifyRefresh();
+    } else {
+      dispatch(setTokenLoading(false));
     }
 
     return () => {
-      ignore = true; // Cleanup to avoid state update after unmount
+      ignore = true;
     };
-  }, [refreshToken, token, dispatch]);
+  }, [token, refreshToken, dispatch]);
 
-  return children;
+  return tokenLoading ? <div>loading...</div> : children;
 }

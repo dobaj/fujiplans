@@ -14,7 +14,9 @@ export default function useRefetch({
 }) {
   const getUser = useGetUser();
   const { token } = useSelector((state: RootState) => state.token);
+  const { user } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
+  const { userLoading } = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     let ignore = false;
@@ -35,7 +37,7 @@ export default function useRefetch({
       }
     }
 
-    if (token && !ignore) {
+    if (token && !user && !ignore) {
       refetch();
     } else {
       dispatch(setUserLoading(false));
@@ -44,7 +46,7 @@ export default function useRefetch({
     return () => {
       ignore = true; // Ensure no state updates after unmount
     };
-  }, [getUser, token, dispatch]);
+  }, [getUser, token, dispatch, user]);
 
-  return children;
+  return userLoading ? <div>loading...</div> : children;
 }

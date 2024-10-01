@@ -155,7 +155,7 @@ class RefreshView(View):
             refresh_token = req.COOKIES.get('refresh_token')
 
             if not refresh_token:
-                return JsonResponse({'message': 'No token'}, status=400)
+                return JsonResponse({'message': 'No token'}, status=401)
 
             payload = jwt.decode(refresh_token, rjwt_secret, algorithms="HS256")
 

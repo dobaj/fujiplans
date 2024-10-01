@@ -4,7 +4,6 @@ import ReduxProvider from "@/redux/Provider";
 import PersistLogin from "@/hooks/usePersistLogin";
 import RequireAuth from "@/hooks/userRequireAuth";
 import Refetch from "@/hooks/useRefetch";
-import CheckLoading from "@/components/CheckLoading";
 
 export const metadata: Metadata = {
   title: "Team Keely",
@@ -22,9 +21,9 @@ export default function RootLayout({
         <ReduxProvider>
           <PersistLogin>
             <Refetch>
-              <CheckLoading>
-                <RequireAuth>{children}</RequireAuth>
-              </CheckLoading>
+              <RequireAuth>
+                {children}
+              </RequireAuth>
             </Refetch>
           </PersistLogin>
         </ReduxProvider>

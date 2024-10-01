@@ -5,7 +5,7 @@ import { RootState } from "@/redux/store";
 import useCustomFetch from '@/hooks/useCustomFetch';
 import useLogout from '@/hooks/useLogout';
 
-export default function Page() {
+export default function Home() {
   // const { token } = useSelector((state: RootState) => state.token);
   const customFetch = useCustomFetch()
   const logout = useLogout();
