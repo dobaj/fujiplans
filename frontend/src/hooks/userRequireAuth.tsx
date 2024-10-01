@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "@/utils/reduxHooks";
 import { RootState } from "@/redux/store";
 
 export default function useRequireAuth({
@@ -11,8 +11,9 @@ export default function useRequireAuth({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const { token } = useSelector((state: RootState) => state.token);
-  const { user } = useSelector((state: RootState) => state.user);
+  const { token } = useAppSelector((state: RootState) => state.token);
+  const { user } = useAppSelector((state: RootState) => state.user);
+
   const router = useRouter();
   const restrictedPath = "/home";
 

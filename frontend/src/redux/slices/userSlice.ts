@@ -18,7 +18,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     // Typing action.payload as User
-    addUser: (state, action: PayloadAction<User>) => {
+    addUser: (state, action: PayloadAction<User | null>) => {
       state.user = action.payload;
     },
     // No payload for logoutUser, just setting user to null

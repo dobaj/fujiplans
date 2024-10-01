@@ -1,11 +1,12 @@
+"use client";
+
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "@/utils/reduxHooks";
 import useRefreshToken from "./useRefreshToken";
-import { RootState } from "@/redux/store";
 
 export default function useCustomFetch() {
-  const { token } = useSelector((state: RootState) => state.token);
-  const { refreshToken } = useRefreshToken();
+  const { token } = useAppSelector((state) => state.token);
+  const refreshToken = useRefreshToken();
 
   async function customFetch(
     url: string,
@@ -42,7 +43,6 @@ export default function useCustomFetch() {
             });
 
             return newRes;
-            
           } catch (refreshError) {
             // Handle error during token refresh
             if (refreshError instanceof AxiosError && refreshError.response) {

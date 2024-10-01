@@ -10,20 +10,19 @@ export const metadata: Metadata = {
   description: "QTMA DEMO WINNER",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
+
   return (
     <html lang="en">
       <body className={`antialiased`}>
         <ReduxProvider>
           <PersistLogin>
             <Refetch>
-              <RequireAuth>
-                {children}
-              </RequireAuth>
+              <RequireAuth>{children}</RequireAuth>
             </Refetch>
           </PersistLogin>
         </ReduxProvider>

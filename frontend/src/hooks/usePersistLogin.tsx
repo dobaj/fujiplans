@@ -1,10 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
 import useRefreshToken from "./useRefreshToken";
-import { RootState } from "@/redux/store";
-import { useDispatch } from "react-redux";
+import { useAppDispatch, useAppSelector } from "@/utils/reduxHooks";
 import { setTokenLoading } from "@/redux/slices/tokenSlice";
 import { setToken } from "@/redux/slices/tokenSlice";
 
@@ -13,10 +11,10 @@ export default function usePersistLogin({
 }: {
   children: React.ReactNode;
 }) {
-  const { refreshToken } = useRefreshToken();
-  const { token } = useSelector((state: RootState) => state.token);
-  const dispatch = useDispatch();
-  const { tokenLoading } = useSelector((state: RootState) => state.token);
+  const refreshToken = useRefreshToken();
+  const { token } = useAppSelector((state) => state.token);
+  const dispatch = useAppDispatch();
+  const { tokenLoading } = useAppSelector((state) => state.token);
 
   useEffect(() => {
     
@@ -43,6 +41,8 @@ export default function usePersistLogin({
 
     if (!token) {
       verifyRefresh();
+    } else {
+      dispatch(setTokenLoading(false));
     }
 
     return () => {

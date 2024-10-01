@@ -1,12 +1,10 @@
 "use client"
 import React from 'react'
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { useAppSelector } from '@/utils/reduxHooks';
 import useCustomFetch from '@/hooks/useCustomFetch';
 import useLogout from '@/hooks/useLogout';
 
 export default function Home() {
-  // const { token } = useSelector((state: RootState) => state.token);
   const customFetch = useCustomFetch()
   const logout = useLogout();
   
@@ -19,7 +17,7 @@ export default function Home() {
     }
   }
 
-  const { user } = useSelector((state: RootState) => state.user);
+  const { user } = useAppSelector((state) => state.user);
   return (
     <main>
       <h1>WELCOME BACK {user?.name}!!!</h1>

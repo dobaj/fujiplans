@@ -148,7 +148,9 @@ class RegisterView(View):
 
             return JsonResponse({'message': str(e)}, status=400)
         
+
 class RefreshView(View):
+
     def get(self, req):
         try:
 
@@ -157,7 +159,8 @@ class RefreshView(View):
             if not refresh_token:
                 return JsonResponse({'message': 'No token'}, status=401)
 
-            payload = jwt.decode(refresh_token, rjwt_secret, algorithms="HS256")
+            payload = jwt.decode(
+                refresh_token, rjwt_secret, algorithms="HS256")
 
             user = User.objects.filter(_id=payload['_id']).first()
 

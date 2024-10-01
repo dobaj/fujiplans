@@ -2,10 +2,8 @@
 
 import { useEffect } from "react";
 import useGetUser from "./useGetUser";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
 import { setUserLoading } from "@/redux/slices/userSlice";
-import { useDispatch } from "react-redux";
+import { useAppDispatch, useAppSelector } from "@/utils/reduxHooks";
 
 export default function useRefetch({
   children,
@@ -13,10 +11,10 @@ export default function useRefetch({
   children: React.ReactNode;
 }) {
   const getUser = useGetUser();
-  const { token } = useSelector((state: RootState) => state.token);
-  const { user } = useSelector((state: RootState) => state.user);
-  const dispatch = useDispatch();
-  const { userLoading } = useSelector((state: RootState) => state.user);
+  const { token } = useAppSelector((state) => state.token);
+  const { user } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
+  const { userLoading } = useAppSelector((state) => state.user);
 
   useEffect(() => {
     let ignore = false;

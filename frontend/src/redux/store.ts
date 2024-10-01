@@ -2,18 +2,18 @@ import { configureStore } from "@reduxjs/toolkit";
 import tokenReducer from "./slices/tokenSlice";
 import userReducer from "./slices/userSlice";
 
-// Create the store
-export const store = configureStore({
-  reducer: {
-    token: tokenReducer,
-    user: userReducer,
-  },
-});
 
-// Infer the `RootState` type from the store itself
-export type RootState = ReturnType<typeof store.getState>;
+export const makeStore = () => {
+  return configureStore({
+    reducer: {
+      token: tokenReducer,
+      user: userReducer,
+    },
+  });
+}
 
-// Infer the `AppDispatch` type from the store itself
-export type AppDispatch = typeof store.dispatch;
-
-export default store;
+// Infer the type of makeStore
+export type AppStore = ReturnType<typeof makeStore>
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type RootState = ReturnType<AppStore['getState']>
+export type AppDispatch = AppStore['dispatch']
