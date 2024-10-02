@@ -8,7 +8,6 @@ export default function useAxiosInt() {
   const refreshToken = useRefreshToken();
 
   const { token } = useAppSelector((state) => state.token);
-  console.log(token)
 
   useEffect(() => {
     //attach token for every request

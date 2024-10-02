@@ -12,8 +12,6 @@ export default function Home() {
     try {
       const res = await axios.get("/users/");
       console.log(res)
-      const res1 = await axios.get("/users/");
-      console.log(res1);
     } catch (error) {
       console.log(error)
     }
