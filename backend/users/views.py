@@ -73,12 +73,12 @@ class LoginView(View):
             user = User.objects.filter(email=data['email']).first()
 
             if (not user):
-                return JsonResponse({'message': 'Invalid credentials!'}, status=400)
+                return JsonResponse({'message': 'Invalid credentials!'}, status=401)
             
             is_valid = check_password(data['password'], user.password)
 
             if(not is_valid):
-                return JsonResponse({'message': 'Invalid credentials!'}, status=400)
+                return JsonResponse({'message': 'Invalid credentials!'}, status=401)
             
             refresh_token = jwt.encode({'_id': str(user._id), 'exp': datetime.now(
                 tz=timezone.utc) + timedelta(days=365)}, rjwt_secret, algorithm='HS256')
