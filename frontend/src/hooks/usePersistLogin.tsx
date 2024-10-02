@@ -1,37 +1,29 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import useRefreshToken from "./useRefreshToken";
 import { useAppDispatch, useAppSelector } from "@/utils/reduxHooks";
 import { setTokenLoading } from "@/redux/slices/tokenSlice";
-import { setToken } from "@/redux/slices/tokenSlice";
 
 export default function usePersistLogin({
   children,
 }: {
   children: React.ReactNode;
 }) {
-
-
   const refreshToken = useRefreshToken();
 
   const { token } = useAppSelector((state) => state.token);
-  
+
   const dispatch = useAppDispatch();
 
   const { tokenLoading } = useAppSelector((state) => state.token);
-
-  const tokenRef = useRef(token);
 
   useEffect(() => {
     let ignore = false;
 
     async function verifyRefresh() {
       try {
-        const newToken = await refreshToken();
-        if (!ignore) {
-          dispatch(setToken(newToken));
-        }
+        await refreshToken();
       } catch (error) {
         if (error instanceof Error) {
           console.log(error);
@@ -45,7 +37,7 @@ export default function usePersistLogin({
       }
     }
 
-    if (!tokenRef.current) {
+    if (!token) {
       verifyRefresh();
     } else {
       dispatch(setTokenLoading(false));
@@ -54,7 +46,9 @@ export default function usePersistLogin({
     return () => {
       ignore = true;
     };
-  }, [refreshToken, dispatch]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return tokenLoading ? <div>loading...</div> : children;
 }

@@ -11,24 +11,23 @@ export default function useRequireAuth({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+
   const { token } = useAppSelector((state: RootState) => state.token);
+
   const { user } = useAppSelector((state: RootState) => state.user);
 
   const router = useRouter();
+
   const restrictedPath = "/home";
 
   const noAuth = !token || !user;
 
   useEffect(() => {
-
     if (noAuth) {
-
       if (pathname.startsWith(restrictedPath)) {
         router.push("/login");
       }
-
     } else {
-
       if (
         pathname === "/" ||
         pathname === "/login" ||
@@ -38,7 +37,8 @@ export default function useRequireAuth({
       }
     }
 
-  }, [noAuth, pathname, router]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname, router]);
 
   if((noAuth) && pathname.startsWith(restrictedPath)) {
     return <div>loading...</div>;
