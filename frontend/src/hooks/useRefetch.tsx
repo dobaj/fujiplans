@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import useGetUser from "./useGetUser";
 import { setUserLoading } from "@/redux/slices/userSlice";
 import { useAppDispatch, useAppSelector } from "@/utils/reduxHooks";
@@ -12,7 +12,9 @@ export default function useRefetch({
 }) {
   const getUser = useGetUser();
   const { token } = useAppSelector((state) => state.token);
+  const tokenRef = useRef(token);
   const { user } = useAppSelector((state) => state.user);
+  const userRef = useRef(user);
   const dispatch = useAppDispatch();
   const { userLoading } = useAppSelector((state) => state.user);
 
@@ -35,7 +37,7 @@ export default function useRefetch({
       }
     }
 
-    if (token && !user && !ignore) {
+    if (tokenRef.current && !userRef.current && !ignore) {
       refetch();
     } else {
       dispatch(setUserLoading(false));
@@ -44,7 +46,7 @@ export default function useRefetch({
     return () => {
       ignore = true; // Ensure no state updates after unmount
     };
-  }, [getUser, token, dispatch, user]);
+  }, [dispatch, getUser]);
 
   return userLoading ? <div>loading...</div> : children;
 }

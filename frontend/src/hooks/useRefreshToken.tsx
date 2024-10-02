@@ -1,17 +1,12 @@
-
 import axios from "@/utils/axios";
 import { AxiosError } from "axios";
-
+import { useCallback } from "react";
 
 export default function useRefreshToken() {
-
-  async function refreshToken() {
+  const refreshToken = useCallback(async () => {
     try {
-
       const res = await axios.get("/users/refresh/");
-
       return res.data.access_token;
-
     } catch (error) {
       if (error instanceof AxiosError) {
         console.log(error?.response?.data.message);
@@ -21,7 +16,7 @@ export default function useRefreshToken() {
         console.log("An unknown error occurred:", error);
       }
     }
-  }
+  }, []);
 
-  return  refreshToken ;
+  return refreshToken;
 }
