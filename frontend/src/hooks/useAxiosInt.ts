@@ -14,7 +14,6 @@ export default function useAxiosInt() {
     const requestInterceptor = axios.interceptors.request.use(
       (config) => {
         if (!config.headers["Authorization"]) {
-          console.log(token)
           config.headers["Authorization"] = `Bearer ${token}`;
         }
         return config;

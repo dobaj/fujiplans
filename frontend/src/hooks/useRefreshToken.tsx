@@ -16,12 +16,11 @@ export default function useRefreshToken() {
       return res.data.access_token;
     } catch (error) {
       if (error instanceof AxiosError) {
-        //refresh token has expired so user has to login again
-        if (error?.response?.data.message === "Signature has expired") {
-          dispatch(logout());
-          dispatch(logoutUser());
-          router.push("/login");
-        }
+        //refresh token token doesn't work, logout user
+        dispatch(logout());
+        dispatch(logoutUser());
+        router.push("/login");
+
         console.log(error?.response?.data.message);
       } else if (error instanceof Error) {
         console.log(error.message);
@@ -29,7 +28,7 @@ export default function useRefreshToken() {
         console.log("An unknown error occurred:", error);
       }
     }
-  }
+  };
 
   return refreshToken;
 }

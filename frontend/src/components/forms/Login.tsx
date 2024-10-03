@@ -80,7 +80,7 @@ export default function LoginForm() {
           {loading ? "Logging in..." : "Login"}
         </span>
       </button>
-      <Link href={"/sign-up"} className="mt-[1rem] text-center">
+      <Link href={"/register"} className="mt-[1rem] text-center">
         Don&apos;t have an account?{" "}
         <span className="text-[#FCCB2A]">Sign up here</span>
       </Link>

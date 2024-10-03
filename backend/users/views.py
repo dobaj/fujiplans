@@ -32,8 +32,7 @@ class UserView(View):
         except Exception as e:
             # Catch any errors and return them in a response
             return JsonResponse({'message': str(e)}, status=400)
-        
-        
+
     @verify_jwt
     def get(self, req, payload, *args, **kwargs):
         try:
@@ -48,12 +47,11 @@ class UserView(View):
                     user_data['_id'] = str(user._id)
 
             return JsonResponse({'user': user_data}, status=200)
-        
+
         except Exception as e:
             return JsonResponse({'message': str(e)}, status=400)
-    
-    
-    
+
+
 class LoginView(View):
     # tester code for verify jwt, now you can use this else where
     # @verify_jwt
@@ -74,12 +72,12 @@ class LoginView(View):
 
             if (not user):
                 return JsonResponse({'message': 'Invalid credentials!'}, status=401)
-            
+
             is_valid = check_password(data['password'], user.password)
 
-            if(not is_valid):
+            if (not is_valid):
                 return JsonResponse({'message': 'Invalid credentials!'}, status=401)
-            
+
             refresh_token = jwt.encode({'_id': str(user._id), 'exp': datetime.now(
                 tz=timezone.utc) + timedelta(days=365)}, rjwt_secret, algorithm='HS256')
 
@@ -95,13 +93,13 @@ class LoginView(View):
 
             one_year = 60 * 60 * 24 * 365
 
-            res.set_cookie(key='refresh_token', value=refresh_token, max_age=one_year, httponly=True, samesite='Strict')
+            res.set_cookie(key='refresh_token', value=refresh_token,
+                           max_age=one_year, httponly=True, samesite='Strict')
 
             return res
 
         except Exception as e:
             return JsonResponse({'message': str(e)}, status=400)
-            
 
 
 class RegisterView(View):
@@ -120,7 +118,8 @@ class RegisterView(View):
 
             password = make_password(data['password'])
 
-            user = User.objects.create(email=data['email'], name=data['name'],password=password)
+            user = User.objects.create(
+                email=data['email'], name=data['name'], password=password)
 
             user.save()
 
@@ -131,7 +130,7 @@ class RegisterView(View):
                 tz=timezone.utc) + timedelta(days=30)}, ajwt_secret, algorithm='HS256')
 
             res = JsonResponse(
-                {'message': 'User registered successfully', 'access_token': access_token,'user': {
+                {'message': 'User registered successfully', 'access_token': access_token, 'user': {
                     '_id': user._id,
                     'email': user.email,
                     'name': user.name
@@ -139,15 +138,16 @@ class RegisterView(View):
 
             one_year = 60 * 60 * 24 * 365
 
-            #remove secure = True for safari in development, remember to add bakc secure = True
-            res.set_cookie(key='refresh_token', value=refresh_token, max_age=one_year, httponly=True, samesite='Strict')
+            # remove secure = True for safari in development, remember to add back secure = True
+            res.set_cookie(key='refresh_token', value=refresh_token,
+                           max_age=one_year, httponly=True, samesite='Strict')
 
             return res
 
         except Exception as e:
 
             return JsonResponse({'message': str(e)}, status=400)
-        
+
 
 class RefreshView(View):
 
@@ -171,6 +171,9 @@ class RefreshView(View):
                 tz=timezone.utc) + timedelta(days=30)}, ajwt_secret, algorithm='HS256')
 
             return JsonResponse({'access_token': access_token}, status=200)
-
+        except jwt.ExpiredSignatureError:
+            return JsonResponse({'message': 'Token expired'}, status=403)
+        except jwt.InvalidTokenError:
+            return JsonResponse({'message': 'Invalid token'}, status=401)
         except Exception as e:
             return JsonResponse({'message': str(e)}, status=400)
