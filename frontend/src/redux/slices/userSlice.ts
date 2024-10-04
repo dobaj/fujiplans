@@ -4,13 +4,11 @@ import { User } from "@/types/user";
 // Define the initial state type
 interface UserState {
   user: User | null;
-  userLoading: boolean;
 }
 
 // Define the initial state
 const initialState: UserState = {
   user: null,
-  userLoading: true,
 };
 
 const userSlice = createSlice({
@@ -25,13 +23,9 @@ const userSlice = createSlice({
     logoutUser: (state) => {
       state.user = null;
     },
-    // Typing action.payload as boolean for userLoading
-    setUserLoading: (state, action: PayloadAction<boolean>) => {
-      state.userLoading = action.payload;
-    },
   },
 });
 
-export const { addUser, logoutUser, setUserLoading } = userSlice.actions;
+export const { addUser, logoutUser } = userSlice.actions;
 
 export default userSlice.reducer;

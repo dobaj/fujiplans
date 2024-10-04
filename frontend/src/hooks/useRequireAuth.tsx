@@ -45,7 +45,7 @@ export default function useRequireAuth({
   }
 
   if(!noAuth && (pathname === "/" || pathname === "/login" || pathname === "/register")) {
-    return <div>loading...</div>;
+    return <div>redirecting...</div>;
   }
 
   return children;

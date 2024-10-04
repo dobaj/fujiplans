@@ -17,11 +17,12 @@ export default function useRefreshToken() {
     } catch (error) {
       if (error instanceof AxiosError) {
         //refresh token token doesn't work, logout user
-        dispatch(logout());
-        dispatch(logoutUser());
-        router.push("/login");
-
         console.log(error?.response?.data.message);
+        if(error.response?.status !== 401) {
+          dispatch(logout());
+          dispatch(logoutUser());
+          router.push("/login");
+        }
       } else if (error instanceof Error) {
         console.log(error.message);
       } else {

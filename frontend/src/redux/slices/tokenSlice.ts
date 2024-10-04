@@ -2,12 +2,10 @@ import { createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 interface TokenState {
   token: string | null;
-  tokenLoading: boolean;
 }
 
 const initialState: TokenState = {
   token: null,
-  tokenLoading: true,
 };
 
 export const tokenSlice = createSlice({
@@ -20,11 +18,9 @@ export const tokenSlice = createSlice({
     logout: (state) => {
       state.token = null;
     },
-    setTokenLoading: (state, action: PayloadAction<boolean>) => {
-      state.tokenLoading = action.payload;
-    },
+   
   },
 });
 
-export const { setToken, logout, setTokenLoading } = tokenSlice.actions;
+export const { setToken, logout } = tokenSlice.actions;
 export default tokenSlice.reducer;
