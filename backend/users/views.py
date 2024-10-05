@@ -1,8 +1,7 @@
-from django.http import HttpResponse, JsonResponse
-from django.views import View
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 import os
 from .models import User
-from utils import verify_jwt
+from utils import verify_jwt, getGoogleOauthToken, getGoogleUserInfo
 import json
 from django.contrib.auth.hashers import make_password, check_password
 from django.forms.models import model_to_dict
@@ -10,6 +9,7 @@ from datetime import datetime, timedelta, timezone
 import jwt
 from dotenv import load_dotenv
 import uuid
+from django.views import View
 
 load_dotenv()
 
@@ -177,3 +177,57 @@ class RefreshView(View):
             return JsonResponse({'message': 'Invalid token'}, status=401)
         except Exception as e:
             return JsonResponse({'message': str(e)}, status=400)
+        
+class GoogleOauth(View):
+    def get(self, req):
+
+        try:
+
+            code = req.GET.get('code')
+
+            if not code:
+                return JsonResponse({'message': 'No code'}, status=400)
+            
+            response = getGoogleOauthToken(code)
+
+            access_token = response.get('access_token')
+
+            id_token = response.get('id_token')
+
+            google_user = getGoogleUserInfo(access_token, id_token)
+
+            if not google_user['verified_email']:
+                return JsonResponse({'message': 'Email not verified'}, status=403)
+
+            user = User.objects.filter(email=google_user['email']).first()
+
+            if not user:
+                user = User.objects.create(
+                    email=google_user['email'], name=google_user['name'])
+
+                user.save()
+
+            refresh_token = jwt.encode({'_id': str(user._id), 'exp': datetime.now(
+                tz=timezone.utc) + timedelta(days=365)}, rjwt_secret, algorithm='HS256')
+
+            access_token = jwt.encode({'_id': str(user._id), 'exp': datetime.now(
+                tz=timezone.utc) + timedelta(days=30)}, ajwt_secret, algorithm='HS256')
+
+            res = JsonResponse(
+                {'message': 'User logged in using Google', 'access_token': access_token, 'user': {
+                    '_id': user._id,
+                    'email': user.email,
+                    'name': user.name
+                }}, status=200)
+
+            one_year = 60 * 60 * 24 * 365
+
+            res.set_cookie(key='refresh_token', value=refresh_token, max_age=one_year, httponly=True, samesite='Strict')
+
+            return res
+    
+        except Exception as e:
+
+            print(str(e))
+
+            return HttpResponseRedirect('http://localhost:3000/oauth/error')

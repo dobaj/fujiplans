@@ -7,6 +7,7 @@ import { setToken } from "@/redux/slices/tokenSlice";
 import { useRouter } from "next/navigation";
 import { addUser } from "@/redux/slices/userSlice";
 import Link from "next/link";
+import { getGoogleOAuthURL } from "@/utils/getGoogleUrl";
 
 type Logininfo = {
   email: string;
@@ -40,6 +41,7 @@ export default function LoginForm() {
 
   return (
     <form onSubmit={submit} className="flex flex-col mt-[1rem]">
+      <Link href={getGoogleOAuthURL()}>login with google</Link>
       <label htmlFor="email" className="">
         email
       </label>
