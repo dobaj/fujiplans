@@ -1,12 +1,11 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import axios from "@/utils/axios";
 
 
 export default function OAuthCallback() {
-  const router = useRouter();
+  
   useEffect(() => {
     // Parse the authorization code from the query parameters
     const query = new URLSearchParams(window.location.search);
@@ -49,7 +48,7 @@ export default function OAuthCallback() {
       }
       window.close();
     }
-  }, [router]);
+  }, []);
 
   return <div>Completing authentication...</div>;
 };
