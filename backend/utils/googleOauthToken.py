@@ -26,7 +26,7 @@ def getGoogleOauthToken(code):
 
 def getGoogleUserInfo(access_token, id_token):
     try:
-        url = f'https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token={access_token}'
+        url = f'https://www.googleapis.com/oauth2/v2/userinfo?alt=json&access_token={access_token}'
 
         headers = {
             'Authorization': f'Bearer {id_token}'

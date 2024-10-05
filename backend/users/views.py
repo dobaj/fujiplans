@@ -230,6 +230,4 @@ class GoogleOauth(View):
     
         except Exception as e:
 
-            print(str(e))
-
-            return HttpResponseRedirect('http://localhost:3000/oauth/error')
+            return JsonResponse({'message': str(e)}, status=400)

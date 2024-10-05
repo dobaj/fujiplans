@@ -1,18 +1,22 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "@/utils/axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setToken } from "@/redux/slices/tokenSlice";
 import { addUser } from "@/redux/slices/userSlice";
+import { openGooglePopup } from "@/utils/openGooglePopup";
+import useGoogleLogin from "@/hooks/useGoogleLogin";
 
 type Registerinfo = {
   email: string;
   password: string;
   name: string;
 };
+
+
 
 export default function Register() {
   const [info, setinfo] = useState<Registerinfo>({
@@ -24,6 +28,8 @@ export default function Register() {
   const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
   const router = useRouter();
+
+  useGoogleLogin();
 
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     try {
@@ -41,9 +47,11 @@ export default function Register() {
       setLoading(false);
     }
   }
+  
 
   return (
     <form onSubmit={submit} className="flex flex-col mt-[1rem]">
+      <button onClick={() => openGooglePopup()} type="button">google</button>
       <label htmlFor="name" className="">
         Name
       </label>

@@ -7,7 +7,8 @@ import { setToken } from "@/redux/slices/tokenSlice";
 import { useRouter } from "next/navigation";
 import { addUser } from "@/redux/slices/userSlice";
 import Link from "next/link";
-import { getGoogleOAuthURL } from "@/utils/getGoogleUrl";
+import { openGooglePopup } from "@/utils/openGooglePopup";
+import useGoogleLogin from "@/hooks/useGoogleLogin";
 
 type Logininfo = {
   email: string;
@@ -22,6 +23,8 @@ export default function LoginForm() {
   });
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  useGoogleLogin();
 
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     setLoading(true);
@@ -41,7 +44,7 @@ export default function LoginForm() {
 
   return (
     <form onSubmit={submit} className="flex flex-col mt-[1rem]">
-      <Link href={getGoogleOAuthURL()}>login with google</Link>
+      <button type="button" onClick={() => openGooglePopup()}>google</button>
       <label htmlFor="email" className="">
         email
       </label>

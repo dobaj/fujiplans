@@ -3,14 +3,10 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "@/utils/axios";
-import { useAppDispatch } from "@/utils/reduxHooks";
-import { setToken } from "@/redux/slices/tokenSlice";
-import { addUser } from "@/redux/slices/userSlice";
+
 
 export default function OAuthCallback() {
   const router = useRouter();
-  const dispatch = useAppDispatch();
-
   useEffect(() => {
     // Parse the authorization code from the query parameters
     const query = new URLSearchParams(window.location.search);
@@ -20,27 +16,40 @@ export default function OAuthCallback() {
     if (code) {
       axios
         .get(`http://localhost:8000/users/oauth/google`, {
-          params: {
-            code,
-          },
+          params: { code },
         })
         .then((response) => {
-          // Extract the access token from the response
+          // Extract the access token and user info from the response
           const { data } = response;
           const { access_token, user } = data;
 
-          dispatch(setToken(access_token));
-          dispatch(addUser(user));
+          // Send the token and user info to the parent window
+          if (window.opener) {
+            window.opener.postMessage(
+              { access_token, user },
+              window.location.origin
+            );
+          }
 
-          router.push("/home");
+          // Close the popup window
+          window.close();
         })
         .catch((error) => {
           console.error("Error:", error);
-          // Redirect to error page
-          router.push("/oauth/error");
+          // Close the popup and redirect the parent window to an error page
+          if (window.opener) {
+            window.opener.postMessage({ error: true }, window.location.origin);
+          }
+          window.close();
         });
+    } else {
+      // If there's no code, send an error message to the parent window and close the popup
+      if (window.opener) {
+        window.opener.postMessage({ error: true }, window.location.origin);
+      }
+      window.close();
     }
-  }, [router, dispatch]);
+  }, [router]);
 
-  return <div>Logging in with Google...</div>;
+  return <div>Completing authentication...</div>;
 };
