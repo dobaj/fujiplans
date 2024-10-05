@@ -205,6 +205,8 @@ class GoogleOauth(View):
                 user = User.objects.create(
                     email=google_user['email'], name=google_user['name'])
 
+                user.password = None
+
                 user.save()
 
             refresh_token = jwt.encode({'_id': str(user._id), 'exp': datetime.now(
