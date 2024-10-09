@@ -1,3 +1,5 @@
+"use client"
+
 import axios from "@/utils/axios";
 import { useEffect } from "react";
 import useRefreshToken from "./useRefreshToken";

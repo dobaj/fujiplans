@@ -138,7 +138,8 @@ class RegisterView(View):
 
             one_year = 60 * 60 * 24 * 365
 
-            # remove secure = True for safari in development, remember to add back secure = True
+
+            # TODO: remove secure = True for safari in development, remember to add back secure = True
             res.set_cookie(key='refresh_token', value=refresh_token,
                            max_age=one_year, httponly=True, samesite='Strict')
 
@@ -172,9 +173,9 @@ class RefreshView(View):
 
             return JsonResponse({'access_token': access_token}, status=200)
         except jwt.ExpiredSignatureError:
-            return JsonResponse({'message': 'Token expired'}, status=403)
+            return JsonResponse({'message': 'Token expired'}, status=498)
         except jwt.InvalidTokenError:
-            return JsonResponse({'message': 'Invalid token'}, status=401)
+            return JsonResponse({'message': 'Invalid token'}, status=498)
         except Exception as e:
             return JsonResponse({'message': str(e)}, status=400)
         

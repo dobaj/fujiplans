@@ -80,6 +80,7 @@ WSGI_APPLICATION = 'server.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# TODO: change database settings when deploying
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -143,6 +144,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# TODO: change cors when deploying
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_ALL_ORIGINS = True

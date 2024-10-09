@@ -1,3 +1,5 @@
+// TODO: Make this server component
+
 "use client"
 import React from 'react'
 import { useAppSelector } from '@/utils/reduxHooks';

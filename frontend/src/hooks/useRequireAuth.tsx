@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useAppSelector } from "@/utils/reduxHooks";
 import { RootState } from "@/redux/store";
+// import Loader from "@/components/Loader";
 
 export default function useRequireAuth({
   children,
@@ -40,12 +41,8 @@ export default function useRequireAuth({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, router]);
 
-  if((noAuth) && pathname.startsWith(restrictedPath)) {
-    return <div>loading...</div>;
-  }
-
-  if(!noAuth && (pathname === "/" || pathname === "/login" || pathname === "/register")) {
-    return <div>redirecting...</div>;
+  if(((noAuth) && pathname.startsWith(restrictedPath)) || (!noAuth && (pathname === "/" || pathname === "/login" || pathname === "/register"))) {
+    return <div>Redirecting...</div>;
   }
 
   return children;
