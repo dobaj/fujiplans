@@ -11,7 +11,12 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        "theme-green": "#9BAF6D",
+        "theme-bg-green": "#E0E1CB"
       },
+      fontFamily: {
+        PJS: ["Plus Jakarta Sans", "sans-serif"]
+      }
     },
   },
   plugins: [],
