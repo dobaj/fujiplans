@@ -3,8 +3,8 @@ import { FaRegPaperPlane } from "react-icons/fa";
 
 
 export const PromptForm = () => {
-  let editable = ["lesson plan","grade 4","Habitats & Communities"]
-  let spans = editable.map((text)=><span className="text-theme-green outline-none" contentEditable={true} >{text}</span>)
+  const editable = ["lesson plan","grade 4","Habitats & Communities"]
+  const spans = editable.map((text)=><span key={0} className="text-theme-green outline-none" contentEditable={true} >{text}</span>)
   return (
     <div className="mx-12 flex flex-col justify-between h-full">
     <div></div>
