@@ -11,6 +11,7 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        main: "#F09234", // Added custom color name 'main'
       },
     },
   },
