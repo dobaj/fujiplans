@@ -9,17 +9,19 @@ import { addUser } from "@/redux/slices/userSlice";
 import Link from "next/link";
 import { openGooglePopup } from "@/utils/openGooglePopup";
 import useGoogleLogin from "@/hooks/useGoogleLogin";
+import Input from "../common/Input";
+import Image from "next/image";
 
-type Logininfo = {
-  email: string;
-  password: string;
+type LoginInfo = {
+  Email: string;
+  Password: string;
 };
 
 export default function LoginForm() {
   const dispatch = useDispatch();
-  const [info, setInfo] = useState<Logininfo>({
-    email: "",
-    password: "",
+  const [info, setInfo] = useState<LoginInfo>({
+    Email: "",
+    Password: "",
   });
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -43,51 +45,63 @@ export default function LoginForm() {
   }
 
   return (
-    <form onSubmit={submit} className="flex flex-col mt-[1rem]">
-      <button type="button" onClick={() => openGooglePopup()}>google</button>
-      <label htmlFor="email" className="">
-        email
-      </label>
-      <input
+    <form onSubmit={submit} className="flex flex-col w-[30%] justify-center">
+      <h2 className="text-[#7C8A5C] font-semibold text-4xl mb-[1rem]">
+        Sign in
+      </h2>
+      <Input
+        labelName="Email"
+        onChange={(e) => setInfo({ ...info, [e.target.name]: e.target.value })}
+        value={info.Email}
         type="text"
-        onChange={(e) => setInfo({ ...info, [e.target.name]: e.target.value })}
-        value={info.email}
-        className="border-[#FCCB2A] border focus:outline-none rounded-md p-[0.5rem]"
-        name="email"
-        placeholder="email"
       />
-      <label htmlFor="password" className="mt-[1rem]">
-        Password
-      </label>
-      <input
-        type="password"
+      <Input
+        labelName="Password"
         onChange={(e) => setInfo({ ...info, [e.target.name]: e.target.value })}
-        value={info.password}
-        className="border-[#FCCB2A] border focus:outline-none rounded-md p-[0.5rem]"
-        name="password"
-        placeholder="password"
+        value={info.Password}
+        type="Password"
       />
-      <button
-        className="mt-[1rem] p-[0.3rem] rounded-md"
-        style={{
-          background:
-            "linear-gradient(180deg, rgba(255,207,0,1) 0%, rgba(252,169,3,1) 100%)",
-        }}
-        disabled={loading}
-      >
-        <span
-          className="p-[0.5rem] flex justify-center items-center rounded-md font-semibold text-xl text-[#efebe1]"
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(252,169,3,1) 0%, rgba(255,207,0,1) 100%)",
-          }}
+      <div className="flex items-center justify-between my-[0.5rem]">
+        <div className="flex items-center gap-[0.5rem]">
+          <input type="checkbox" />
+          <p>Remember me</p>
+        </div>
+        <Link
+          href={"/forgot-password"}
+          className="bg-gradient-to-r from-[#424C2B] via-[#9AB164] via-[#9AB164] to-[#7C8A5C] text-transparent bg-clip-text"
         >
-          {loading ? "Logging in..." : "Login"}
-        </span>
-      </button>
-      <Link href={"/register"} className="mt-[1rem] text-center">
+          Forgot password?
+        </Link>
+      </div>
+      <div className="flex flex-col gap-[1rem]">
+        <button
+          className="bg-gradient-to-r from-[#9AB164] to-[#DFFF94] p-[0.5rem] rounded-[1rem] h-[4rem] w-full"
+          aria-disabled={loading}
+        >
+          {loading ? (
+            "Signing in..."
+          ) : (
+            <span className="text-[#717568] font-bold text-lg">Sign in</span>
+          )}
+        </button>
+        <hr />
+        <button
+          onClick={() => openGooglePopup()}
+          type="button"
+          className="p-[0.5rem] rounded-[1rem] h-[4rem] border-1 border flex justify-center items-center gap-[1rem]"
+        >
+          <Image
+            src="/logos/googleIcon.svg"
+            height={40}
+            width={40}
+            alt="Google"
+          />
+          Login with Google
+        </button>
+      </div>
+      <Link href={"/login"} className="mt-[1rem] text-center">
         Don&apos;t have an account?{" "}
-        <span className="text-[#FCCB2A]">Sign up here</span>
+        <span className="text-[#7C8A5C]">Sign up for free</span>
       </Link>
     </form>
   );

@@ -17,7 +17,7 @@ export default async function RootLayout({
 }) {
 
   return (
-    <html lang="en" className="font-PJS">
+    <html lang="en" className="">
       <body className={`antialiased`}>
         <ReduxProvider>
           <PersistLogin>

@@ -1,11 +1,16 @@
 import Register from "@/components/forms/Register";
+import Background from "@/components/common/Background";
+
 
 export default function Page() {
   return (
-    <main className="h-screen w-screen flex justify-center items-center">
-      <div className="w-[300px]">
+    <Background>
+      <div className="flex h-screen w-screen px-[4rem]">
+        <div className="w-[70%]">
+          hi
+        </div>
         <Register />
       </div>
-    </main>
+    </Background>
   );
 }

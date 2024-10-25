@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode } from "react"
+import {  ReactNode } from "react"
 
 export const RowBox = ({ children }: { children: ReactNode }) => {
   return <div className="border-2 border-black rounded-2xl">

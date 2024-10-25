@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode } from "react"
+import {  ReactNode } from "react"
 
 export const Button = ({ children }: { children: ReactNode }) => {
   return (

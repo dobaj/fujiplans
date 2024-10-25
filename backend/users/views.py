@@ -65,15 +65,15 @@ class LoginView(View):
         try:
             data = json.loads(req.body)
 
-            if not data.get('email') or not data.get('password'):
+            if not data.get('Email') or not data.get('Password'):
                 return JsonResponse({'message': 'Please fill out all fields!'}, status=400)
 
-            user = User.objects.filter(email=data['email']).first()
+            user = User.objects.filter(email=data['Email']).first()
 
             if (not user):
                 return JsonResponse({'message': 'Invalid credentials!'}, status=401)
 
-            is_valid = check_password(data['password'], user.password)
+            is_valid = check_password(data['Password'], user.password)
 
             if (not is_valid):
                 return JsonResponse({'message': 'Invalid credentials!'}, status=401)
@@ -110,16 +110,16 @@ class RegisterView(View):
         try:
             data = json.loads(req.body)
 
-            if not data.get('email') or not data.get('password') or not data.get('name'):
+            if not data.get('Email') or not data.get('Password') or not data.get('Name'):
                 return JsonResponse({'message': 'Please fill out all fields!'}, status=400)
 
-            if User.objects.filter(email=data['email']).exists():
-                return JsonResponse({'message': f'User with the email: {data["email"]} already exists'}, status=400)
+            if User.objects.filter(email=data['Email']).exists():
+                return JsonResponse({'message': f'User with the email: {data["Email"]} already exists'}, status=400)
 
-            password = make_password(data['password'])
+            password = make_password(data['Password'])
 
             user = User.objects.create(
-                email=data['email'], name=data['name'], password=password)
+                email=data['Email'], name=data['Name'], password=password)
 
             user.save()
 

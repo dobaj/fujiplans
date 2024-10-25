@@ -9,20 +9,20 @@ import { setToken } from "@/redux/slices/tokenSlice";
 import { addUser } from "@/redux/slices/userSlice";
 import { openGooglePopup } from "@/utils/openGooglePopup";
 import useGoogleLogin from "@/hooks/useGoogleLogin";
+import Input from "../common/Input";
+import Image from "next/image";
 
 type Registerinfo = {
-  email: string;
-  password: string;
-  name: string;
+  Email: string;
+  Password: string;
+  Name: string;
 };
 
-
-
 export default function Register() {
-  const [info, setinfo] = useState<Registerinfo>({
-    email: "",
-    password: "",
-    name: "",
+  const [info, setInfo] = useState<Registerinfo>({
+    Email: "",
+    Password: "",
+    Name: "",
   });
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -47,65 +47,60 @@ export default function Register() {
       setLoading(false);
     }
   }
-  
 
   return (
-    <form onSubmit={submit} className="flex flex-col mt-[1rem]">
-      <button onClick={() => openGooglePopup()} type="button">google</button>
-      <label htmlFor="name" className="">
-        Name
-      </label>
-      <input
+    <form onSubmit={submit} className="flex flex-col w-[30%] justify-center">
+      <h2 className="text-[#7C8A5C] font-semibold text-4xl mb-[1rem]">
+        Sign up
+      </h2>
+      <Input
+        labelName="Name"
+        onChange={(e) => setInfo({ ...info, [e.target.name]: e.target.value })}
+        value={info.Name}
         type="text"
-        onChange={(e) => setinfo({ ...info, [e.target.name]: e.target.value })}
-        value={info.name}
-        className="border-[#FCCB2A] border focus:outline-none rounded-md p-[0.5rem]"
-        name="name"
-        placeholder="Name"
       />
-      <label htmlFor="email" className="mt-[1rem]">
-        Email
-      </label>
-      <input
-        type="email"
-        onChange={(e) => setinfo({ ...info, [e.target.name]: e.target.value })}
-        value={info.email}
-        className="border-[#FCCB2A] border focus:outline-none rounded-md p-[0.5rem]"
-        name="email"
-        placeholder="Email"
+      <Input
+        labelName="Email"
+        onChange={(e) => setInfo({ ...info, [e.target.name]: e.target.value })}
+        value={info.Email}
+        type="text"
       />
-      <label htmlFor="password" className="mt-[1rem]">
-        Password
-      </label>
-      <input
-        type="password"
-        onChange={(e) => setinfo({ ...info, [e.target.name]: e.target.value })}
-        value={info.password}
-        className="border-[#FCCB2A] border focus:outline-none rounded-md p-[0.5rem]"
-        name="password"
-        placeholder="Password"
+      <Input
+        labelName="Password"
+        onChange={(e) => setInfo({ ...info, [e.target.name]: e.target.value })}
+        value={info.Password}
+        type="Password"
       />
-      <button
-        className="mt-[1rem] p-[0.3rem] rounded-md"
-        style={{
-          background:
-            "linear-gradient(180deg, rgba(255,207,0,1) 0%, rgba(252,169,3,1) 100%)",
-        }}
-        aria-disabled={loading}
-      >
-        <span
-          className="p-[0.5rem] flex justify-center items-center rounded-md font-semibold text-xl text-[#efebe1]"
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(252,169,3,1) 0%, rgba(255,207,0,1) 100%)",
-          }}
+      
+      <div className="flex flex-col gap-[1rem] mt-[1.5rem]">
+        <button
+          className="bg-gradient-to-r from-[#9AB164] to-[#DFFF94] p-[0.5rem] rounded-[1rem] h-[4rem] w-full"
+          aria-disabled={loading}
         >
-          {loading ? "Making account..." : "Sign up"}
-        </span>
-      </button>
+          {loading ? (
+            "Making account..."
+          ) : (
+            <span className="text-[#717568] font-bold text-lg">Sign up</span>
+          )}
+        </button>
+        <hr />
+        <button
+          onClick={() => openGooglePopup()}
+          type="button"
+          className="p-[0.5rem] rounded-[1rem] h-[4rem] border-1 border flex justify-center items-center gap-[1rem]"
+        >
+          <Image
+            src="/logos/googleIcon.svg"
+            height={40}
+            width={40}
+            alt="Google"
+          />
+          Sign up with Google
+        </button>
+      </div>
       <Link href={"/login"} className="mt-[1rem] text-center">
         Already have an account?{" "}
-        <span className="text-[#FCCB2A]">Login in here</span>
+        <span className="text-[#7C8A5C]">Login in here</span>
       </Link>
     </form>
   );

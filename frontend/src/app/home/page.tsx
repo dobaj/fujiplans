@@ -6,7 +6,7 @@ import { useAppSelector } from '@/utils/reduxHooks';
 import useLogout from '@/hooks/useLogout';
 import useAxiosInt from '@/hooks/useAxiosInt';
 
-export default function Home() {
+export default function Page() {
   const logout = useLogout();
   const axios = useAxiosInt();
   
