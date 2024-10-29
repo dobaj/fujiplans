@@ -3,7 +3,7 @@ import json
 
 # File paths
 csv_file_path = "tagged_lesson_data.csv"  # Replace with your CSV file path if different
-jsonl_file_path = "lesson_data_for_cohere.jsonl"
+jsonl_file_path = "lesson_data_for_training.jsonl"
 
 def convert_csv_to_jsonl(csv_file, jsonl_file):
     with open(csv_file, mode='r', encoding='utf-8') as csv_file:
@@ -11,11 +11,11 @@ def convert_csv_to_jsonl(csv_file, jsonl_file):
         
         with open(jsonl_file, mode='w', encoding='utf-8') as jsonl_file:
             for row in reader:
-                # Structure the JSONL entry with the case-sensitive roles "User" and "Chatbot"
+                # Structure the JSONL entry with the roles "user" and "assistant" as required by GPT-4-turbo
                 jsonl_entry = {
                     "messages": [
-                        {"role": "User", "content": row["Input"]},
-                        {"role": "Chatbot", "content": row["Output"]}
+                        {"role": "user", "content": row["Input"]},
+                        {"role": "assistant", "content": row["Output"]}
                     ]
                 }
 
