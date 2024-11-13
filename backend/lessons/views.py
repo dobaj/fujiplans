@@ -4,12 +4,11 @@ from django.views import View
 from utils import verify_jwt, getGoogleOauthToken, getGoogleUserInfo
 from dotenv import load_dotenv
 import json
-import openai
+from openai import OpenAI
 load_dotenv()
 
 gpt_model = os.getenv('GPT_MODEL_NAME')
-gpt_key = os.getenv('OPENAI_API_KEY')
-
+client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 class LessonView(View):
     @verify_jwt
     def post(self, req, payload, *args, **kwargs):
@@ -27,11 +26,12 @@ class LessonView(View):
                 "content": message
             }
 
-            response = openai.ChatCompletion.create(
+            response = client.chat.completions.create(
                 model=gpt_model,
                 messages=[system_message, user_message]
             )
-            return JsonResponse({'message': response.choices[0].message["content"]})
+
+            return JsonResponse({'message': response.choices[0].message.content})
 
         except Exception as e:
             # Catch any errors and return them in a response
