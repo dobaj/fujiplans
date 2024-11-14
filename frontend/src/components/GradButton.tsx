@@ -3,10 +3,10 @@ import { MouseEventHandler, ReactNode } from "react";
 
 const defaultProps = {
   className: "justify-center",
-  background: "",
+  background: "bg-[#D9918D] hover:bg-[#CF8783]",
 };
 
-export const Button = (inputProps: {
+export const GradButton = (inputProps: {
   children: ReactNode;
   className?: string;
   background?: string;
@@ -19,8 +19,7 @@ export const Button = (inputProps: {
       <button
         onClick={inputProps.onClick}
         className={
-          "flex justify-center border-2 border-theme-stroke-red rounded-[3rem] text-white bg-[#D9918D] hover:bg-[#BF7773] " +
-          props.background
+          "flex justify-center border-2  border-theme-stroke-red rounded-[3rem] text-white bg-grad hover:bg-[#00000080]"
         }
       >
         {props.children}

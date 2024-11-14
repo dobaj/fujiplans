@@ -5,6 +5,13 @@ import { Button } from "../Button";
 import { Box } from "../Box";
 import { Plugins } from "@/app/prompt/page";
 
+//Generate the stringified version of the plugins
+const spans: { [key: string]: React.JSX.Element } = {};
+
+export const toString = () => {
+  return `I want to create a lesson plan for a ${spans["Scope"].props.children} ${spans["Subject"].props.children} class learning about ${spans["Topic"].props.children}. Include ${spans["Creative Elements"].props.children}. By the end, I want students to be able to ${spans["Learning Goals"].props.children}.`;
+};
+
 export const PromptForm = (props: {
   setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
   plugins: Plugins;
@@ -12,9 +19,6 @@ export const PromptForm = (props: {
   randomizePlugins: () => void;
   navigateToTab: (name: string) => void;
 }) => {
-
-  //Generate the stringified version of the plugins
-  const spans: { [key: string]: React.JSX.Element } = {};
   props.plugins.forEach((tab) => {
     //All active items
     let items = tab.elements

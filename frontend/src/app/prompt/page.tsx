@@ -1,10 +1,11 @@
 "use client";
-import { PromptForm } from "@/components/forms/PromptForm";
+import { PromptForm, toString } from "@/components/forms/PromptForm";
 import React, { useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/Button";
 import { PluginsForm } from "@/components/forms/PluginsForm";
 import { useRouter } from "next/navigation";
+import { GradButton } from "@/components/GradButton";
 
 export type PluginCategory = { name: string; active: boolean };
 
@@ -124,7 +125,7 @@ export default function Prompt() {
             className="my-4 self-start w-[300px] h-auto"
             priority={true}
           />
-          
+
           <Button className={"flex-1 justify-end font-bold"}>
             <div className="mx-3 my-2">about us</div>
           </Button>
@@ -140,11 +141,16 @@ export default function Prompt() {
             />
 
             <div className="flex items-center justify-center">
-              <Button onClick={() => router.push("/results")} background="bg-grad ">
+              <GradButton
+                onClick={() => {
+                  console.log(toString());
+                  router.push("/results");
+                }}
+              >
                 <div className="flex items-center font-bold text-3xl mb-4 mx-5 my-2">
                   generate
                 </div>
-              </Button>
+              </GradButton>
             </div>
           </div>
         ) : (
