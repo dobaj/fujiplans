@@ -7,19 +7,20 @@ import { ClickableBox } from "../ClickableBox";
 import { Plugins } from "@/app/prompt/page";
 
 export const PluginsForm = (props: {
+  selectedTab: number;
+  setSelectedTab: React.Dispatch<React.SetStateAction<number>>;
   setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
   setPlugins: React.Dispatch<React.SetStateAction<Plugins>>;
   plugins: Plugins;
 }) => {
-  const [selectedTab, setTab] = useState(0);
   const [addName, setAddName] = useState("");
   const [editingIndex, setEditingIndex] = useState(-1);
 
   const addPlugin = () => {
     if (addName !== "") {
-      const tab = props.plugins[selectedTab];
+      const tab = props.plugins[props.selectedTab];
       props.setPlugins((prev) => {
-        prev[selectedTab].elements = [
+        prev[props.selectedTab].elements = [
           ...tab.elements,
           { name: addName, active: false },
         ];
@@ -31,16 +32,16 @@ export const PluginsForm = (props: {
 
   const changeTab = (newTab: number) => {
     addPlugin();
-    setTab(newTab);
+    props.setSelectedTab(newTab);
   };
 
   const changeElement = (name: string) => {
     if (name !== "" && editingIndex != -1) {
-      const tab = props.plugins[selectedTab];
+      const tab = props.plugins[props.selectedTab];
       const selected = tab.elements[editingIndex].active;
       props.setPlugins((prev) => {
         const newArr = [...prev];
-        newArr[selectedTab].elements[editingIndex] = {
+        newArr[props.selectedTab].elements[editingIndex] = {
           name: name,
           active: selected,
         };
@@ -53,8 +54,8 @@ export const PluginsForm = (props: {
   const toggleActive = (index: number, active: boolean) => {
     props.setPlugins((prev) => {
       const newArr = [...prev];
-      const element = newArr[selectedTab].elements[index];
-      newArr[selectedTab].elements[index] = {
+      const element = newArr[props.selectedTab].elements[index];
+      newArr[props.selectedTab].elements[index] = {
         name: element.name,
         active: !active,
       };
@@ -79,7 +80,7 @@ export const PluginsForm = (props: {
             <div key={tab.name} className="flex">
               <p
                 className="text-3xl m-2 hover:font-semibold hover:cursor-pointer"
-                style={{ fontWeight: selectedTab === i ? "bold" : "" }}
+                style={{ fontWeight: props.selectedTab === i ? "bold" : "" }}
                 key={tab.name}
                 onClick={() => changeTab(i)}
               >
@@ -100,35 +101,39 @@ export const PluginsForm = (props: {
             className={"grid grid-cols-2 gap-x-12 gap-y-10 h-3/4 items-start"}
             style={{ gridAutoRows: "1fr" }}
           >
-            {selectedTab != -1 &&
-              props.plugins[selectedTab].elements.map(({ name, active }, i) => {
-                return (
-                  <ClickableBox
-                    key={name}
-                    darkMode={active}
-                    onClick={() => {
-                      setEditingIndex(i);
-                      toggleActive(i, active);
-                    }}
-                  >
-                    <p
-                      style={{ color: active ? "white" : "" }}
-                      contentEditable={true}
-                      onClick={(event) => {
+            {props.selectedTab != -1 &&
+              props.plugins[props.selectedTab].elements.map(
+                ({ name, active }, i) => {
+                  return (
+                    <ClickableBox
+                      key={name}
+                      darkMode={active}
+                      onClick={() => {
                         setEditingIndex(i);
-                        event.stopPropagation();
+                        toggleActive(i, active);
                       }}
-                      onBlur={(change) =>
-                        changeElement((change.target as HTMLElement).innerText)
-                      }
-                      suppressContentEditableWarning={true}
-                      className={"w-fit pr-4"}
                     >
-                      {name}
-                    </p>
-                  </ClickableBox>
-                );
-              })}
+                      <p
+                        style={{ color: active ? "white" : "" }}
+                        contentEditable={true}
+                        onClick={(event) => {
+                          setEditingIndex(i);
+                          event.stopPropagation();
+                        }}
+                        onBlur={(change) =>
+                          changeElement(
+                            (change.target as HTMLElement).innerText
+                          )
+                        }
+                        suppressContentEditableWarning={true}
+                        className={"w-fit pr-4"}
+                      >
+                        {name}
+                      </p>
+                    </ClickableBox>
+                  );
+                }
+              )}
             <ClickableBox darkMode={false} onClick={() => {}}>
               <input
                 className="focus:outline-1 bg-transparent"

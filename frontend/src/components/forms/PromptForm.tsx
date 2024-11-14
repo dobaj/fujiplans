@@ -3,28 +3,57 @@
 import Image from "next/image";
 import { Button } from "../Button";
 import { Box } from "../Box";
+import { Plugins } from "@/app/prompt/page";
 
 export const PromptForm = (props: {
   setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
+  plugins: Plugins;
   className?: string;
+  randomizePlugins: () => void;
+  navigateToTab: (name: string) => void;
 }) => {
-  const editable = ["lesson plan", "grade 4", "Habitats & Communities"];
-  const spans = editable.map((text) => (
-    <span key={0} className="text-grad outline-none" contentEditable={true}>
-      {text}
-    </span>
-  ));
+
+  //Generate the stringified version of the plugins
+  const spans: { [key: string]: React.JSX.Element } = {};
+  props.plugins.forEach((tab) => {
+    //All active items
+    let items = tab.elements
+      .filter((item) => item.active)
+      .map((item) => item.name.toLowerCase());
+
+    //Special cases
+    if (items.length > 1) {
+      if (items.length == 2) {
+        items = [items.join(" and ")];
+      } else {
+        items[items.length - 2] = items.slice(-2).join(", and ");
+        items.pop();
+      }
+    }
+
+    spans[tab.name] = (
+      <span
+        className="text-grad outline-none hover:cursor-pointer"
+        onClick={() => props.navigateToTab(tab.name)}
+      >
+        {items.join(", ")}
+      </span>
+    );
+  });
+
   const class_name = props.className ? props.className : "";
   return (
     <div className={"mx-32 " + class_name}>
       <Box>
         <div className={"mx-12 my-32 flex flex-col h-full"}>
           <p className="text-3xl">
-            I want to create a {spans[0]} for a {spans[1]} class learning about{" "}
-            {spans[2]}
+            I want to create a lesson plan for a {spans["Scope"]}{" "}
+            {spans["Subject"]} class learning about {spans["Topic"]}. Include{" "}
+            {spans["Creative Elements"]}. By the end, I want students to be able
+            to {spans["Learning Goals"]}.
           </p>
           <div className="flex">
-            <Button onClick={() => console.log("Shuffle!")}>
+            <Button onClick={() => props.randomizePlugins()}>
               <Image
                 src="shuffle.svg"
                 alt="Menu"
