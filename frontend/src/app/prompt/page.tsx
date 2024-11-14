@@ -4,12 +4,15 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/Button";
 import { PluginsForm } from "@/components/forms/PluginsForm";
+import { useRouter } from "next/navigation";
 
 export type PluginCategory = { name: string; active: boolean };
 
 export type Plugins = { name: string; elements: PluginCategory[] }[];
 
 export default function Prompt() {
+  const router = useRouter();
+
   const defaultPlugins = [
     {
       name: "Creative Elements",
@@ -121,6 +124,7 @@ export default function Prompt() {
             className="my-4 self-start w-[300px] h-auto"
             priority={true}
           />
+          
           <Button className={"flex-1 justify-end font-bold"}>
             <div className="mx-3 my-2">about us</div>
           </Button>
@@ -136,7 +140,7 @@ export default function Prompt() {
             />
 
             <div className="flex items-center justify-center">
-              <Button onClick={() => console.log("Generate!")}>
+              <Button onClick={() => router.push("/results")} background="bg-grad ">
                 <div className="flex items-center font-bold text-3xl mb-4 mx-5 my-2">
                   generate
                 </div>

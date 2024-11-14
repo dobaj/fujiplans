@@ -15,7 +15,8 @@ const config: Config = {
         "theme-bg-green": "#E0E1CB",
         "theme-grad-red": "#AE4747",
         "theme-grad-green": "#ACA477",
-        "theme-stroke-red": "#CF7D7D"
+        "theme-stroke-red": "#CF7D7D",
+        "theme-fill-red": "#D9918D"
       },
       fontFamily: {
         PJS: ["Plus Jakarta Sans", "sans-serif"]

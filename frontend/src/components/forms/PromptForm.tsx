@@ -52,7 +52,7 @@ export const PromptForm = (props: {
             {spans["Creative Elements"]}. By the end, I want students to be able
             to {spans["Learning Goals"]}.
           </p>
-          <div className="flex">
+          <div className="flex gap-3 mt-2">
             <Button onClick={() => props.randomizePlugins()}>
               <Image
                 src="shuffle.svg"
