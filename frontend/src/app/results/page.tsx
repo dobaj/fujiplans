@@ -11,7 +11,7 @@ export default function Results() {
 
   return (
     <div className="flex h-dvh bg-background ">
-      <div className="m-10 mt-2 flex flex-grow flex-col max-h-full">
+      <div className="m-10 mt-2 flex flex-grow flex-col max-ha-full">
         {/* Nav Bar */}
         <div className="flex flex-row justify-between items-center max-h-16 mb-24">
           <div className="flex-1 flex">
@@ -39,33 +39,33 @@ export default function Results() {
         </div>
         <div className={"flex flex-grow"}>
           <div className="flex flex-col justify-end gap-y-6">
-              <Button className="">
-                <Image
-                  src="download.svg"
-                  alt="Download"
-                  width={0}
-                  height={0}
-                  className="m-2 w-[4rem] h-auto mx-4 px-4"
-                />
-              </Button>
-              <Button className="">
-                <Image
-                  src="edit.svg"
-                  alt="Edit"
-                  width={0}
-                  height={0}
-                  className="m-2 w-[4rem] h-auto mx-4 px-4"
-                />
-              </Button>
-              <Button className="" onClick={()=>router.push("/prompt")}>
-                <Image
-                  src="back.svg"
-                  alt="Go Back"
-                  width={0}
-                  height={0}
-                  className="m-2 w-[4rem] h-auto mx-4 px-4"
-                />
-              </Button>
+            <Button className="">
+              <Image
+                src="download.svg"
+                alt="Download"
+                width={0}
+                height={0}
+                className="m-2 w-[4rem] h-auto mx-4 px-4"
+              />
+            </Button>
+            <Button className="">
+              <Image
+                src="edit.svg"
+                alt="Edit"
+                width={0}
+                height={0}
+                className="m-2 w-[4rem] h-auto mx-4 px-4"
+              />
+            </Button>
+            <Button className="" onClick={() => router.push("/prompt")}>
+              <Image
+                src="back.svg"
+                alt="Go Back"
+                width={0}
+                height={0}
+                className="m-2 w-[4rem] h-auto mx-4 px-4"
+              />
+            </Button>
           </div>
           <MDViewer />
         </div>
