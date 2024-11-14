@@ -14,3 +14,13 @@
   --background: #F5F1E9;
   --foreground: #000;
 }
+
+@layer components {
+  .text-grad {
+    @apply bg-gradient-to-r from-theme-grad-red to-theme-grad-green text-transparent bg-clip-text caret-black
+  }
+  .bg-grad {
+    /* @apply bg-gradient-to-r from-theme-grad-red to-[#D5F2A2]; */
+    background: radial-gradient(ellipse at 90% 10%, #D5F2A2A0 ,#AE4747A0);
+  } 
+}

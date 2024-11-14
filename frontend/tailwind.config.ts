@@ -12,7 +12,10 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
         "theme-green": "#9BAF6D",
-        "theme-bg-green": "#E0E1CB"
+        "theme-bg-green": "#E0E1CB",
+        "theme-grad-red": "#AE4747",
+        "theme-grad-green": "#ACA477",
+        "theme-stroke-red": "#CF7D7D"
       },
       fontFamily: {
         PJS: ["Plus Jakarta Sans", "sans-serif"]
