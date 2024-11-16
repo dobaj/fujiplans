@@ -102,67 +102,69 @@ export default function Prompt() {
   };
 
   return (
-    <div className="flex h-dvh bg-background ">
-      <div className="m-10 mt-2 flex flex-grow flex-col max-h-full">
-        {/* Nav Bar */}
-        <div className="flex flex-row justify-between items-center max-h-16 mb-24">
-          <div className="flex-1 flex">
-            <button className="flex-grow-0">
-              <Image
-                src="menuIcon.svg"
-                alt="Menu"
-                width={0}
-                height={0}
-                className="m-2 w-[48px] h-auto"
-              />
-            </button>
-          </div>
-          <Image
-            src="logo.svg"
-            alt="Fujiplans Logo"
-            width={0}
-            height={0}
-            className="my-4 self-start w-[300px] h-auto"
-            priority={true}
-          />
-
-          <Button className={"flex-1 justify-end font-bold"}>
-            <div className="mx-3 my-2">about us</div>
-          </Button>
-        </div>
-
-        {showForm ? (
-          <div className="flex-grow flex flex-col justify-around w-full">
-            <PromptForm
-              setShowForm={setShowForm}
-              plugins={plugins}
-              randomizePlugins={randomizePlugins}
-              navigateToTab={navigateToTab}
+    <body className="bg-background">
+      <div className="flex">
+        <div className="m-10 mt-2 flex flex-grow flex-col max-h-full">
+          {/* Nav Bar */}
+          <div className="flex flex-row justify-between items-center max-h-16 mb-24">
+            <div className="flex-1 flex">
+              <button className="flex-grow-0">
+                <Image
+                  src="menuIcon.svg"
+                  alt="Menu"
+                  width={0}
+                  height={0}
+                  className="m-2 w-[48px] h-auto"
+                />
+              </button>
+            </div>
+            <Image
+              src="logo.svg"
+              alt="Fujiplans Logo"
+              width={0}
+              height={0}
+              className="my-4 self-start w-[300px] h-auto"
+              priority={true}
             />
 
-            <div className="flex items-center justify-center">
-              <GradButton
-                onClick={() => {
-                  console.log(toString());
-                  router.push("/results");
-                }}
-              >
-                <div className="flex items-center font-bold text-3xl mb-4 mx-5 my-2">
-                  generate
-                </div>
-              </GradButton>
-            </div>
+            <Button className={"flex-1 justify-end font-bold"}>
+              <div className="mx-3 my-2">about us</div>
+            </Button>
           </div>
-        ) : (
-          <PluginsForm
-            selectedTab={selectedTab}
-            setSelectedTab={setSelectedTab}
-            setShowForm={setShowForm}
-            setPlugins={setPlugins}
-            plugins={plugins}
-          />
-        )}
+
+          {showForm ? (
+            <div className="flex-grow flex flex-col justify-around w-full">
+              <PromptForm
+                setShowForm={setShowForm}
+                plugins={plugins}
+                randomizePlugins={randomizePlugins}
+                navigateToTab={navigateToTab}
+              />
+
+              <div className="flex items-center justify-center">
+                <GradButton
+                  onClick={() => {
+                    console.log(toString());
+                    router.push("/results");
+                  }}
+                >
+                  <div className="flex items-center font-bold text-3xl mb-4 mx-5 my-2">
+                    generate
+                  </div>
+                </GradButton>
+              </div>
+            </div>
+          ) : (
+            <PluginsForm
+              selectedTab={selectedTab}
+              setSelectedTab={setSelectedTab}
+              setShowForm={setShowForm}
+              setPlugins={setPlugins}
+              plugins={plugins}
+            />
+          )}
+        </div>
       </div>
-    </div>
+    </body>
   );
 }
