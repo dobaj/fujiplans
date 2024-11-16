@@ -10,7 +10,29 @@
   margin: 0;
 }
 
+h1,h2,h3,h4,h5,h6 {
+  font-weight: bold;
+}
+
+ul {
+  list-style: initial;
+}
+
+li {
+  margin-left: 2rem;
+}
+
 :root {
   --background: #F5F1E9;
   --foreground: #000;
+}
+
+@layer components {
+  .text-grad {
+    @apply bg-gradient-to-r from-theme-grad-red to-theme-grad-green text-transparent bg-clip-text caret-black
+  }
+  .bg-grad {
+    /* @apply bg-gradient-to-r from-theme-grad-red to-[#D5F2A2]; */
+    background: radial-gradient(ellipse at 90% 10%, #D5F2A2A0 ,#AE4747A0);
+  } 
 }
