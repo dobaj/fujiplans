@@ -1,7 +1,7 @@
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 import os
 from django.views import View
-from utils import verify_jwt, getGoogleOauthToken, getGoogleUserInfo
+from utils import verify_jwt
 from dotenv import load_dotenv
 import json
 from openai import OpenAI
