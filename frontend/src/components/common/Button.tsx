@@ -1,13 +1,30 @@
-import {  ReactNode } from "react"
+"use client";
+import { MouseEventHandler, ReactNode } from "react";
 
-export const Button = ({ children }: { children: ReactNode }) => {
+const defaultProps = {
+  className: "justify-center",
+  background: "",
+};
+
+export const Button = (inputProps: {
+  children: ReactNode;
+  className?: string;
+  background?: string;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+}) => {
+  const props = { ...defaultProps, ...inputProps };
+
   return (
-  <div className="flex justify-center">
-  <button className="flex w-min border-4 border-theme-green rounded-2xl justify-center bg-theme-bg-green hover:bg-theme-green">
-    <div className="mx-5 my-2">
-      {children}
+    <div className={"flex " + props.className}>
+      <button
+        onClick={inputProps.onClick}
+        className={
+          "flex justify-center border-2 border-theme-stroke-red rounded-[3rem] text-white bg-[#D9918D] hover:bg-[#BF7773] " +
+          props.background
+        }
+      >
+        {props.children}
+      </button>
     </div>
-  </button>
-  </div>
-  )
-}
+  );
+};
