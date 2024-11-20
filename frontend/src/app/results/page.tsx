@@ -2,9 +2,9 @@
 
 import React from "react";
 import Image from "next/image";
-import { Button } from "@/components/Button";
 import { MDViewer } from "@/components/MDViewer";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/common/Button";
 
 export default function Results() {
   const router = useRouter();
