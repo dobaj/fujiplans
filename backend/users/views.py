@@ -192,6 +192,7 @@ class RegisterView(View):
                 max_age=one_year,
                 httponly=True,
                 samesite="Strict",
+                secure=True,
             )
 
             return res
