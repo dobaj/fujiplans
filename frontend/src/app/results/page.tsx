@@ -18,7 +18,7 @@ export default function Results() {
             <div className="flex-1 flex">
               <button className="flex-grow-0">
                 <Image
-                  src="menuIcon.svg"
+                  src="/menuIcon.svg"
                   alt="Menu"
                   width={0}
                   height={0}
@@ -27,7 +27,7 @@ export default function Results() {
               </button>
             </div>
             <Image
-              src="logo.svg"
+              src="/logo.svg"
               alt="Fujiplans Logo"
               width={0}
               height={0}
@@ -42,7 +42,7 @@ export default function Results() {
             <div className="flex flex-col justify-end gap-y-6">
               <Button className="">
                 <Image
-                  src="download.svg"
+                  src="/download.svg"
                   alt="Download"
                   width={0}
                   height={0}
@@ -51,7 +51,7 @@ export default function Results() {
               </Button>
               <Button className="">
                 <Image
-                  src="edit.svg"
+                  src="/edit.svg"
                   alt="Edit"
                   width={0}
                   height={0}
@@ -60,7 +60,7 @@ export default function Results() {
               </Button>
               <Button className="" onClick={() => router.push("/prompt")}>
                 <Image
-                  src="back.svg"
+                  src="/back.svg"
                   alt="Go Back"
                   width={0}
                   height={0}

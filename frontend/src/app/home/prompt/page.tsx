@@ -1,10 +1,10 @@
 "use client";
-import { PromptForm, toString } from "@/components/forms/PromptForm";
+import { PromptForm, toPromptString } from "@/components/forms/PromptForm";
 import React, { useState } from "react";
 import Image from "next/image";
 import { PluginsForm } from "@/components/forms/PluginsForm";
-import {Button} from "@/components/common/Button"
-import { useRouter } from "next/navigation";
+import { Button } from "@/components/common/Button";
+// import { useRouter } from "next/navigation";
 import { GradButton } from "@/components/GradButton";
 import useAxios from "@/hooks/useAxiosInt";
 
@@ -13,28 +13,30 @@ export type PluginCategory = { name: string; active: boolean };
 export type Plugins = { name: string; elements: PluginCategory[] }[];
 
 export default function Prompt() {
-  const router = useRouter();
+  // const router = useRouter();
   const axios = useAxios();
 
-
-  async function test(){
-    console.log("test");
-    const message = "Give me a weekly lesson plan for a 5th grade math class on multiplication. Include concepts about sharks. I want to spend half of each day for the next week on this lesson. By the end, I want students to be able to confidently multiply 2-digit numbers by 2-digit numbers and understand the diversity in ecosystems.";
+  async function getResult() {
+    const message = toPromptString();
     try {
-      const startTime = performance.now();
-      const res = await axios.post("/lessons/", {message}, {responseType: "blob"}); 
-      const endTime = performance.now();
-      console.log(`API response time: ${(endTime - startTime).toFixed(2)} ms`);
+      // const startTime = performance.now();
+      const res = await axios.post(
+        "/lessons/",
+        { message },
+        { responseType: "blob" }
+      );
+      // const endTime = performance.now();
+      // console.log(`API response time: ${(endTime - startTime).toFixed(2)} ms`);
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
       link.href = url;
       link.setAttribute("download", "lesson.pdf");
       link.click();
       link.remove();
-
+      setLoading(false);
     } catch (error) {
-      console.log(error); 
-    } 
+      console.log(error);
+    }
   }
 
   const defaultPlugins = [
@@ -94,6 +96,7 @@ export default function Prompt() {
   const [selectedTab, setSelectedTab] = useState(0);
   const [showForm, setShowForm] = useState(true);
   const [plugins, setPlugins] = useState<Plugins>(defaultPlugins);
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   const randomizePlugins = () => {
     setPlugins((prev) => {
@@ -133,7 +136,7 @@ export default function Prompt() {
             <div className="flex-1 flex">
               <button className="flex-grow-0">
                 <Image
-                  src="menuIcon.svg"
+                  src="/menuIcon.svg"
                   alt="Menu"
                   width={0}
                   height={0}
@@ -142,7 +145,7 @@ export default function Prompt() {
               </button>
             </div>
             <Image
-              src="logo.svg"
+              src="/logo.svg"
               alt="Fujiplans Logo"
               width={0}
               height={0}
@@ -153,12 +156,14 @@ export default function Prompt() {
             <Button className={"flex-1 justify-end font-bold"}>
               <div className="mx-3 my-2">about us</div>
             </Button>
-            <button onClick={test}>
-              pdf test
-            </button>
           </div>
 
-          {showForm ? (
+          {isLoading ? (
+            <div className="flex-grow flex flex-col my-[11rem] text-center">
+              <p className="text-4xl">loading...</p>
+              <p className="text-xl ">this may take some time</p>
+            </div>
+          ) : showForm ? (
             <div className="flex-grow flex flex-col justify-around w-full">
               <PromptForm
                 setShowForm={setShowForm}
@@ -169,9 +174,10 @@ export default function Prompt() {
 
               <div className="flex items-center justify-center">
                 <GradButton
+                  className="mt-4"
                   onClick={() => {
-                    console.log(toString());
-                    router.push("/results");
+                    setLoading(true);
+                    getResult();
                   }}
                 >
                   <div className="flex items-center font-bold text-3xl mb-4 mx-5 my-2">
