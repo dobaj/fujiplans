@@ -1,11 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { Button } from "../Button";
-import { Box } from "../Box";
-import { Plugins } from "@/app/prompt/page";
-
-//Generate the stringified version of the plugins
+import { Button } from "../common/Button";
+import { Box } from "../common/Box";
+import { Plugins } from "@/app/home/prompt/page";
 const spans: { [key: string]: React.JSX.Element } = {};
 
 export const toString = () => {

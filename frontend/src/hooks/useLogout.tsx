@@ -14,7 +14,7 @@ export default function useLogout() {
       dispatch(logout());
       dispatch(logoutUser());
       const res = await axios.post("/users/");
-      console.log(res);
+      console.log(res.data.msg);
       router.push("/");
       return;
     } catch (error) {

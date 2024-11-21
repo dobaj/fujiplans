@@ -17,8 +17,8 @@ export default function useRefreshToken() {
     } catch (error) {
       if (error instanceof AxiosError) {
         //refresh token token doesn't work, logout user
-        console.log(error?.response?.data.message);
-        if(error.response?.status !== 401) {
+        console.log(error);
+        if (error.response?.status === 498 || error.response?.status === 400) {
           dispatch(logout());
           dispatch(logoutUser());
           router.push("/login");

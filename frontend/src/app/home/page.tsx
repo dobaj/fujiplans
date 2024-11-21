@@ -1,19 +1,21 @@
-"use client"
-import React from 'react'
-import { useAppSelector } from '@/utils/reduxHooks';
-import useLogout from '@/hooks/useLogout';
-import useAxiosInt from '@/hooks/useAxiosInt';
+// TODO: Make this server component
 
-export default function Home() {
+"use client";
+import React from "react";
+import { useAppSelector } from "@/utils/reduxHooks";
+import useLogout from "@/hooks/useLogout";
+import useAxiosInt from "@/hooks/useAxiosInt";
+
+export default function Page() {
   const logout = useLogout();
   const axios = useAxiosInt();
-  
+
   async function test() {
     try {
       const res = await axios.get("/users/");
-      console.log(res)
+      console.log(res);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 

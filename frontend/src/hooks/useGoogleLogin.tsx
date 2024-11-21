@@ -28,6 +28,7 @@ export default function useGoogleLogin() {
 
           if (error) {
             // Handle error case, maybe redirect to an error page
+            console.log(error);
             router.push("/oauth/error");
           }
 
