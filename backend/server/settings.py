@@ -29,7 +29,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["https://server-593347292272.us-east1.run.app", "server-593347292272.us-east1.run.app"]
 
 
 # Application definition
@@ -145,5 +145,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # TODO: change cors when deploying
-CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "https://www.fujiplans.com"]
+CORS_ALLOWED_ORIGINS = ["https://www.fujiplans.com"]
 #CORS_ALLOW_CREDENTIALS = True
