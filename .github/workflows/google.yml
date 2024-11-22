@@ -1,0 +1,57 @@
+name: Deploy Django Backend to Cloud Run
+
+on:
+  push:
+    branches:
+      - main  # Trigger deployment on pushes to the main branch
+
+env:
+  PROJECT_ID: 'fuji-plans' # TODO: Update to your Google Cloud project ID
+  REGION: 'us-east1'       # TODO: Update to your Cloud Run region
+  SERVICE_NAME: 'server' # TODO: Update to your Cloud Run service name
+  IMAGE_NAME: 'server'   # TODO: Update to your desired image name
+
+jobs:
+  deploy-to-cloud-run:
+    name: Build and Deploy to Cloud Run
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Step 2: Authenticate to Google Cloud
+      - id: 'auth'
+        name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: '${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}'
+          service_account: '${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}'
+
+      # Step 3: Configure Docker authentication
+      - name: Configure Docker Authentication
+        run: gcloud auth configure-docker
+
+      # Step 4: Build and push the Docker image
+      - name: Build and Push Docker Image
+        run: |
+          IMAGE="gcr.io/${{ env.PROJECT_ID }}/${{ env.IMAGE_NAME }}:latest"
+          docker build -t $IMAGE .
+          docker push $IMAGE
+
+      # Step 5: Deploy to Cloud Run
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy ${{ env.SERVICE_NAME }} \
+            --image gcr.io/${{ env.PROJECT_ID }}/${{ env.IMAGE_NAME }}:latest \
+            --platform managed \
+            --region ${{ env.REGION }} \
+            --allow-unauthenticated \
+            --update-env-vars DB_HOST=${{ secrets.DB_HOST }},DB_USER=${{ secrets.DB_USER }}
+
+
