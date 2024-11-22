@@ -46,7 +46,7 @@ export default function LoginForm() {
 
   return (
     <form onSubmit={submit} className="flex flex-col w-[30%] justify-center">
-      <h2 className="text-[#7C8A5C] font-semibold text-4xl mb-[1rem]">
+      <h2 className="text-grad font-semibold text-4xl mb-[1rem]">
         Sign in
       </h2>
       <Input
@@ -66,16 +66,10 @@ export default function LoginForm() {
           <input type="checkbox" />
           <p>Remember me</p>
         </div>
-        <Link
-          href={"/forgot-password"}
-          className="bg-gradient-to-r from-[#424C2B] via-[#9AB164] via-[#9AB164] to-[#7C8A5C] text-transparent bg-clip-text"
-        >
-          Forgot password?
-        </Link>
       </div>
       <div className="flex flex-col gap-[1rem]">
         <button
-          className="bg-gradient-to-r from-[#9AB164] to-[#DFFF94] p-[0.5rem] rounded-[1rem] h-[4rem] w-full"
+          className="bg-grad p-[0.5rem] rounded-[1rem] h-[4rem] w-full"
           aria-disabled={loading}
         >
           {loading ? (
@@ -101,7 +95,7 @@ export default function LoginForm() {
       </div>
       <Link href={"/register"} className="mt-[1rem] text-center">
         Don&apos;t have an account?{" "}
-        <span className="text-[#7C8A5C]">Sign up for free</span>
+        <span className="text-grad">Sign up for free</span>
       </Link>
     </form>
   );

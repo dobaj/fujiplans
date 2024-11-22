@@ -50,7 +50,7 @@ export default function Register() {
 
   return (
     <form onSubmit={submit} className="flex flex-col w-[30%] justify-center">
-      <h2 className="text-[#7C8A5C] font-semibold text-4xl mb-[1rem]">
+      <h2 className="text-grad font-semibold text-4xl mb-[1rem]">
         Sign up
       </h2>
       <Input
@@ -74,7 +74,7 @@ export default function Register() {
       
       <div className="flex flex-col gap-[1rem] mt-[1.5rem]">
         <button
-          className="bg-gradient-to-r from-[#9AB164] to-[#DFFF94] p-[0.5rem] rounded-[1rem] h-[4rem] w-full"
+          className="bg-grad p-[0.5rem] rounded-[1rem] h-[4rem] w-full"
           aria-disabled={loading}
         >
           {loading ? (
@@ -100,7 +100,7 @@ export default function Register() {
       </div>
       <Link href={"/login"} className="mt-[1rem] text-center">
         Already have an account?{" "}
-        <span className="text-[#7C8A5C]">Login in here</span>
+        <span className="text-grad">Login in here</span>
       </Link>
     </form>
   );

@@ -10,7 +10,7 @@ interface inputProps {
 export default function Input({ labelName, onChange, value, type}: inputProps) {
   return (
     <>
-      <label htmlFor={labelName} className="text-[#7C8A5C] text-base font-semibold">
+      <label htmlFor={labelName} className="text-grad text-base font-semibold">
         {labelName}
       </label>
       <input

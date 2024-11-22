@@ -12,6 +12,7 @@ interface OAuthMessageData {
     name: string;
   };
   error?: boolean;
+  oAuthUrl?: string;
 }
 
 export default function useGoogleLogin() {
