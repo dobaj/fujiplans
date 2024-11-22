@@ -116,7 +116,7 @@ class LoginView(View):
                 value=refresh_token,
                 max_age=one_year,
                 httponly=True,
-                samesite="Strict",
+                samesite="None",
                 secure=True,
             )
 
@@ -192,7 +192,7 @@ class RegisterView(View):
                 value=refresh_token,
                 max_age=one_year,
                 httponly=True,
-                samesite="Strict",
+                samesite="None",
                 secure=True,
             )
 
@@ -200,7 +200,7 @@ class RegisterView(View):
 
         except Exception as e:
 
-            return JsonResponse({"message": str(e)}, status=400)
+            return JsonResponse({"message": e}, status=400)
 
 
 class RefreshView(View):
@@ -304,7 +304,8 @@ class GoogleOauth(View):
                 value=refresh_token,
                 max_age=one_year,
                 httponly=True,
-                samesite="Strict",
+                samesite="None",
+                secure=True,
             )
 
             return res
