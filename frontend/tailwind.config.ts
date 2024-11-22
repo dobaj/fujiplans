@@ -12,15 +12,19 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
         "theme-green": "#9BAF6D",
+        pink: "#CF7D7D",
+        "light-pink": "#DA928E",
+        yellow: "#ECEFA2",
         "theme-bg-green": "#E0E1CB",
         "theme-grad-red": "#AE4747",
         "theme-grad-green": "#ACA477",
         "theme-stroke-red": "#CF7D7D",
-        "theme-fill-red": "#D9918D"
+        "theme-fill-red": "#D9918D",
+        bg: "#F6F0E9",
       },
       fontFamily: {
-        PJS: ["Plus Jakarta Sans", "sans-serif"]
-      }
+        PJS: ["Plus Jakarta Sans", "sans-serif"],
+      },
     },
   },
   plugins: [],
