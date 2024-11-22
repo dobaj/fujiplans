@@ -1,6 +1,6 @@
-import axios from "@/utils/axios";
 import { AxiosError } from "axios";
 import { useAppDispatch } from "@/utils/reduxHooks";
+import axios from "@/utils/axios";
 import { setToken } from "@/redux/slices/tokenSlice";
 import { useRouter } from "next/navigation";
 import { logout } from "@/redux/slices/tokenSlice";

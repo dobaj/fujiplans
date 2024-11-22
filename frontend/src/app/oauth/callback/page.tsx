@@ -13,8 +13,14 @@ export default function OAuthCallback() {
 
     // Send the code to the backend to complete the OAuth flow
     if (code) {
+      let oAuthUrl;
+      if(process.env.NEXT_PUBLIC_OAUTH_URL){
+        oAuthUrl = process.env.NEXT_PUBLIC_OAUTH_URL;
+      } else {
+        oAuthUrl = "http://localhost:8080/users/oauth/google";
+      }
       axios
-        .get(`http://localhost:8000/users/oauth/google`, {
+        .get(oAuthUrl, {
           params: { code },
         })
         .then((response) => {
