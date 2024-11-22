@@ -12,16 +12,13 @@ export default function OAuthCallback() {
 
     // Send the code to the backend to complete the OAuth flow
     if (code) {
-      let oAuthUrl;
-      if (process.env.NEXT_PUBLIC_OAUTH_URL) {
-        oAuthUrl = process.env.NEXT_PUBLIC_OAUTH_URL;
-      } else {
-        oAuthUrl = "http://localhost:8080/users/oauth/google";
-      }
       axios
-        .get(oAuthUrl, {
-          params: { code },
-        })
+        .get(
+          "https://fuji-backend-593347292272.northamerica-northeast2.run.app/users/oauth/google",
+          {
+            params: { code },
+          },
+        )
         .then((response) => {
           // Extract the access token and user info from the response
           const { data } = response;
