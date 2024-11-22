@@ -6,7 +6,7 @@ import { Box } from "../common/Box";
 import { Plugins } from "@/app/home/prompt/page";
 const spans: { [key: string]: React.JSX.Element } = {};
 
-export const toString = () => {
+export const toPromptString = () => {
   return `I want to create a lesson plan for a ${spans["Scope"].props.children} ${spans["Subject"].props.children} class learning about ${spans["Topic"].props.children}. Include ${spans["Creative Elements"].props.children}. By the end, I want students to be able to ${spans["Learning Goals"].props.children}.`;
 };
 
@@ -57,7 +57,7 @@ export const PromptForm = (props: {
           <div className="flex gap-3 mt-2">
             <Button onClick={() => props.randomizePlugins()}>
               <Image
-                src="shuffle.svg"
+                src="/shuffle.svg"
                 alt="Menu"
                 width={24}
                 height={24}
@@ -66,7 +66,7 @@ export const PromptForm = (props: {
             </Button>
             <Button onClick={() => props.setShowForm((prev) => !prev)}>
               <Image
-                src="puzzle.svg"
+                src="/puzzle.svg"
                 alt="Menu"
                 width={24}
                 height={24}

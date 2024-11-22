@@ -45,7 +45,7 @@ class LessonView(View):
             #convert markdown to pdf using md2pdf
             #Create buffer to store pdf in memory
             pdf_buffer = io.BytesIO()
-            md2pdf(pdf_buffer, message)
+            md2pdf(pdf_buffer, message, css_file_path="./utils/pdf.css")
             
             #Return pdf buffer to start of file
             pdf_buffer.seek(0)

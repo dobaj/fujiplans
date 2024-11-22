@@ -87,7 +87,7 @@ export const PluginsForm = (props: {
                 {tab.name}
               </p>
               <Image
-                src="right-chevron.svg"
+                src="/right-chevron.svg"
                 alt="Menu"
                 width={0}
                 height={0}
