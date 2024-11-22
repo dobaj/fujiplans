@@ -5,7 +5,6 @@ import axios from "@/utils/axios";
 import Loader from "@/components/loading/Loader";
 
 export default function OAuthCallback() {
-  
   useEffect(() => {
     // Parse the authorization code from the query parameters
     const query = new URLSearchParams(window.location.search);
@@ -13,8 +12,14 @@ export default function OAuthCallback() {
 
     // Send the code to the backend to complete the OAuth flow
     if (code) {
+      let oAuthUrl;
+      if (process.env.NEXT_PUBLIC_OAUTH_URL) {
+        oAuthUrl = process.env.NEXT_PUBLIC_OAUTH_URL;
+      } else {
+        oAuthUrl = "http://localhost:8080/users/oauth/google";
+      }
       axios
-        .get("https://fuji-backend-593347292272.northamerica-northeast2.run.app/users/oauth/google", {
+        .get(oAuthUrl, {
           params: { code },
         })
         .then((response) => {
@@ -26,7 +31,7 @@ export default function OAuthCallback() {
           if (window.opener) {
             window.opener.postMessage(
               { access_token, user },
-              window.location.origin
+              window.location.origin,
             );
           }
 
@@ -50,5 +55,5 @@ export default function OAuthCallback() {
     }
   }, []);
 
-  return <Loader/>
-};
+  return <Loader />;
+}
