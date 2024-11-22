@@ -4,8 +4,7 @@ import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useAppSelector } from "@/utils/reduxHooks";
 import { RootState } from "@/redux/store";
-// import Loader from "@/components/Loader";
-
+import Loader from "@/components/loading/Loader";
 export default function useRequireAuth({
   children,
 }: {
@@ -19,7 +18,7 @@ export default function useRequireAuth({
 
   const router = useRouter();
 
-  const restrictedPath = "/home";
+  const restrictedPath = "/home/prompt";
 
   const noAuth = !token || !user;
 
@@ -34,7 +33,7 @@ export default function useRequireAuth({
         pathname === "/login" ||
         pathname === "/register"
       ) {
-        router.push("/home");
+        router.push("/home/prompt");
       }
     }
 
@@ -42,7 +41,7 @@ export default function useRequireAuth({
   }, [pathname, router]);
 
   if(((noAuth) && pathname.startsWith(restrictedPath)) || (!noAuth && (pathname === "/" || pathname === "/login" || pathname === "/register"))) {
-    return <div>Redirecting...</div>;
+    return <Loader />;
   }
 
   return children;

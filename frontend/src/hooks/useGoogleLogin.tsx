@@ -38,7 +38,7 @@ export default function useGoogleLogin() {
             dispatch(addUser(user));
 
             // Redirect to the home page
-            router.push("/home");
+            router.push("/home/prompt");
           }
         }
       };

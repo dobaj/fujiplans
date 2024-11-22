@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function Loader() {
   return (
-    <main className="bg-[#d6efd8] w-screen h-screen flex items-center justify-center">
+    <main className="bg-background w-screen h-screen flex items-center justify-center">
       <div className="loader">
         <span className="l">
           <svg

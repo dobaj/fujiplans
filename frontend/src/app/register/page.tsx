@@ -6,9 +6,7 @@ export default function Page() {
   return (
     <Background>
       <div className="flex h-screen w-screen px-[4rem]">
-        <div className="w-[70%]">
-          hi
-        </div>
+        <div className="w-[70%]"/>
         <Register />
       </div>
     </Background>

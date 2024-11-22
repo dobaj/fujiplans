@@ -36,7 +36,7 @@ export default function LoginForm() {
       const { access_token, user } = data;
       dispatch(setToken(access_token));
       dispatch(addUser(user));
-      router.push("/home");
+      router.push("/home/prompt");
     } catch (error) {
       console.log(error);
     } finally {
@@ -99,7 +99,7 @@ export default function LoginForm() {
           Login with Google
         </button>
       </div>
-      <Link href={"/login"} className="mt-[1rem] text-center">
+      <Link href={"/register"} className="mt-[1rem] text-center">
         Don&apos;t have an account?{" "}
         <span className="text-[#7C8A5C]">Sign up for free</span>
       </Link>

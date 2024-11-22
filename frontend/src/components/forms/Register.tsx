@@ -40,7 +40,7 @@ export default function Register() {
       dispatch(setToken(data.access_token));
       dispatch(addUser(data.user));
 
-      router.push("/login");
+      router.push("/home/prompt");
     } catch (error) {
       console.log(error);
     } finally {

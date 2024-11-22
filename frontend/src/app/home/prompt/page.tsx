@@ -7,6 +7,7 @@ import { Button } from "@/components/common/Button";
 // import { useRouter } from "next/navigation";
 import { GradButton } from "@/components/GradButton";
 import useAxios from "@/hooks/useAxiosInt";
+import Loader from "@/components/loading/Loader";
 
 export type PluginCategory = { name: string; active: boolean };
 
@@ -127,8 +128,12 @@ export default function Prompt() {
     });
   };
 
+  if(isLoading) {
+    return <Loader />;
+  }
+
   return (
-    <body className="bg-background">
+    <main className="h-full bg-background">
       <div className="flex">
         <div className="m-10 mt-2 flex flex-grow flex-col max-h-full">
           {/* Nav Bar */}
@@ -158,12 +163,7 @@ export default function Prompt() {
             </Button>
           </div>
 
-          {isLoading ? (
-            <div className="flex-grow flex flex-col my-[11rem] text-center">
-              <p className="text-4xl">loading...</p>
-              <p className="text-xl ">this may take some time</p>
-            </div>
-          ) : showForm ? (
+          {showForm ? (
             <div className="flex-grow flex flex-col justify-around w-full">
               <PromptForm
                 setShowForm={setShowForm}
@@ -197,6 +197,6 @@ export default function Prompt() {
           )}
         </div>
       </div>
-    </body>
+    </main>
   );
 }

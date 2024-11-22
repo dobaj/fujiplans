@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import useRefreshToken from "./useRefreshToken";
 import { useAppSelector } from "@/utils/reduxHooks";
+import Loader from "@/components/loading/Loader";
 
 export default function usePersistLogin({
   children,
@@ -46,5 +47,5 @@ export default function usePersistLogin({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return loading ? <div>loading...</div> : children;
+  return loading ? <Loader/> : children;
 }

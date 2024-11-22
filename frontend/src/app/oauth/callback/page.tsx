@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import axios from "@/utils/axios";
-
+import Loader from "@/components/loading/Loader";
 
 export default function OAuthCallback() {
   
@@ -56,5 +56,5 @@ export default function OAuthCallback() {
     }
   }, []);
 
-  return <div>Completing authentication...</div>;
+  return <Loader/>
 };

@@ -25,6 +25,7 @@ body {
   align-items: center;
   overflow: hidden;
 }
+
 .loader span {
   padding: 0;
   margin: 0;

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import useGetUser from "./useGetUser";
 import { useAppSelector } from "@/utils/reduxHooks";
+import Loader from "@/components/loading/Loader";
 
 export default function useRefetch({
   children,
@@ -45,5 +46,5 @@ export default function useRefetch({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return loading ? <div>loading...</div> : children;
+  return loading ? <Loader/> : children;
 }
