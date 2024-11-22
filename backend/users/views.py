@@ -116,7 +116,7 @@ class LoginView(View):
                 value=refresh_token,
                 max_age=one_year,
                 httponly=True,
-                samesite="Strict",
+                samesite="None",
                 secure=True,
             )
 
@@ -192,7 +192,7 @@ class RegisterView(View):
                 value=refresh_token,
                 max_age=one_year,
                 httponly=True,
-                samesite="Strict",
+                samesite="None",
                 secure=True,
             )
 
@@ -304,7 +304,7 @@ class GoogleOauth(View):
                 value=refresh_token,
                 max_age=one_year,
                 httponly=True,
-                samesite="Strict",
+                samesite="None",
             )
 
             return res

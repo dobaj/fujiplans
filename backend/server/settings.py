@@ -145,5 +145,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # TODO: change cors when deploying
-CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "https://www.fujiplans.com"]
+CORS_ALLOWED_ORIGINS = ["https://fujiplans.com", "https://www.fujiplans.com","vercel"]
 CORS_ALLOW_CREDENTIALS = True
