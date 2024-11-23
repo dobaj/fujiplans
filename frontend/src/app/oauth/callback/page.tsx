@@ -12,9 +12,10 @@ export default function OAuthCallback() {
 
     // Send the code to the backend to complete the OAuth flow
     if (code) {
+      const backendURL = process.env.NEXT_PUBLIC_OAUTH_URL ? process.env.NEXT_PUBLIC_OAUTH_URL : "http://localhost:8080/users/oauth/google/"
       axios
         .get(
-          "https://fuji-backend-593347292272.northamerica-northeast2.run.app/users/oauth/google",
+          backendURL,
           {
             params: { code },
           },
