@@ -258,7 +258,7 @@ class GoogleOauth(View):
 
             if not google_user["verified_email"]:
                 return JsonResponse({"message": "Email not verified"}, status=403)
-
+            
             user, created = User.objects.get_or_create(
                 email=google_user["email"],
                 defaults={"name": google_user["name"]},
@@ -266,7 +266,7 @@ class GoogleOauth(View):
 
             if created:
                 # Set the password to unusable since it's an OAuth user
-                user.set_unusable_password()
+                user.password = None
                 user.save()
 
             print(user)
