@@ -39,7 +39,7 @@ export default function OAuthCallback() {
           console.error("Error:", error);
           // Close the popup and redirect the parent window to an error page
           if (window.opener) {
-            window.opener.postMessage({ error: true }, window.location.origin);
+            window.opener.postMessage({ error: error }, window.location.origin);
           }
           window.close();
         });
