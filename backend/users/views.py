@@ -269,8 +269,6 @@ class GoogleOauth(View):
                 user.password = None
                 user.save()
 
-            print(user)
-
             refresh_token = jwt.encode(
                 {
                     "_id": str(user._id),

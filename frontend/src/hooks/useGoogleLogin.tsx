@@ -26,7 +26,6 @@ export default function useGoogleLogin() {
       const handleMessage = (event: MessageEvent<OAuthMessageData>) => {
         if (event.origin === window.location.origin) {
           const { access_token, user, error } = event.data;
-          console.log(user);
 
           if (error) {
             // Handle error case, maybe redirect to an error page
