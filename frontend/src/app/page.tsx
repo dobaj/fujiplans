@@ -16,51 +16,47 @@ export default function Page() {
       </div>
       <div className="relative mt-[-10rem] md:mt-[-20rem] lg:mt-[-30rem] xl:mt-[-42rem]">
         <Image
-          className="absolute z-30 mt-[-18rem] ml-[-20rem]"
+          className="absolute z-30 xl:mt-[-18rem] xl:ml-[-12rem] md:mt-[-15rem] ml-[1.25rem] mt-[-10rem]"
           alt="FujiPlans logo"
           src="/fujiplans.svg"
           width={766.53}
           height={255.59}
         />
-        <Pdfanimation />
-        <div className="flex gap-[1rem] absolute top-[15rem] left-[40rem]">
-          <Link
-            href={"/login"}
-            className="flex justify-center border-2 w-[10rem] h-[5rem] items-center font-bold text-2xl border-theme-stroke-red rounded-[3rem] text-white bg-grad hover:bg-[#00000080]"
-          >
-            Login
-          </Link>
-          <Link
-            href={"/register"}
-            className="flex justify-center border-2 w-[10rem] h-[5rem] items-center font-bold text-2xl border-theme-stroke-red rounded-[3rem] text-white bg-grad hover:bg-[#00000080]"
-          >
-            Register
-          </Link>
+        <div className="ml-[7.5rem]">
+          <Pdfanimation />
         </div>
-        <Image
-          className="absolute z-10 ml-[20rem] md:ml-[30rem] lg:ml-[40rem] xl:ml-[58rem] mt-[-5rem] md:mt-[-7rem] lg:mt-[-10rem] xl:mt-[-13.5rem] -rotate-6"
-          alt="seeds1"
-          src="/seeds1.svg"
-          width={493}
-          height={638}
-        />
-        <h1
-          className={`flex justify-center text-center text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold font-PJS mt-[-0.5rem] md:mt-0 lg:mt-[0.5rem] xl:mt-[1rem]
-          drop-shadow-md`}
-        >
-          Empowering Teachers to Use AI
-        </h1>
-        <Image
-          className="ml-[10rem] md:ml-[20rem] lg:ml-[30rem] xl:ml-[38.5rem]"
-          alt="underline"
-          src="/underline.svg"
-          width={335}
-          height={46}
-        />
+        <div className="flex gap-[1rem] absolute top-[14rem] left-1/2 transform -translate-x-1/2 xl:top-[10rem] xl:left-[40rem] xl:transform-none lg:top-[25rem] md:top-[20rem]">
+        <Link
+          href={"/login"}
+          className="flex justify-center border-2 w-[8rem] h-[3rem] md:w-[10rem] md:h-[5rem] items-center font-bold text-lg md:text-2xl 
+          border-theme-stroke-red rounded-[3rem] text-white bg-grad hover:bg-[#00000080]">
+          Login
+        </Link>
+        <Link
+          href={"/register"}
+          className="flex justify-center border-2 w-[8rem] h-[3rem] md:w-[10rem] md:h-[5rem] items-center font-bold text-lg md:text-2xl 
+          border-theme-stroke-red rounded-[3rem] text-white bg-grad hover:bg-[#00000080]">
+          Register
+        </Link>
+        </div>
+        <div className="flex-col justify-center item-center">
+          <h1
+            className={`text-2xl md:text-3xl lg:text-4xl xl:text-7xl font-semibold font-PJS mt-[-0.5rem] md:mt-[1rem] lg:mt-[0.5rem] xl:mt-[1rem]
+            drop-shadow-md`}>
+            Empowering Teachers to Use AI
+          </h1>
+          <Image
+            className="mx-auto"
+            alt="underline"
+            src="/underline.svg"
+            width={335}
+            height={46}
+          />
+        </div>
       </div>
       <div className="relative mt-[2rem] md:mt-[3rem] lg:mt-[4rem] xl:mt-[4.5rem]">
         <p
-          className={`text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-PJS text-center whitespace-pre-line font-light`}
+          className={`text-xl md:text-2xl lg:text-3xl xl:text-5xl font-PJS text-center whitespace-pre-line font-light`}
         >
           FujiPlans is an AI-powered platform <br />
           designed to <span className="text-pink">simplify</span> the lesson
@@ -74,17 +70,10 @@ export default function Page() {
           width={219}
           height={200}
         />
-        <Image
-          className="absolute z-10 ml-[10rem] md:ml-[20rem] lg:ml-[30rem] xl:ml-[48rem] mt-[-10rem] md:mt-[-20rem] lg:mt-[-30rem] xl:mt-[-35.5rem] -rotate-270"
-          alt="seeds2"
-          src="/seeds2.svg"
-          width={434}
-          height={591}
-        />
       </div>
       <div className="mt-[4.5rem] md:mt-[5rem] lg:mt-[6rem] xl:mt-[7rem]">
         <p
-          className={`text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-PJS text-center whitespace-pre-line font-light`}
+          className={`text-xl md:text-2xl lg:text-3xl xl:text-5xl font-PJS text-center whitespace-pre-line font-light`}
         >
           By inputting a written prompt, our tool generates <br />
           <span
@@ -106,7 +95,7 @@ export default function Page() {
         />
       </div>
       <div className="mt-[2rem] md:mt-[3rem] lg:mt-[4rem] xl:mt-[4.5rem]">
-        <p className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-PJS text-center whitespace-pre-line font-light">
+        <p className="text-xl md:text-2xl lg:text-3xl xl:text-5xl font-PJS text-center whitespace-pre-line font-light">
           Our goal is to
           <span
             className="bg-gradient-to-r from-light-pink via-light-pink via-50%
@@ -126,13 +115,6 @@ export default function Page() {
           src="/frame3.svg"
           width={268}
           height={208}
-        />
-        <Image
-          className="absolute z-50 ml-[-11rem] md:ml-[-13rem] lg:ml-[-15rem] xl:ml-[-17rem] mt-[-35rem] md:mt-[-40rem] lg:mt-[-45rem] xl:mt-[-49.5rem] -rotate-125"
-          alt="seeds3"
-          src="/seeds3.svg"
-          width={434}
-          height={591}
         />
       </div>
       <div className="pt-[5rem]"></div>

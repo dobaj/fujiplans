@@ -45,7 +45,7 @@ export default function LoginForm() {
   }
 
   return (
-    <form onSubmit={submit} className="flex flex-col w-[30%] justify-center">
+    <form onSubmit={submit} className="flex flex-col xl:w-[30%] w-full justify-center">
       <h2 className="text-grad font-semibold text-4xl mb-[1rem]">
         Sign in
       </h2>
