@@ -1,20 +1,45 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { MDViewer } from "@/components/MDViewer";
+import { MDEditor } from "@/components/MDViewer";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/common/Button";
+import useAxios from "@/hooks/useAxiosInt";
 
 export default function Results() {
   const router = useRouter();
+  const axios = useAxios();
 
+  const [content, setContent] = useState("");
+  const [editing, setEditing] = useState(false);
+
+  useEffect(() => {
+    const data = sessionStorage.getItem("markdownContent");
+    if (data) setContent(JSON.parse(data).content);
+  }, []);
+
+  const handleDownload = async () => {
+    const res = await axios.post(
+        "/lessons/convertMD",
+        { message: content },
+        { responseType: "blob" }
+      );
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "lesson.pdf");
+      link.click();
+      link.remove();
+  }
+
+  
   return (
-    <body className="bg-background">
+    <main className="min-h-screen bg-background">
       <div className="flex h-dvh bg-background ">
-        <div className="m-10 mt-2 flex flex-grow flex-col max-ha-full">
+        <div className="p-10 pt-2 flex flex-grow flex-col h-full max-h-full">
           {/* Nav Bar */}
-          <div className="flex flex-row justify-between items-center max-h-16 mb-24">
+          <div className="flex flex-row justify-between items-center max-h-40 pb-24">
             <div className="flex-1 flex">
               <button className="flex-grow-0">
                 <Image
@@ -31,16 +56,16 @@ export default function Results() {
               alt="Fujiplans Logo"
               width={0}
               height={0}
-              className="my-4 self-start w-[300px] h-auto"
+              className="my-4 self-start w-auto h-[110px]"
               priority={true}
             />
             <Button className={"flex-1 justify-end font-bold"}>
-              <div className="mx-3 my-2">about us</div>
+              <div className="px-3 py-2">about us</div>
             </Button>
           </div>
-          <div className={"flex flex-grow"}>
+          <div className={"flex-grow flex w-full min-w-full overflow-hidden"}>
             <div className="flex flex-col justify-end gap-y-6">
-              <Button className="">
+              <Button className="" onClick={() => handleDownload()}>
                 <Image
                   src="/download.svg"
                   alt="Download"
@@ -49,7 +74,7 @@ export default function Results() {
                   className="m-2 w-[4rem] h-auto mx-4 px-4"
                 />
               </Button>
-              <Button className="">
+              <Button className="" onClick={()=>setEditing((prev)=>!prev)}>
                 <Image
                   src="/edit.svg"
                   alt="Edit"
@@ -58,7 +83,7 @@ export default function Results() {
                   className="m-2 w-[4rem] h-auto mx-4 px-4"
                 />
               </Button>
-              <Button className="" onClick={() => router.push("/prompt")}>
+              <Button className="" onClick={() => router.push("/home/prompt")}>
                 <Image
                   src="/back.svg"
                   alt="Go Back"
@@ -68,10 +93,12 @@ export default function Results() {
                 />
               </Button>
             </div>
-            <MDViewer />
+            <div className="pl-2 h-full max-h-full flex-grow">
+              <MDEditor editing={editing} content={content} setContent={setContent}/>
+            </div>
           </div>
         </div>
       </div>
-    </body>
+    </main>
   );
 }
