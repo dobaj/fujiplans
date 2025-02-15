@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Button } from "../common/Button";
 import { Box } from "../common/Box";
-import { Plugins } from "@/app/home/prompt/page";
+import { Plugins } from "@/app/home/page";
 const spans: { [key: string]: React.JSX.Element } = {};
 
 export const toPromptString = () => {

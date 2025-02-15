@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { MdChevronLeft } from "react-icons/md";
 import { ClickableBox } from "../ClickableBox";
-import { Plugins } from "@/app/home/prompt/page";
+import { Plugins } from "@/app/home/page";
 
 export const PluginsForm = (props: {
   selectedTab: number;

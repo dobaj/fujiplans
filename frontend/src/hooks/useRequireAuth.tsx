@@ -18,7 +18,7 @@ export default function useRequireAuth({
 
   const router = useRouter();
 
-  const restrictedPath = "/home/prompt";
+  const restrictedPath = "/home";
 
   const noAuth = !token || !user;
 
@@ -33,7 +33,7 @@ export default function useRequireAuth({
         pathname === "/login" ||
         pathname === "/register"
       ) {
-        router.push("/home/prompt");
+        router.push("/home");
       }
     }
 
