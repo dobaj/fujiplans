@@ -36,7 +36,7 @@ export default function LoginForm() {
       const { access_token, user } = data;
       dispatch(setToken(access_token));
       dispatch(addUser(user));
-      router.push("/home/prompt");
+      router.push("/home");
     } catch (error) {
       console.log(error);
     } finally {
