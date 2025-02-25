@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "FUJIPLANS",
   description: "QTMA DEMO WINNER",
   icons: {
-    icon: "/fujiplans.svg",
+    icon: "/favicon.png",
   },
   
 };
@@ -24,7 +24,7 @@ export default async function RootLayout({
   return (
     <html lang="en" className="">
       <Head>
-        <link rel="icon" href="/fujiplans.svg" />
+        <link rel="icon" href="/favicon.png" />
       </Head>
       <body className={`antialiased`}>
         <ReduxProvider>
