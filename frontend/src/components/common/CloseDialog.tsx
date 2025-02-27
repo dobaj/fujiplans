@@ -10,9 +10,6 @@ export default function CloseDialog({
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setConfirmationOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  // const [dialogOpen, setDialogOpen] = React.useState(false);
-  // const [confirmationOpen, setConfirmationOpen] = React.useState(false);
-  // const [textareaValue, setTextareaValue] = React.useState('');
 
   return (
     <Dialog.Root open={dialogOpen}>
@@ -23,7 +20,7 @@ export default function CloseDialog({
         <Dialog.Backdrop className="fixed inset-0 bg-black opacity-20 transition-all duration-150 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0 dark:opacity-70" />
         <Dialog.Popup className="fixed top-[calc(50%+1.25rem*var(--nested-dialogs))] left-1/2 -mt-8 w-96 max-w-[calc(100vw-3rem)] -translate-x-1/2 -translate-y-1/2 scale-[calc(1-0.1*var(--nested-dialogs))] rounded-lg bg-gray-50 p-6 text-gray-900 outline outline-1 outline-gray-200 transition-all duration-150 data-[ending-style]:scale-90 data-[ending-style]:opacity-0 data-[has-nested-dialogs]:after:absolute data-[has-nested-dialogs]:after:inset-0 data-[has-nested-dialogs]:after:rounded-[inherit] data-[has-nested-dialogs]:after:bg-black/5 data-[starting-style]:scale-90 data-[starting-style]:opacity-0 dark:outline-gray-300">
           <Dialog.Title className="-mt-1.5 mb-1 text-lg font-medium">
-            Are you sure you want to go back?
+            Are you sure you want to go back? The lesson plan will not be saved.
           </Dialog.Title>
           <form
             className="mt-4 flex flex-col gap-6"
