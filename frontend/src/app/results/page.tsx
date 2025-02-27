@@ -6,6 +6,7 @@ import { MDEditor } from "@/components/MDViewer";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/common/Button";
 import useAxios from "@/hooks/useAxiosInt";
+import CloseDialog from "@/components/common/CloseDialog";
 
 export default function Results() {
   const router = useRouter();
@@ -14,10 +15,19 @@ export default function Results() {
   const [content, setContent] = useState("");
   const [editing, setEditing] = useState(false);
 
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [goBack, setGoBack] = React.useState(false);
+
   useEffect(() => {
     const data = sessionStorage.getItem("markdownContent");
     if (data) setContent(JSON.parse(data).content);
   }, []);
+
+  useEffect(()=> {
+    if (router && goBack) {
+      router.push("/home/prompt");
+    }
+  }, [goBack, router])
 
   const handleDownload = async () => {
     const res = await axios.post(
@@ -83,7 +93,7 @@ export default function Results() {
                   className="m-2 w-[4rem] h-auto mx-4 px-4"
                 />
               </Button>
-              <Button className="" onClick={() => router.push("/home/prompt")}>
+              <Button className="" onClick={()=>setDialogOpen(true)}>
                 <Image
                   src="/back.svg"
                   alt="Go Back"
@@ -95,6 +105,7 @@ export default function Results() {
             </div>
             <div className="pl-2 h-full max-h-full flex-grow">
               <MDEditor editing={editing} content={content} setContent={setContent}/>
+              <CloseDialog dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} setConfirmationOpen={setGoBack}/>
             </div>
           </div>
         </div>
