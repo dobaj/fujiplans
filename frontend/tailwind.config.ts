@@ -15,6 +15,7 @@ const config: Config = {
         pink: "#CF7D7D",
         "light-pink": "#DA928E",
         yellow: "#ECEFA2",
+        "dark-yellow": "#F4ED5E",
         "theme-bg-green": "#E0E1CB",
         "theme-grad-red": "#AE4747",
         "theme-grad-green": "#ACA477",
