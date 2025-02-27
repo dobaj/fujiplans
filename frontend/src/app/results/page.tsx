@@ -25,7 +25,7 @@ export default function Results() {
 
   useEffect(()=> {
     if (router && goBack) {
-      router.push("/home/prompt");
+      router.push("/home");
     }
   }, [goBack, router])
 
