@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { PluginsForm } from "@/components/forms/PluginsForm";
 import { Button } from "@/components/common/Button";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { GradButton } from "@/components/GradButton";
 import useAxios from "@/hooks/useAxiosInt";
 import Loader from "@/components/loading/Loader";
@@ -14,26 +14,34 @@ export type PluginCategory = { name: string; active: boolean };
 export type Plugins = { name: string; elements: PluginCategory[] }[];
 
 export default function Prompt() {
-  // const router = useRouter();
+  const router = useRouter();
   const axios = useAxios();
 
   async function getResult() {
     const message = toPromptString();
     try {
       // const startTime = performance.now();
-      const res = await axios.post(
-        "/lessons/",
-        { message },
-        { responseType: "blob" }
-      );
+      // const res = await axios.post(
+      //   "/lessons/",
+      //   { message },
+      //   { responseType: "blob" }
+      // );
       // const endTime = performance.now();
       // console.log(`API response time: ${(endTime - startTime).toFixed(2)} ms`);
-      const url = window.URL.createObjectURL(new Blob([res.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "lesson.pdf");
-      link.click();
-      link.remove();
+      // const url = window.URL.createObjectURL(new Blob([res.data]));
+      // const link = document.createElement("a");
+      // link.href = url;
+      // link.setAttribute("download", "lesson.pdf");
+      // link.click();
+      // link.remove();
+      const res = await axios.post(
+          "/lessons/getLesson",
+          { message },
+          { responseType: "blob" }
+        );
+      const content = await res.data.text()
+      sessionStorage.setItem("markdownContent", JSON.stringify({ content: content }));
+      router.push("/results");
       setLoading(false);
     } catch (error) {
       console.log(error);
