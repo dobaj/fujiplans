@@ -37,10 +37,15 @@ export default function OAuthCallback() {
           window.close();
         })
         .catch((error) => {
-          console.error("Error:", error);
+          // Create a serializable error object instead of passing the entire error
+          const serializableError = { 
+            message: error.message || "OAuth authentication failed",
+            status: error.response?.status || 500,
+            data: error.response?.data || {}
+          };
           // Close the popup and redirect the parent window to an error page
           if (window.opener) {
-            window.opener.postMessage({ error: error }, window.location.origin);
+            window.opener.postMessage({ error: serializableError }, window.location.origin);
           }
           window.close();
         });

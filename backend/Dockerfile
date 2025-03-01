@@ -52,4 +52,5 @@ USER appuser
 
 EXPOSE 8080
 
-CMD ["/venv/bin/gunicorn", "--bind", "0.0.0.0:8080", "server.wsgi:application", "--workers", "4", "--threads", "4"]
+# TODO: Remove reload and volumes when deploying
+CMD ["/venv/bin/gunicorn", "--bind", "0.0.0.0:8080", "server.wsgi:application", "--workers", "4", "--threads", "4", "--reload"]
