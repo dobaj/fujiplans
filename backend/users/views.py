@@ -55,13 +55,6 @@ class UserView(View):
 
 
 class LoginView(View):
-    # tester code for verify jwt, now you can use this else where
-    # @verify_jwt
-    # def post(self, req, payload, *args, **kwargs):
-    #     print(payload)
-    #     user_id = self.kwargs.get('id')
-    #     print(user_id)
-    #     return HttpResponse("login")
 
     def post(self, req):
         try:
@@ -258,7 +251,7 @@ class GoogleOauth(View):
 
             if not google_user["verified_email"]:
                 return JsonResponse({"message": "Email not verified"}, status=403)
-            
+
             user, created = User.objects.get_or_create(
                 email=google_user["email"],
                 defaults={"name": google_user["name"]},

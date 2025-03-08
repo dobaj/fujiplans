@@ -12,4 +12,3 @@ class User(models.Model):
 
     def __str__(self):
         return f"ID: {self._id}, Name: {self.name}, Email: {self.email}"
-
