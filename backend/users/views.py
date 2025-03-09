@@ -8,10 +8,11 @@ from django.forms.models import model_to_dict
 from django.http import HttpResponse, JsonResponse
 from django.views import View
 from dotenv import load_dotenv
+from utils import GoogleCloudStorage, html_to_pdf, validate_pdf_buffer
 
 from utils import getGoogleOauthToken, getGoogleUserInfo, verify_jwt
 
-from .models import User
+from .models import User, Favourites
 
 load_dotenv()
 
@@ -20,7 +21,6 @@ rjwt_secret = os.getenv("RJWT_SECRET")
 
 
 class UserView(View):
-
     def post(self, req):
         try:
             # Create a response to log the user out
@@ -55,7 +55,6 @@ class UserView(View):
 
 
 class LoginView(View):
-
     def post(self, req):
         try:
             data = json.loads(req.body)
@@ -120,9 +119,6 @@ class LoginView(View):
 
 
 class RegisterView(View):
-    def get(self, req):
-        return HttpResponse("register")
-
     def post(self, req):
         try:
             data = json.loads(req.body)
@@ -138,7 +134,7 @@ class RegisterView(View):
 
             if User.objects.filter(email=data["Email"]).exists():
                 return JsonResponse(
-                    {"message": f'User with the email: {data["Email"]} already exists'},
+                    {"message": f"User with the email: {data['Email']} already exists"},
                     status=400,
                 )
 
@@ -192,15 +188,12 @@ class RegisterView(View):
             return res
 
         except Exception as e:
-
             return JsonResponse({"message": e}, status=400)
 
 
 class RefreshView(View):
-
     def get(self, req):
         try:
-
             refresh_token = req.COOKIES.get("refresh_token")
 
             if not refresh_token:
@@ -233,9 +226,7 @@ class RefreshView(View):
 
 class GoogleOauth(View):
     def get(self, req):
-
         try:
-
             code = req.GET.get("code")
 
             if not code:
@@ -303,5 +294,95 @@ class GoogleOauth(View):
             return res
 
         except Exception as e:
-
             return JsonResponse({"message": str(e)}, status=400)
+
+
+# TODO: Add ability to favourite a post
+class FavouritesView(View):
+    @verify_jwt
+    def get(self, req, payload):
+        try:
+            user_id = payload["_id"]
+            user = User.objects.filter(_id=user_id).first()
+            if user:
+                favourites = Favourites.objects.filter(user=user)
+            else:
+                return JsonResponse({"error": "User not found"}, status=404)
+
+            favourites_data = []
+            for fav in favourites:
+                favourites_data.append(
+                    {
+                        "_id": fav._id,
+                        "pdf_file": fav.pdf_file,
+                        "original_filename": fav.original_filename,
+                        "subject": fav.subject,
+                        "gcs_url": fav.gcs_url,
+                        "created_at": fav.created_at.isoformat(),
+                        "updated_at": fav.updated_at.isoformat(),
+                    }
+                )
+
+            return JsonResponse({"favourites": favourites_data})
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+
+    @verify_jwt
+    def post(self, req, payload):
+        try:
+            user_id = payload["_id"]
+
+            # Check if user exists
+            try:
+                user = User.objects.get(_id=user_id)
+            except User.DoesNotExist:
+                return JsonResponse({"error": "User not found"}, status=404)
+
+            data = json.loads(req.body)
+
+            if "message" not in data:
+                return JsonResponse({"error": "Please upload a file!"}, status=400)
+
+            pdf_buffer = html_to_pdf(data["message"])
+
+            try:
+                file_metadata = validate_pdf_buffer(pdf_buffer)
+
+                gcs = GoogleCloudStorage()
+
+                upload_result = gcs.upload_file(
+                    pdf_buffer,
+                    destination_path=f"favourites/{uuid.uuid4()}_{file_metadata['name']}",
+                    content_type=file_metadata["type"],
+                )
+
+                favourite = Favourites.objects.create(
+                    user=user,
+                    pdf_file=upload_result["path"],
+                    original_filename=file_metadata["name"],
+                    gcs_url=upload_result["url"],
+                    subject=req.POST.get("subject") or "English",
+                )
+
+                return JsonResponse(
+                    {
+                        "message": "Favourite created successfully",
+                        "favourite": {
+                            "_id": favourite._id,
+                            "user": str(favourite.user._id),
+                            "pdf_file": favourite.pdf_file,
+                            "original_filename": favourite.original_filename,
+                            "subject": favourite.subject,
+                            "gcs_url": favourite.gcs_url,
+                            "created_at": favourite.created_at.isoformat(),
+                            "updated_at": favourite.updated_at.isoformat(),
+                        },
+                    },
+                    status=201,
+                )
+
+            except Exception as e:
+                return JsonResponse({"error": str(e)}, status=400)
+
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)

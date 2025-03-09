@@ -23,27 +23,31 @@ export default function Results() {
     if (data) setContent(JSON.parse(data).content);
   }, []);
 
-  useEffect(()=> {
+  useEffect(() => {
     if (router && goBack) {
       router.push("/home");
     }
-  }, [goBack, router])
+  }, [goBack, router]);
 
   const handleDownload = async () => {
     const res = await axios.post(
-        "/lessons/convertMD/",
-        { message: content },
-        { responseType: "blob" }
-      );
-      const url = window.URL.createObjectURL(new Blob([res.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "lesson.pdf");
-      link.click();
-      link.remove();
+      "/lessons/convertMD/",
+      { message: content },
+      { responseType: "blob" },
+    );
+    const url = window.URL.createObjectURL(new Blob([res.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "lesson.pdf");
+    link.click();
+    link.remove();
+  };
+
+  async function handleFavourite() {
+    const { data } = await axios.post("/users/favourites/", { message: content });
+    console.log(data);
   }
 
-  
   return (
     <main className="min-h-screen bg-background">
       <div className="flex h-dvh bg-background ">
@@ -84,7 +88,7 @@ export default function Results() {
                   className="m-2 w-[4rem] h-auto mx-4 px-4"
                 />
               </Button>
-              <Button className="" onClick={()=>setEditing((prev)=>!prev)}>
+              <Button className="" onClick={() => setEditing((prev) => !prev)}>
                 <Image
                   src="/edit.svg"
                   alt="Edit"
@@ -93,7 +97,7 @@ export default function Results() {
                   className="m-2 w-[4rem] h-auto mx-4 px-4"
                 />
               </Button>
-              <Button className="" onClick={()=>setDialogOpen(true)}>
+              <Button className="" onClick={() => setDialogOpen(true)}>
                 <Image
                   src="/back.svg"
                   alt="Go Back"
@@ -102,10 +106,19 @@ export default function Results() {
                   className="m-2 w-[4rem] h-auto mx-4 px-4"
                 />
               </Button>
+              <Button onClick={handleFavourite}>Favourite</Button>
             </div>
             <div className="pl-2 h-full max-h-full flex-grow">
-              <MDEditor editing={editing} content={content} setContent={setContent}/>
-              <CloseDialog dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} setConfirmationOpen={setGoBack}/>
+              <MDEditor
+                editing={editing}
+                content={content}
+                setContent={setContent}
+              />
+              <CloseDialog
+                dialogOpen={dialogOpen}
+                setDialogOpen={setDialogOpen}
+                setConfirmationOpen={setGoBack}
+              />
             </div>
           </div>
         </div>

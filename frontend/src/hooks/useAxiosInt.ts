@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import axios from "@/utils/axios";
 import { useEffect } from "react";
@@ -6,7 +6,6 @@ import useRefreshToken from "./useRefreshToken";
 import { useAppSelector } from "@/utils/reduxHooks";
 
 export default function useAxiosInt() {
-
   const refreshToken = useRefreshToken();
 
   const { token } = useAppSelector((state) => state.token);
@@ -20,7 +19,7 @@ export default function useAxiosInt() {
         }
         return config;
       },
-      (error) => Promise.reject(error)
+      (error) => Promise.reject(error),
     );
 
     const responseInterceptor = axios.interceptors.response.use(
@@ -38,7 +37,7 @@ export default function useAxiosInt() {
           return axios(prevReq);
         }
         return Promise.reject(error);
-      }
+      },
     );
 
     //clean up
@@ -46,7 +45,7 @@ export default function useAxiosInt() {
       axios.interceptors.request.eject(requestInterceptor);
       axios.interceptors.response.eject(responseInterceptor);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   return axios;
