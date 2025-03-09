@@ -6,6 +6,17 @@ import { MDViewer } from "@/components/MDViewer";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/common/Button";
 
+function ButtonAlt({src, alt, text}: {src: string, alt: string, text: string}) {
+  const [hover, setHover] = React.useState(false);
+
+  return(
+    <Button onMouseEnter={()=> setHover(true)} onMouseLeave={() => setHover(false)}>
+      {hover ? (<span className="font-PJS text-white font-semibold m-3 w-[4rem] mx-4">{text}</span>) : 
+      (<Image src={src} alt={alt} width={0} height={0} className="m-2 w-[4rem] h-auto mx-4 px-4"/>)}
+    </Button>
+  )
+}
+
 export default function Results() {
   const router = useRouter();
 
@@ -40,33 +51,9 @@ export default function Results() {
           </div>
           <div className={"flex flex-grow"}>
             <div className="flex flex-col justify-end gap-y-6">
-              <Button className="">
-                <Image
-                  src="/download.svg"
-                  alt="Download"
-                  width={0}
-                  height={0}
-                  className="m-2 w-[4rem] h-auto mx-4 px-4"
-                />
-              </Button>
-              <Button className="">
-                <Image
-                  src="/edit.svg"
-                  alt="Edit"
-                  width={0}
-                  height={0}
-                  className="m-2 w-[4rem] h-auto mx-4 px-4"
-                />
-              </Button>
-              <Button className="" onClick={() => router.push("/prompt")}>
-                <Image
-                  src="/back.svg"
-                  alt="Go Back"
-                  width={0}
-                  height={0}
-                  className="m-2 w-[4rem] h-auto mx-4 px-4"
-                />
-              </Button>
+              <ButtonAlt src="/download.svg" alt="Download" text="Save"/>
+              <ButtonAlt src="/edit.svg" alt="Edit" text="Edit"/>
+              <ButtonAlt src="/back.svg" alt="Go Back" text="Return"/>
             </div>
             <MDViewer />
           </div>
