@@ -20,31 +20,22 @@ export default function Prompt() {
   async function getResult() {
     const message = toPromptString();
     try {
-      // const startTime = performance.now();
-      // const res = await axios.post(
-      //   "/lessons/",
-      //   { message },
-      //   { responseType: "blob" }
-      // );
-      // const endTime = performance.now();
-      // console.log(`API response time: ${(endTime - startTime).toFixed(2)} ms`);
-      // const url = window.URL.createObjectURL(new Blob([res.data]));
-      // const link = document.createElement("a");
-      // link.href = url;
-      // link.setAttribute("download", "lesson.pdf");
-      // link.click();
-      // link.remove();
       const res = await axios.post(
-          "/lessons/getLesson",
-          { message },
-          { responseType: "blob" }
-        );
-      const content = await res.data.text()
-      sessionStorage.setItem("markdownContent", JSON.stringify({ content: content }));
+        "/lessons/getLesson/",
+        { message },
+        { responseType: "blob" },
+      );
+      const content = await res.data.text();
+      sessionStorage.setItem(
+        "markdownContent",
+        JSON.stringify({ content: content }),
+      );
       router.push("/results");
       setLoading(false);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -136,7 +127,7 @@ export default function Prompt() {
     });
   };
 
-  if(isLoading) {
+  if (isLoading) {
     return <Loader />;
   }
 
@@ -208,3 +199,4 @@ export default function Prompt() {
     </main>
   );
 }
+

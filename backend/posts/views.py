@@ -1,20 +1,16 @@
-import json
 import uuid
-from django.forms.models import model_to_dict
 from django.http import JsonResponse
 from django.views import View
 from utils import GoogleCloudStorage, handle_uploaded_file
-from dotenv import load_dotenv
 from django.core.exceptions import ValidationError
+from django.forms.models import model_to_dict
 from .models import Post
 from users.models import User
 from utils import verify_jwt
 
-# TODO: Implement retrieval of posts
 class PostView(View):
 
-    # TODO: Implement markdown content handling
-    # Create new post with pdf file and markdown content
+    # Create new post with pdf file
     @verify_jwt
     def post(self, req, payload):
         try:
@@ -30,20 +26,19 @@ class PostView(View):
 
             if 'pdfFile' in req.FILES:
                 pdfFile = req.FILES['pdfFile']
-            elif 'markdownContent' in req.POST:
-                generatePdf = req.POST.get('generatePdf') == 'true'
             else:
-                return JsonResponse({"message": "Please upload a file or provide markdown content!"}, status=400)
+                return JsonResponse({"message": "Please upload a file!"}, status=400)
 
             try:
                 # Validate and process the file
-                file_metadata = handle_uploaded_file(pdfFile)
+                file_metadata = handle_uploaded_file(pdfFile or pdf_buffer)
 
                 gcs = GoogleCloudStorage()
 
                 # Upload the file to Google Cloud Storage
                 upload_result = gcs.upload_file(
                     pdfFile,
+                    # Make file path unique
                     destination_path=f"lessons/{uuid.uuid4()}_{file_metadata['name']}",
                     content_type=file_metadata['type']
                 )
@@ -53,7 +48,8 @@ class PostView(View):
                     description=description,
                     pdf_file=upload_result['path'],  # Store the path in the bucket
                     original_filename=file_metadata['name'],
-                    gcs_url=upload_result['url']
+                    gcs_url=upload_result['url'],
+                    subject = req.POST.get('subject') or user.subject,
                 )
 
                 return JsonResponse({
@@ -62,20 +58,41 @@ class PostView(View):
                     "pdf_url": post.gcs_url,
                     "created_at": post.created_at.isoformat(),
                     "user": {
-                        "id": str(user._id),
+                        "_id": str(user._id),
                         "name": user.name
-                    }
+                    },
+                    "subject": post.subject
                 }, status=201)
 
             except ValidationError as e:
                 return JsonResponse({"error": str(e)}, status=400)
 
         except Exception as e:
-            print(f"Error: {e}")
             return JsonResponse({"message": str(e)}, status=400)
 
     def get(self, req):
         try:
-            return JsonResponse({"message": "GET request to the post view"})
+            posts = Post.objects.all()
+            # Convert posts to a list of dictionaries
+            posts_data = []
+            for post in posts:
+                post_dict = {
+                    '_id': str(post._id),
+                    'description': post.description,
+                    'original_filename': post.original_filename,
+                    'subject': post.subject,
+                    'gcs_url': post.gcs_url,
+                    'created_at': post.created_at.isoformat(),
+                    'updated_at': post.updated_at.isoformat()
+                }
+
+                post_dict['user_id'] = str(post.user._id)
+                post_dict['user_name'] = post.user.name
+                post_dict['user_email'] = post.user.email
+                post_dict['user_subject'] = post.user.subject
+
+                posts_data.append(post_dict)
+
+            return JsonResponse({"status": "success", "data": posts_data}, status=201)
         except Exception as e:
-            return JsonResponse({"message": str(e)}, status=400)
+            return JsonResponse({"status": "error", "message": str(e)}, status=400)

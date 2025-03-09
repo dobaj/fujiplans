@@ -9,6 +9,7 @@ class User(models.Model):
     email = models.EmailField(max_length=254, unique=True)
     password = models.CharField(max_length=100, null=True, blank=True, editable=False)
     date = models.DateTimeField(auto_now_add=True)
+    subject = models.CharField(max_length=255, blank=False, default='English')
 
     def __str__(self):
         return f"ID: {self._id}, Name: {self.name}, Email: {self.email}"

@@ -31,7 +31,7 @@ export default function Results() {
 
   const handleDownload = async () => {
     const res = await axios.post(
-        "/lessons/convertMD",
+        "/lessons/convertMD/",
         { message: content },
         { responseType: "blob" }
       );

@@ -6,9 +6,7 @@ import { isAxiosError } from "axios";
 
 export default function PostForm() {
   const [description, setDescription] = useState("");
-  const [markdownContent, setMarkdownContent] = useState("");
   const [file, setFile] = useState<File | null>(null);
-  const [useMarkdown, setUseMarkdown] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -45,13 +43,7 @@ export default function PostForm() {
       return;
     }
 
-    if (useMarkdown && !markdownContent.trim()) {
-      setError("Markdown content is required when using the Markdown option");
-      setIsLoading(false);
-      return;
-    }
-
-    if (!useMarkdown && !file) {
+    if (!file) {
       setError("Please upload a PDF file or switch to using Markdown");
       setIsLoading(false);
       return;
@@ -62,14 +54,7 @@ export default function PostForm() {
       const formData = new FormData();
       formData.append("description", description);
 
-      if (useMarkdown) {
-        formData.append("markdownContent", markdownContent);
-        formData.append("generatePdf", "true");
-      } else if (file) {
-        formData.append("pdfFile", file);
-      }
-
-      console.log("Sending data:", Object.fromEntries(formData));
+      formData.append("pdfFile", file);
 
       // Use FormData in the request
       const { data } = await axios.post("/posts/", formData, {
@@ -113,49 +98,19 @@ export default function PostForm() {
         </div>
 
         <div className="mb-4">
-          <div className="flex items-center space-x-2 mb-2">
+          <div className="mb-4">
+            <label className="block text-gray-700 mb-2">Upload PDF*</label>
             <input
-              type="checkbox"
-              id="useMarkdown"
-              checked={useMarkdown}
-              onChange={(e) => setUseMarkdown(e.target.checked)}
+              type="file"
+              accept=".pdf"
+              onChange={handleFileChange}
+              required
+              className="w-full"
             />
-            <label htmlFor="useMarkdown">Use Markdown Editor</label>
+            <p className="text-sm text-gray-500 mt-1">
+              Maximum file size: 20MB. Only PDF files are accepted.
+            </p>
           </div>
-
-          {useMarkdown ? (
-            <div className="mb-4">
-              <label className="block text-gray-700 mb-2">
-                Markdown Content*
-              </label>
-              <textarea
-                className="w-full px-3 py-2 border rounded font-mono"
-                rows={10}
-                value={markdownContent}
-                onChange={(e) => setMarkdownContent(e.target.value)}
-                placeholder="# Title\n\nYour content here..."
-                required={useMarkdown}
-              />
-              <p className="text-sm text-gray-500 mt-1">
-                Use Markdown formatting for rich text. The system will
-                automatically convert this to a PDF.
-              </p>
-            </div>
-          ) : (
-            <div className="mb-4">
-              <label className="block text-gray-700 mb-2">Upload PDF*</label>
-              <input
-                type="file"
-                accept=".pdf"
-                onChange={handleFileChange}
-                required={!useMarkdown}
-                className="w-full"
-              />
-              <p className="text-sm text-gray-500 mt-1">
-                Maximum file size: 20MB. Only PDF files are accepted.
-              </p>
-            </div>
-          )}
         </div>
 
         <button
