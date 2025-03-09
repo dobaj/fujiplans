@@ -8,6 +8,17 @@ import { Button } from "@/components/common/Button";
 import useAxios from "@/hooks/useAxiosInt";
 import CloseDialog from "@/components/common/CloseDialog";
 
+function ButtonAlt({src, alt, text, onClick}: {src: string, alt: string, text: string, onClick: () => void}) {
+  const [hover, setHover] = React.useState(false);
+
+  return(
+    <Button onMouseEnter={()=> setHover(true)} onMouseLeave={() => setHover(false)} onClick={onClick}>
+      {hover ? (<span className="font-PJS text-white font-semibold m-3 w-[4rem] mx-4">{text}</span>) : 
+      (<Image src={src} alt={alt} width={0} height={0} className="m-2 w-[4rem] h-auto mx-4 px-4"/>)}
+    </Button>
+  )
+}
+
 export default function Results() {
   const router = useRouter();
   const axios = useAxios();
@@ -75,33 +86,9 @@ export default function Results() {
           </div>
           <div className={"flex-grow flex w-full min-w-full overflow-hidden"}>
             <div className="flex flex-col justify-end gap-y-6">
-              <Button className="" onClick={() => handleDownload()}>
-                <Image
-                  src="/download.svg"
-                  alt="Download"
-                  width={0}
-                  height={0}
-                  className="m-2 w-[4rem] h-auto mx-4 px-4"
-                />
-              </Button>
-              <Button className="" onClick={()=>setEditing((prev)=>!prev)}>
-                <Image
-                  src="/edit.svg"
-                  alt="Edit"
-                  width={0}
-                  height={0}
-                  className="m-2 w-[4rem] h-auto mx-4 px-4"
-                />
-              </Button>
-              <Button className="" onClick={()=>setDialogOpen(true)}>
-                <Image
-                  src="/back.svg"
-                  alt="Go Back"
-                  width={0}
-                  height={0}
-                  className="m-2 w-[4rem] h-auto mx-4 px-4"
-                />
-              </Button>
+              <ButtonAlt src="/download.svg" alt="Download" text="Save" onClick={()=> handleDownload()}/>
+              <ButtonAlt src="/edit.svg" alt="Edit" text="Edit" onClick={()=>setEditing((prev)=>!prev)}/>
+              <ButtonAlt src="/back.svg" alt="Go Back" text="Return" onClick={()=> setDialogOpen(true)}/>
             </div>
             <div className="pl-2 h-full max-h-full flex-grow">
               <MDEditor editing={editing} content={content} setContent={setContent}/>
