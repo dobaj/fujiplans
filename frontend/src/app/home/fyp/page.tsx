@@ -19,17 +19,6 @@ export default function Fyp() {
     })();
   }, []);
 
-  useEffect(() => {
-    (async function fetchData() {
-      try {
-        const { data } = await axios.get("/users/favourites/");
-        console.log(data);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-  }, []);
-
   return (
     <div>
       <PostForm />

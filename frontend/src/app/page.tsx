@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import Pdfanimation from "@/components/common/Pdfanimation";
-import PostForm from "@/components/forms/PostForm";
 
 export default function Page() {
   return (
