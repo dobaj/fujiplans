@@ -39,13 +39,13 @@ export const MDEditor = ({
         {editing ? (
           <textarea
             ref={textareaRef}
-            className=" w-full outline-none resize-none"
+            className="w-full outline-none resize-none"
             defaultValue={content}
             onChange={handleAreaChange}
           />
         ) : (
           /* eslint-disable-next-line react/no-children-prop */
-          <ReactMarkdown children={content} />
+          <ReactMarkdown className="w-full" children={content} />
         )}
         </div>
       </div>

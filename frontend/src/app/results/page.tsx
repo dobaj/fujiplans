@@ -73,8 +73,8 @@ export default function Results() {
               <div className="px-3 py-2">about us</div>
             </Button>
           </div>
-          <div className={"flex-grow flex w-full min-w-full overflow-hidden"}>
-            <div className="flex flex-col justify-end gap-y-6">
+          <div className={"flex w-full min-w-full overflow-hidden"}>
+            <div className="flex flex-shrink-0 flex-col justify-end gap-y-6 w-24">
               <Button className="" onClick={() => handleDownload()}>
                 <Image
                   src="/download.svg"
