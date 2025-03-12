@@ -166,7 +166,7 @@ export default function Prompt() {
               priority={true}
             />
 
-            <Button className={"flex-1 justify-end font-bold"}>
+            <Button className={"flex-1 justify-end font-bold"} onClick={()=>router.push("/about")}>
               <div className="mx-3 my-2">about us</div>
             </Button>
           </div>
