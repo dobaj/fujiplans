@@ -71,7 +71,7 @@ export default function About() {
             reduce the time teachers spend on administrative tasks, ensuring
             they can focus on what truly matters: their students. Winning Fall
             Demo Day confirmed our commitment to pushing the boundaries of
-            what's possible and fostering a collaborative community of
+            what&apos;s possible and fostering a collaborative community of
             educators. By pairing curriculum alignment, user-friendly
             automation, and ongoing classroom insights, we aim to create a
             platform that redefines how teachers approach lesson planning.
