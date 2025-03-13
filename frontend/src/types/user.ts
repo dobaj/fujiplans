@@ -7,11 +7,23 @@ export type User = {
   school: string;
 };
 
+export type Subject =
+  | "Mathematics"
+  | "Science"
+  | "History"
+  | "English"
+  | "Art"
+  | "Music"
+  | "Physical Education"
+  | "Computer Science"
+  | "Foreign Languages"
+  | "";
+
 export type Post = {
   _id: string;
   description: string;
   title: string;
-  subject: string;
+  subject: Subject;
   gcs_url: string;
   created_at: string;
   poster: poster;
@@ -26,7 +38,7 @@ type poster = {
 
 type favourite = {
   _id: string;
-  subject: string;
+  subject: Subject;
   gcs_url: string;
   created_at: string;
 };

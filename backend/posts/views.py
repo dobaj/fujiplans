@@ -59,18 +59,7 @@ class PostView(View):
 
                 return JsonResponse(
                     {
-                        "_id": str(post._id),
-                        "title": post.title,
-                        "description": post.description,
-                        "pdf_url": post.gcs_url,
-                        "created_at": post.created_at.isoformat(),
-                        "poster": {
-                            "_id": str(user._id),
-                            "first_name": user.first_name,
-                            "last_name": user.last_name,
-                            "school": user.school,
-                        },
-                        "subject": post.subject,
+                        "message": "Post created successfully!",
                     },
                     status=201,
                 )
@@ -95,7 +84,7 @@ class PostView(View):
                         "subject": post.subject,
                         "gcs_url": post.gcs_url,
                         "created_at": post.created_at.isoformat(),
-                        "user": {
+                        "poster": {
                             "_id": str(post.user._id),
                             "first_name": post.user.first_name,
                             "last_name": post.user.last_name,

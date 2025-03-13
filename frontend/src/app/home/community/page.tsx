@@ -1,17 +1,104 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { IoIosSearch } from "react-icons/io";
 import { FaHeart } from "react-icons/fa";
 import { CiFilter } from "react-icons/ci";
 import { FaChevronDown } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
 import { FiUpload } from "react-icons/fi";
+import { Post } from "@/types/user";
+import axios from "@/utils/axios";
+import { useAppSelector } from "@/utils/reduxHooks";
+import { RootState } from "@/redux/store";
+import { Subject } from "@/types/user";
+
+type PostData = {
+  title: string;
+  subject: Subject;
+  description: string;
+  file: File | null;
+  school?: string;
+};
 
 export default function TeacherResourcePlatform() {
+  const { user } = useAppSelector((state: RootState) => state.user);
+
   const [activeTab, setActiveTab] = useState("browse");
-  const [selectedSubjects, setSelectedSubjects] = useState([]);
+  const [selectedSubjects, setSelectedSubjects] = useState<Subject[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [postData, setPostData] = useState<PostData>({
+    title: "",
+    subject: "",
+    description: "",
+    file: null,
+    school: user?.school,
+  });
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+  };
+
+  const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+  };
+
+  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (event.dataTransfer.files && event.dataTransfer.files[0]) {
+      setPostData((prev) => ({ ...prev, file: event.dataTransfer.files[0] }));
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Check for null before accessing files
+    if (e.target.files && e.target.files.length > 0) {
+      setPostData((prev) => ({
+        ...prev,
+        [e.target.name]: e.target.files![0],
+      }));
+    }
+  };
+
+  const createPost = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("title", postData.title);
+    formData.append("subject", postData.subject);
+    formData.append("description", postData.description);
+    formData.append("file", postData.file!);
+    formData.append("school", postData.school!);
+
+    try {
+      const { data } = await axios.post("/posts", formData);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const { data } = await axios.get("/posts");
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    if (activeTab === "browse") {
+      fetchData();
+    }
+  });
 
   // Sample data
   const samplePosts = [
@@ -62,11 +149,11 @@ export default function TeacherResourcePlatform() {
     "Foreign Languages",
   ];
 
-  const toggleFavorite = (id) => {
-    // Would implement actual favoriting logic here
+  const toggleFavorite = (id: string) => {
+    console.log(id);
   };
 
-  const toggleSubjectFilter = (subject) => {
+  const toggleSubjectFilter = (subject: Subject) => {
     if (selectedSubjects.includes(subject)) {
       setSelectedSubjects(selectedSubjects.filter((s) => s !== subject));
     } else {
@@ -184,7 +271,7 @@ export default function TeacherResourcePlatform() {
                   className="bg-white rounded-xl shadow-md overflow-hidden border border-[#292F36]/10 hover:shadow-lg transition duration-300"
                 >
                   <div className="bg-gradient-to-r from-[#D9918D] to-[#ECF2A2] p-1" />
-                  <div className="p-5">
+                  <div className="p-5 h-full w-full">
                     <div className="flex justify-between items-start mb-3">
                       <div>
                         <h3 className="font-bold text-lg text-[#292F36]">
@@ -239,24 +326,41 @@ export default function TeacherResourcePlatform() {
               Share Your Lesson Plan
             </h2>
 
-            <form>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-[#292F36]/70 mb-1">
-                  Lesson Title
-                </label>
-                <input
-                  type="text"
-                  className="w-full p-3 rounded-lg border border-[#292F36]/20 focus:outline-none focus:ring-2 focus:ring-[#D9918D]"
-                  placeholder="E.g., Creative Writing Workshop"
-                />
-              </div>
-
+            <form onClick={(e) => e.stopPropagation()} onSubmit={createPost}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label className="block text-sm font-medium text-[#292F36]/70 mb-1">
+                    Lesson Title
+                  </label>
+                  <input
+                    type="text"
+                    name="title"
+                    className="w-full p-3 rounded-lg border border-[#292F36]/20 focus:outline-none focus:ring-2 focus:ring-[#D9918D]"
+                    placeholder="E.g., Creative Writing Workshop"
+                    value={postData.title}
+                    onChange={(e) =>
+                      setPostData((prev) => ({
+                        ...prev,
+                        [e.target.name]: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
                 <div>
                   <label className="block text-sm font-medium text-[#292F36]/70 mb-1">
                     Subject
                   </label>
-                  <select className="w-full p-3 rounded-lg border border-[#292F36]/20 focus:outline-none focus:ring-2 focus:ring-[#D9918D] bg-white">
+                  <select
+                    name="subject"
+                    value={postData.subject}
+                    onChange={(e) => {
+                      setPostData((prev) => ({
+                        ...prev,
+                        [e.target.name]: e.target.value,
+                      }));
+                    }}
+                    className="w-full p-3 rounded-lg border border-[#292F36]/20 focus:outline-none focus:ring-2 focus:ring-[#D9918D] bg-white"
+                  >
                     <option value="">Select a subject</option>
                     {subjects.map((subject) => (
                       <option key={subject} value={subject}>
@@ -264,16 +368,6 @@ export default function TeacherResourcePlatform() {
                       </option>
                     ))}
                   </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-[#292F36]/70 mb-1">
-                    School
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full p-3 rounded-lg border border-[#292F36]/20 focus:outline-none focus:ring-2 focus:ring-[#D9918D]"
-                    placeholder="Your school name"
-                  />
                 </div>
               </div>
 
@@ -284,13 +378,36 @@ export default function TeacherResourcePlatform() {
                 <textarea
                   className="w-full p-3 rounded-lg border border-[#292F36]/20 focus:outline-none focus:ring-2 focus:ring-[#D9918D] min-h-32"
                   placeholder="Describe your lesson plan and how it can be used..."
-                ></textarea>
+                  name="description"
+                  value={postData.description}
+                  onChange={(e) =>
+                    setPostData((prev) => ({
+                      ...prev,
+                      [e.target.name]: e.target.value,
+                    }))
+                  }
+                />
               </div>
 
-              <div className="mb-6">
+              <div
+                className="mb-6"
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                onClick={() => inputRef.current?.click()}
+              >
                 <label className="block text-sm font-medium text-[#292F36]/70 mb-1">
                   Upload Lesson Plan (PDF)
                 </label>
+                <input
+                  type="file"
+                  name="file"
+                  ref={inputRef}
+                  accept="application/pdf" // Changed to PDF since that's what you're asking for
+                  className="hidden"
+                  onChange={handleFileChange}
+                />
+
                 <div className="border-2 border-dashed border-[#292F36]/20 rounded-lg p-8 text-center hover:bg-[#F5F1E9]/50 transition duration-300 cursor-pointer">
                   <FiUpload className="mx-auto mb-2 text-[#D9918D]" size={36} />
                   <p className="text-sm text-[#292F36]/70">
