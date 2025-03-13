@@ -10,6 +10,17 @@ import CloseDialog from "@/components/common/CloseDialog";
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 import { NavBar } from "@/components/common/NavBar";
 
+function ButtonAlt({src, alt, text, onClick}: {src: string, alt: string, text: string, onClick: () => void}) {
+  const [hover, setHover] = React.useState(false);
+
+  return(
+    <Button onMouseEnter={()=> setHover(true)} onMouseLeave={() => setHover(false)} onClick={onClick}>
+      {hover ? (<span className="font-PJS text-white font-semibold m-3 w-[4rem] mx-4">{text}</span>) : 
+      (<Image src={src} alt={alt} width={0} height={0} className="m-2 w-[4rem] h-auto mx-4 px-4"/>)}
+    </Button>
+  )
+}
+
 export default function Results() {
   const router = useRouter();
   const axios = useAxios();
@@ -92,7 +103,6 @@ export default function Results() {
     <main className="min-h-screen bg-background">
       <div className="flex h-dvh bg-background ">
         <div className="p-10 pt-2 flex flex-grow flex-col h-full max-h-full">
-          {/* Nav Bar */}
           <NavBar />
           <div className={"flex w-full min-w-full overflow-hidden"}>
             {/* Buttons */}

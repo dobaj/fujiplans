@@ -145,7 +145,6 @@ export default function Prompt() {
     <main className="min-h-screen bg-background">
       <div className="flex">
         <div className="m-10 mt-2 flex flex-grow flex-col max-h-full">
-          {/* Nav Bar */}
           <NavBar />
 
           {showForm ? (
