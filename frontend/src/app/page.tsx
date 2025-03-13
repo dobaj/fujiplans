@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import Pdfanimation from "@/components/common/Pdfanimation";
+import PostForm from "@/components/forms/PostForm";
 
 export default function Page() {
   return (
@@ -26,23 +27,26 @@ export default function Page() {
           <Pdfanimation />
         </div>
         <div className="flex gap-[1rem] absolute top-[14rem] left-1/2 transform -translate-x-1/2 xl:top-[10rem] xl:left-[40rem] xl:transform-none lg:top-[25rem] md:top-[20rem]">
-        <Link
-          href={"/login"}
-          className="flex justify-center border-2 w-[8rem] h-[3rem] md:w-[10rem] md:h-[5rem] items-center font-bold text-lg md:text-2xl 
-          border-theme-stroke-red rounded-[3rem] text-white bg-grad hover:bg-[#00000080]">
-          Login
-        </Link>
-        <Link
-          href={"/register"}
-          className="flex justify-center border-2 w-[8rem] h-[3rem] md:w-[10rem] md:h-[5rem] items-center font-bold text-lg md:text-2xl 
-          border-theme-stroke-red rounded-[3rem] text-white bg-grad hover:bg-[#00000080]">
-          Register
-        </Link>
+          <Link
+            href={"/login"}
+            className="flex justify-center border-2 w-[8rem] h-[3rem] md:w-[10rem] md:h-[5rem] items-center font-bold text-lg md:text-2xl 
+          border-theme-stroke-red rounded-[3rem] text-white bg-grad hover:bg-[#00000080]"
+          >
+            Login
+          </Link>
+          <Link
+            href={"/register"}
+            className="flex justify-center border-2 w-[8rem] h-[3rem] md:w-[10rem] md:h-[5rem] items-center font-bold text-lg md:text-2xl 
+          border-theme-stroke-red rounded-[3rem] text-white bg-grad hover:bg-[#00000080]"
+          >
+            Register
+          </Link>
         </div>
         <div className="flex-col justify-center item-center">
           <h1
             className={`text-2xl md:text-3xl lg:text-4xl xl:text-7xl font-semibold font-PJS mt-[-0.5rem] md:mt-[1rem] lg:mt-[0.5rem] xl:mt-[1rem]
-            drop-shadow-md`}>
+            drop-shadow-md`}
+          >
             Empowering Teachers to Use AI
           </h1>
           <Image

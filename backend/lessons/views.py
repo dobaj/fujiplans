@@ -1,11 +1,13 @@
 from django.http import JsonResponse, HttpResponse
 import os
 from django.views import View
+from lessons.models import Lesson
 from utils import verify_jwt
 from dotenv import load_dotenv
 import json
 from openai import OpenAI
 from md2pdf.core import md2pdf
+from users.models import User
 import io
 
 load_dotenv()
@@ -131,3 +133,93 @@ class MDConvert(View):
         except Exception as e:
             # Catch any errors and return them in a response
             return JsonResponse({"message": str(e)}, status=400)
+
+class UpdateLesson(View):
+    @verify_jwt
+    def post(self, req, payload, *args, **kwargs):
+        try:
+            data = json.loads(req.body)
+            user_id = payload["_id"]
+            user = User.objects.get(_id=user_id)
+
+            title = data.get("title", "Untitled Lesson")
+            content = data.get("content", "")
+            favourite = data.get("favourite", False)
+            lesson_id = data.get("lesson_id", -1)
+
+            if not content:
+                return JsonResponse({"message": "Markdown content is required"}, status=400)
+
+            lesson = Lesson.objects.filter(id=lesson_id, user=user_id).first()
+            if not lesson:
+                lesson = Lesson.objects.create(user=user, title=title, content=content, favourited=favourite)
+                return JsonResponse({"message": "Lesson created successfully", "lesson_id": lesson.id}, status=201)
+            else:
+                lesson.title = title
+                lesson.content = content
+                lesson.favourited = favourite
+                lesson.save()
+
+                return JsonResponse({"message": f"Lesson updated successfully + {lesson.favourited}", "lesson_id": lesson.id}, status=201)
+
+        except Exception as e:
+            return JsonResponse({"message": str(e)}, status=400)
+
+class GetFavouriteLessons(View):
+    @verify_jwt
+    def get(self, req, payload, *args, **kwargs):
+        try:
+            user_id = payload["_id"]
+            lessons = Lesson.objects.filter(user=user_id, favourited=True).values("id", "title", "content","favourited")
+
+            return JsonResponse({"favourite_lessons": list(lessons)}, status=200)
+
+        except Exception as e:
+            return JsonResponse({"message": str(e)}, status=400)
+        
+class GetFavouriteLesson(View):
+    @verify_jwt
+    def get(self, req, payload, *args, **kwargs):
+        try:
+            user_id = payload["_id"]
+            lesson_id = req.GET.get("lesson_id")  # Fetch `lesson_id` from query parameters
+            
+            if lesson_id:
+                # Get a specific lesson if `lesson_id` is provided
+                lesson = Lesson.objects.filter(id=lesson_id, user=user_id).values(
+                    "id", "title", "content", "favourited"
+                ).first()
+
+                if lesson:
+                    return JsonResponse({"lesson": lesson}, status=200)
+                else:
+                    return JsonResponse({"error": "Lesson not found"}, status=404)
+            
+            return JsonResponse({"error": "missing lesson"}, status=400)
+
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+
+class DeleteFavouriteLesson(View):
+    @verify_jwt
+    def delete(self, req, payload, *args, **kwargs):
+        try:
+            user_id = payload["_id"]
+            lesson_id = req.GET.get("lesson_id")  # Get lesson_id from query parameters
+
+            if not lesson_id:
+                return JsonResponse({"error": "Missing lesson_id"}, status=400)
+
+            # Try to get the lesson
+            lesson = Lesson.objects.filter(id=lesson_id, user=user_id).first()
+
+            if not lesson:
+                return JsonResponse({"error": "Lesson not found"}, status=404)
+
+            # Delete the lesson
+            lesson.delete()
+
+            return JsonResponse({"message": "Lesson deleted successfully"}, status=200)
+
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)

@@ -52,3 +52,4 @@ weasyprint==63.0
 webencodings==0.5.1
 yarl==1.17.1
 zopfli==0.2.3.post1
+google-cloud-storage==3.1.0
