@@ -31,7 +31,10 @@ export const NavBar = ({ favourites }: { favourites?: boolean }) => {
           priority={true}
         />
       </button>
-      <Button className={"flex-1 justify-end font-bold"}>
+      <Button
+        className={"flex-1 justify-end font-bold"}
+        onClick={() => router.push("/about")}
+      >
         <div className="px-3 py-2">about us</div>
       </Button>
     </div>

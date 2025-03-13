@@ -10,15 +10,30 @@ import CloseDialog from "@/components/common/CloseDialog";
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 import { NavBar } from "@/components/common/NavBar";
 
-function ButtonAlt({src, alt, text, onClick}: {src: string, alt: string, text: string, onClick: () => void}) {
+function HoverAlt({
+  alt,
+  children,
+}: {
+  alt: string;
+  children?: React.ReactNode;
+}) {
   const [hover, setHover] = React.useState(false);
 
-  return(
-    <Button onMouseEnter={()=> setHover(true)} onMouseLeave={() => setHover(false)} onClick={onClick}>
-      {hover ? (<span className="font-PJS text-white font-semibold m-3 w-[4rem] mx-4">{text}</span>) : 
-      (<Image src={src} alt={alt} width={0} height={0} className="m-2 w-[4rem] h-auto mx-4 px-4"/>)}
-    </Button>
-  )
+  return (
+    <div
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+    >
+      {hover ? (
+        <div className="flex justify-center w-full">
+          <span className="font-PJS text-black font-semibold">{alt}</span>
+        </div>
+      ) : (
+        <></>
+      )}
+      {children}
+    </div>
+  );
 }
 
 export default function Results() {
@@ -107,43 +122,54 @@ export default function Results() {
           <div className={"flex w-full min-w-full overflow-hidden"}>
             {/* Buttons */}
             <div className="flex flex-shrink-0 flex-col justify-end gap-y-6 w-24">
-              <Button className="" onClick={() => handleDownload()}>
-                <Image
-                  src="/download.svg"
-                  alt="Download"
-                  width={0}
-                  height={0}
-                  className="m-2 w-[4rem] h-auto mx-4 px-4"
-                />
-              </Button>
-              <Button className="" onClick={() => setEditing((prev) => !prev)}>
-                <Image
-                  src="/edit.svg"
-                  alt="Edit"
-                  width={0}
-                  height={0}
-                  className="m-2 w-[4rem] h-auto mx-4 px-4"
-                />
-              </Button>
-              <Button
-                className=""
-                onClick={() => setFavourite((prev) => !prev)}
-              >
-                {favourite ? (
-                  <MdFavorite className="m-2 w-[4rem] h-auto mx-4 px-4" />
-                ) : (
-                  <MdFavoriteBorder className="m-2 w-[4rem] h-auto mx-4 px-4" />
-                )}
-              </Button>
-              <Button className="" onClick={() => setDialogOpen(true)}>
-                <Image
-                  src="/back.svg"
-                  alt="Go Back"
-                  width={0}
-                  height={0}
-                  className="m-2 w-[4rem] h-auto mx-4 px-4"
-                />
-              </Button>
+              <HoverAlt alt="Download">
+                <Button className="" onClick={() => handleDownload()}>
+                  <Image
+                    src="/download.svg"
+                    alt="Download"
+                    width={0}
+                    height={0}
+                    className="m-2 w-[4rem] h-auto mx-4 px-4"
+                  />
+                </Button>
+              </HoverAlt>
+              <HoverAlt alt="Edit">
+                <Button
+                  className=""
+                  onClick={() => setEditing((prev) => !prev)}
+                >
+                  <Image
+                    src="/edit.svg"
+                    alt="Edit"
+                    width={0}
+                    height={0}
+                    className="m-2 w-[4rem] h-auto mx-4 px-4"
+                  />
+                </Button>
+              </HoverAlt>
+              <HoverAlt alt="Favourite">
+                <Button
+                  className=""
+                  onClick={() => setFavourite((prev) => !prev)}
+                >
+                  {favourite ? (
+                    <MdFavorite className="m-2 w-[4rem] h-auto mx-4 px-4" />
+                  ) : (
+                    <MdFavoriteBorder className="m-2 w-[4rem] h-auto mx-4 px-4" />
+                  )}
+                </Button>
+              </HoverAlt>
+              <HoverAlt alt="Back">
+                <Button className="" onClick={() => setDialogOpen(true)}>
+                  <Image
+                    src="/back.svg"
+                    alt="Go Back"
+                    width={0}
+                    height={0}
+                    className="m-2 w-[4rem] h-auto mx-4 px-4"
+                  />
+                </Button>
+              </HoverAlt>
             </div>
             {/* Editor */}
             <div className="pl-2 h-full max-h-full flex-grow">
