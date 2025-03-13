@@ -97,7 +97,7 @@ class LoginView(View):
                 {
                     "message": "Login successful",
                     "access_token": access_token,
-                    "user": {"_id": user._id, "email": user.email, "name": user.name},
+                    "user": {"_id": user._id, "email": user.email, "name": user.first_name},
                 },
                 status=200,
             )
@@ -172,7 +172,7 @@ class RegisterView(View):
                 {
                     "message": "User registered successfully",
                     "access_token": access_token,
-                    "user": {"_id": user._id, "email": user.email, "name": user.name},
+                    "user": {"_id": user._id, "email": user.email, "name": user.first_name},
                 },
                 status=200,
             )
@@ -284,7 +284,7 @@ class GoogleOauth(View):
                 {
                     "message": "User logged in using Google",
                     "access_token": access_token,
-                    "user": {"_id": user._id, "email": user.email, "name": user.name},
+                    "user": {"_id": user._id, "email": user.email, "name": user.first_name},
                 },
                 status=200,
             )

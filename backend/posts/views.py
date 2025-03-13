@@ -63,7 +63,7 @@ class PostView(View):
                     "created_at": post.created_at.isoformat(),
                     "user": {
                         "id": str(user._id),
-                        "name": user.name
+                        "name": user.first_name
                     }
                 }, status=201)
 
