@@ -86,7 +86,7 @@ class LoginView(View):
             access_token = jwt.encode(
                 {
                     "_id": str(user._id),
-                    "exp": datetime.now(tz=timezone.utc) + timedelta(days=30),
+                    "exp": datetime.now(tz=timezone.utc) + timedelta(days=365),
                 },
                 ajwt_secret,
                 algorithm="HS256",
@@ -97,7 +97,12 @@ class LoginView(View):
                     "message": "Login successful",
                     "access_token": access_token,
                     "refresh_token": refresh_token,
-                    "user": {"_id": user._id, "email": user.email, "name": user.name},
+                    "user": {
+                        "_id": user._id,
+                        "email": user.email,
+                        "first_name": user.first_name,
+                        "last_name": user.last_name,
+                    },
                 },
                 status=200,
             )
@@ -116,7 +121,8 @@ class RegisterView(View):
             if (
                 not data.get("Email")
                 or not data.get("Password")
-                or not data.get("Name")
+                or not data.get("FirstName")
+                or not data.get("LastName")
             ):
                 return JsonResponse(
                     {"message": "Please fill out all fields!"}, status=400
@@ -131,7 +137,10 @@ class RegisterView(View):
             password = make_password(data["Password"])
 
             user = User.objects.create(
-                email=data["Email"], name=data["Name"], password=password
+                email=data["Email"],
+                first_name=data["FirstName"],
+                last_name=data["LastName"],
+                password=password,
             )
 
             user.save()
@@ -148,7 +157,7 @@ class RegisterView(View):
             access_token = jwt.encode(
                 {
                     "_id": str(user._id),
-                    "exp": datetime.now(tz=timezone.utc) + timedelta(days=30),
+                    "exp": datetime.now(tz=timezone.utc) + timedelta(days=365),
                 },
                 ajwt_secret,
                 algorithm="HS256",
@@ -159,7 +168,12 @@ class RegisterView(View):
                     "message": "User registered successfully",
                     "access_token": access_token,
                     "refresh_token": refresh_token,
-                    "user": {"_id": user._id, "email": user.email, "name": user.name},
+                    "user": {
+                        "_id": user._id,
+                        "email": user.email,
+                        "first_name": user.first_name,
+                        "last_name": user.last_name,
+                    },
                 },
                 status=200,
             )
@@ -189,7 +203,7 @@ class RefreshView(View):
             access_token = jwt.encode(
                 {
                     "_id": str(user._id),
-                    "exp": datetime.now(tz=timezone.utc) + timedelta(days=30),
+                    "exp": datetime.now(tz=timezone.utc) + timedelta(days=365),
                 },
                 ajwt_secret,
                 algorithm="HS256",
@@ -225,7 +239,10 @@ class GoogleOauth(View):
 
             user, created = User.objects.get_or_create(
                 email=google_user["email"],
-                defaults={"name": google_user["name"]},
+                defaults={
+                    "first_name": google_user["given_name"],
+                    "last_name": google_user["family_name"],
+                },
             )
 
             if created:
@@ -245,7 +262,7 @@ class GoogleOauth(View):
             access_token = jwt.encode(
                 {
                     "_id": str(user._id),
-                    "exp": datetime.now(tz=timezone.utc) + timedelta(days=30),
+                    "exp": datetime.now(tz=timezone.utc) + timedelta(days=365),
                 },
                 ajwt_secret,
                 algorithm="HS256",
@@ -256,7 +273,12 @@ class GoogleOauth(View):
                     "message": "User logged in using Google",
                     "access_token": access_token,
                     "refresh_token": refresh_token,
-                    "user": {"_id": user._id, "email": user.email, "name": user.name},
+                    "user": {
+                        "_id": user._id,
+                        "email": user.email,
+                        "first_name": user.first_name,
+                        "last_name": user.last_name,
+                    },
                 },
                 status=200,
             )
@@ -284,12 +306,9 @@ class FavouritesView(View):
                 favourites_data.append(
                     {
                         "_id": fav._id,
-                        "pdf_file": fav.pdf_file,
-                        "original_filename": fav.original_filename,
                         "subject": fav.subject,
                         "gcs_url": fav.gcs_url,
                         "created_at": fav.created_at.isoformat(),
-                        "updated_at": fav.updated_at.isoformat(),
                     }
                 )
 
@@ -341,11 +360,9 @@ class FavouritesView(View):
                             "_id": favourite._id,
                             "user": str(favourite.user._id),
                             "pdf_file": favourite.pdf_file,
-                            "original_filename": favourite.original_filename,
                             "subject": favourite.subject,
                             "gcs_url": favourite.gcs_url,
                             "created_at": favourite.created_at.isoformat(),
-                            "updated_at": favourite.updated_at.isoformat(),
                         },
                     },
                     status=201,

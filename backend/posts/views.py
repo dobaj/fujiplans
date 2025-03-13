@@ -24,6 +24,12 @@ class PostView(View):
                     {"message": "Please fill out all fields!"}, status=400
                 )
 
+            title = req.POST.get("title")
+            if not title:
+                return JsonResponse(
+                    {"message": "Please fill out all fields!"}, status=400
+                )
+
             if "pdfFile" in req.FILES:
                 pdfFile = req.FILES["pdfFile"]
             else:
@@ -47,7 +53,6 @@ class PostView(View):
                     user=user,
                     description=description,
                     pdf_file=upload_result["path"],  # Store the path in the bucket
-                    original_filename=file_metadata["name"],
                     gcs_url=upload_result["url"],
                     subject=req.POST.get("subject") or user.subject,
                 )
@@ -55,10 +60,16 @@ class PostView(View):
                 return JsonResponse(
                     {
                         "_id": str(post._id),
+                        "title": post.title,
                         "description": post.description,
                         "pdf_url": post.gcs_url,
                         "created_at": post.created_at.isoformat(),
-                        "user": {"_id": str(user._id), "name": user.name},
+                        "poster": {
+                            "_id": str(user._id),
+                            "first_name": user.first_name,
+                            "last_name": user.last_name,
+                            "school": user.school,
+                        },
                         "subject": post.subject,
                     },
                     status=201,
@@ -80,15 +91,15 @@ class PostView(View):
                     {
                         "_id": str(post._id),
                         "description": post.description,
-                        "original_filename": post.original_filename,
+                        "title": post.title,
                         "subject": post.subject,
                         "gcs_url": post.gcs_url,
                         "created_at": post.created_at.isoformat(),
-                        "updated_at": post.updated_at.isoformat(),
                         "user": {
                             "_id": str(post.user._id),
-                            "name": post.user.name,
-                            "email": post.user.email,
+                            "first_name": post.user.first_name,
+                            "last_name": post.user.last_name,
+                            "school": post.user.school,
                         },
                     }
                 )

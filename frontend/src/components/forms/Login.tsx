@@ -65,7 +65,7 @@ export default function LoginForm() {
       />
       <div className="flex flex-col gap-[1rem]">
         <button
-          className="bg-grad p-[0.5rem] rounded-[1rem] h-[4rem] w-full"
+          className="bg-grad p-[0.5rem] rounded-[1rem] h-[4rem] w-full mt-[1rem]"
           aria-disabled={loading}
         >
           {loading ? (

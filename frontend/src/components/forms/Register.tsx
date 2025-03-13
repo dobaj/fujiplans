@@ -15,14 +15,16 @@ import Image from "next/image";
 type Registerinfo = {
   Email: string;
   Password: string;
-  Name: string;
+  FirstName: string;
+  LastName: string;
 };
 
 export default function Register() {
   const [info, setInfo] = useState<Registerinfo>({
     Email: "",
     Password: "",
-    Name: "",
+    FirstName: "",
+    LastName: "",
   });
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -55,12 +57,24 @@ export default function Register() {
       className="flex flex-col xl:w-[30%] w-full justify-center"
     >
       <h2 className="text-grad font-semibold text-4xl mb-[1rem]">Sign up</h2>
-      <Input
-        labelName="Name"
-        onChange={(e) => setInfo({ ...info, [e.target.name]: e.target.value })}
-        value={info.Name}
-        type="text"
-      />
+      <div className="flex gap-[1rem]">
+        <Input
+          labelName="FirstName"
+          onChange={(e) =>
+            setInfo({ ...info, [e.target.name]: e.target.value })
+          }
+          value={info.FirstName}
+          type="text"
+        />
+        <Input
+          labelName="LastName"
+          onChange={(e) =>
+            setInfo({ ...info, [e.target.name]: e.target.value })
+          }
+          value={info.LastName}
+          type="text"
+        />
+      </div>
       <Input
         labelName="Email"
         onChange={(e) => setInfo({ ...info, [e.target.name]: e.target.value })}
@@ -73,7 +87,6 @@ export default function Register() {
         value={info.Password}
         type="Password"
       />
-
       <div className="flex flex-col gap-[1rem] mt-[1.5rem]">
         <button
           className="bg-grad p-[0.5rem] rounded-[1rem] h-[4rem] w-full"

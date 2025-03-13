@@ -1,15 +1,20 @@
-import React from 'react'
+import React from "react";
 
 interface inputProps {
-    // colorPalette: string;
-    labelName: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    value: string;
-    type: string;
+  // colorPalette: string;
+  labelName: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value: string;
+  type: string;
 }
-export default function Input({ labelName, onChange, value, type}: inputProps) {
+export default function Input({
+  labelName,
+  onChange,
+  value,
+  type,
+}: inputProps) {
   return (
-    <>
+    <div className="flex flex-col w-full">
       <label htmlFor={labelName} className="text-grad text-base font-semibold">
         {labelName}
       </label>
@@ -21,6 +26,6 @@ export default function Input({ labelName, onChange, value, type}: inputProps) {
         name={labelName}
         placeholder={labelName}
       />
-    </>
+    </div>
   );
 }
