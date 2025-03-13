@@ -1,20 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import useRefreshToken from "./useRefreshToken";
 import { useAppSelector } from "@/utils/reduxHooks";
 import Loader from "@/components/loading/Loader";
+import useRefreshToken from "./useRefreshToken";
 
 export default function usePersistLogin({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const refreshToken = useRefreshToken();
-
   const { token } = useAppSelector((state) => state.token);
 
   const [loading, setLoading] = useState<boolean>(true);
+  const refreshToken = useRefreshToken();
 
   useEffect(() => {
     let ignore = false;
@@ -44,8 +43,8 @@ export default function usePersistLogin({
       ignore = true;
     };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return loading ? <Loader/> : children;
+  return loading ? <Loader /> : children;
 }

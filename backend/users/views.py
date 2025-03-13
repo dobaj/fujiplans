@@ -96,20 +96,10 @@ class LoginView(View):
                 {
                     "message": "Login successful",
                     "access_token": access_token,
+                    "refresh_token": refresh_token,
                     "user": {"_id": user._id, "email": user.email, "name": user.name},
                 },
                 status=200,
-            )
-
-            one_year = 60 * 60 * 24 * 365
-
-            res.set_cookie(
-                key="refresh_token",
-                value=refresh_token,
-                max_age=one_year,
-                httponly=True,
-                samesite="None",
-                secure=True,
             )
 
             return res
@@ -168,21 +158,10 @@ class RegisterView(View):
                 {
                     "message": "User registered successfully",
                     "access_token": access_token,
+                    "refresh_token": refresh_token,
                     "user": {"_id": user._id, "email": user.email, "name": user.name},
                 },
                 status=200,
-            )
-
-            one_year = 60 * 60 * 24 * 365
-
-            # TODO: remove secure = True for safari in development, remember to add back secure = True
-            res.set_cookie(
-                key="refresh_token",
-                value=refresh_token,
-                max_age=one_year,
-                httponly=True,
-                samesite="None",
-                secure=True,
             )
 
             return res
@@ -192,9 +171,10 @@ class RegisterView(View):
 
 
 class RefreshView(View):
-    def get(self, req):
+    def post(self, req):
         try:
-            refresh_token = req.COOKIES.get("refresh_token")
+            data = json.loads(req.body)
+            refresh_token = data.get("refresh_token")
 
             if not refresh_token:
                 return JsonResponse({"message": "No token"}, status=401)
@@ -275,20 +255,10 @@ class GoogleOauth(View):
                 {
                     "message": "User logged in using Google",
                     "access_token": access_token,
+                    "refresh_token": refresh_token,
                     "user": {"_id": user._id, "email": user.email, "name": user.name},
                 },
                 status=200,
-            )
-
-            one_year = 60 * 60 * 24 * 365
-
-            res.set_cookie(
-                key="refresh_token",
-                value=refresh_token,
-                max_age=one_year,
-                httponly=True,
-                samesite="None",
-                secure=True,
             )
 
             return res
@@ -304,7 +274,7 @@ class FavouritesView(View):
         try:
             user_id = payload["_id"]
             user = User.objects.filter(_id=user_id).first()
-            if user:
+            if user_id:
                 favourites = Favourites.objects.filter(user=user)
             else:
                 return JsonResponse({"error": "User not found"}, status=404)

@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-#TODO turn off debug when deploying
+# TODO turn off debug when deploying
 DEBUG = False
 
 ALLOWED_HOSTS = [
@@ -86,7 +86,6 @@ WSGI_APPLICATION = "server.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# TODO: change database settings when deploying
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",

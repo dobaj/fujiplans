@@ -37,6 +37,7 @@ export default function Register() {
       e.preventDefault();
       const { data } = await axios.post("/users/register/", info);
 
+      localStorage.setItem("refresh_token", data.refresh_token);
       dispatch(setToken(data.access_token));
       dispatch(addUser(data.user));
 
@@ -49,10 +50,11 @@ export default function Register() {
   }
 
   return (
-    <form onSubmit={submit} className="flex flex-col xl:w-[30%] w-full justify-center">
-      <h2 className="text-grad font-semibold text-4xl mb-[1rem]">
-        Sign up
-      </h2>
+    <form
+      onSubmit={submit}
+      className="flex flex-col xl:w-[30%] w-full justify-center"
+    >
+      <h2 className="text-grad font-semibold text-4xl mb-[1rem]">Sign up</h2>
       <Input
         labelName="Name"
         onChange={(e) => setInfo({ ...info, [e.target.name]: e.target.value })}
@@ -71,7 +73,7 @@ export default function Register() {
         value={info.Password}
         type="Password"
       />
-      
+
       <div className="flex flex-col gap-[1rem] mt-[1.5rem]">
         <button
           className="bg-grad p-[0.5rem] rounded-[1rem] h-[4rem] w-full"

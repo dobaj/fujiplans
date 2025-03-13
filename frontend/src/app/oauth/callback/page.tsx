@@ -12,23 +12,22 @@ export default function OAuthCallback() {
 
     // Send the code to the backend to complete the OAuth flow
     if (code) {
-      const backendURL = process.env.NEXT_PUBLIC_OAUTH_URL ? process.env.NEXT_PUBLIC_OAUTH_URL : "http://localhost:8080/users/oauth/google/"
+      const backendURL = process.env.NEXT_PUBLIC_OAUTH_URL
+        ? process.env.NEXT_PUBLIC_OAUTH_URL
+        : "http://localhost:8080/users/oauth/google/";
       axios
-        .get(
-          backendURL,
-          {
-            params: { code },
-          },
-        )
+        .get(backendURL, {
+          params: { code },
+        })
         .then((response) => {
           // Extract the access token and user info from the response
           const { data } = response;
-          const { access_token, user } = data;
+          const { access_token, refresh_token, user } = data;
 
           // Send the token and user info to the parent window
           if (window.opener) {
             window.opener.postMessage(
-              { access_token, user },
+              { access_token, refresh_token, user },
               window.location.origin,
             );
           }
@@ -38,14 +37,17 @@ export default function OAuthCallback() {
         })
         .catch((error) => {
           // Create a serializable error object instead of passing the entire error
-          const serializableError = { 
+          const serializableError = {
             message: error.message || "OAuth authentication failed",
             status: error.response?.status || 500,
-            data: error.response?.data || {}
+            data: error.response?.data || {},
           };
           // Close the popup and redirect the parent window to an error page
           if (window.opener) {
-            window.opener.postMessage({ error: serializableError }, window.location.origin);
+            window.opener.postMessage(
+              { error: serializableError },
+              window.location.origin,
+            );
           }
           window.close();
         });

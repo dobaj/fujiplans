@@ -11,7 +11,10 @@ export default function useRefreshToken() {
   const router = useRouter();
   const refreshToken = async () => {
     try {
-      const res = await axios.get("/users/refresh/");
+      const refreshToken = localStorage.getItem("refresh_token");
+      const res = await axios.post("/users/refresh/", {
+        refresh_token: refreshToken,
+      });
       dispatch(setToken(res.data.access_token));
       return res.data.access_token;
     } catch (error) {

@@ -12,7 +12,6 @@ export const metadata: Metadata = {
   icons: {
     icon: "/favicon.png",
   },
-  
 };
 
 export default async function RootLayout({
@@ -20,7 +19,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
   return (
     <html lang="en" className="">
       <Head>

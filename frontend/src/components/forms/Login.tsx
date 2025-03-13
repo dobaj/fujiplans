@@ -33,7 +33,8 @@ export default function LoginForm() {
     e.preventDefault();
     try {
       const { data } = await axios.post("/users/login/", info);
-      const { access_token, user } = data;
+      const { access_token, refresh_token, user } = data;
+      localStorage.setItem("refresh_token", refresh_token);
       dispatch(setToken(access_token));
       dispatch(addUser(user));
       router.push("/home");
@@ -45,10 +46,11 @@ export default function LoginForm() {
   }
 
   return (
-    <form onSubmit={submit} className="flex flex-col xl:w-[30%] w-full justify-center">
-      <h2 className="text-grad font-semibold text-4xl mb-[1rem]">
-        Sign in
-      </h2>
+    <form
+      onSubmit={submit}
+      className="flex flex-col xl:w-[30%] w-full justify-center"
+    >
+      <h2 className="text-grad font-semibold text-4xl mb-[1rem]">Sign in</h2>
       <Input
         labelName="Email"
         onChange={(e) => setInfo({ ...info, [e.target.name]: e.target.value })}
@@ -61,12 +63,6 @@ export default function LoginForm() {
         value={info.Password}
         type="Password"
       />
-      <div className="flex items-center justify-between my-[0.5rem]">
-        <div className="flex items-center gap-[0.5rem]">
-          <input type="checkbox" />
-          <p>Remember me</p>
-        </div>
-      </div>
       <div className="flex flex-col gap-[1rem]">
         <button
           className="bg-grad p-[0.5rem] rounded-[1rem] h-[4rem] w-full"

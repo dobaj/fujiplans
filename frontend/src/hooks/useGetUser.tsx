@@ -22,7 +22,7 @@ export default function useGetUser() {
         console.log("An unknown error occurred:", error);
       }
     }
-  }
+  };
 
   return getUser;
 }

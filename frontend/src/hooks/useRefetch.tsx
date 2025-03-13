@@ -46,5 +46,5 @@ export default function useRefetch({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return loading ? <Loader/> : children;
+  return loading ? <Loader /> : children;
 }
