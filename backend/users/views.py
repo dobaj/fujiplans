@@ -289,7 +289,6 @@ class GoogleOauth(View):
             return JsonResponse({"message": str(e)}, status=400)
 
 
-# TODO: Add ability to favourite a post
 class FavouritesView(View):
     @verify_jwt
     def get(self, req, payload):

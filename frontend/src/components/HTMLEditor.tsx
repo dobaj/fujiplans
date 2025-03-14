@@ -170,13 +170,13 @@ const HTMLEditor: React.FC<HTMLEditorProps> = ({
     const path = generateElementPath(target);
     setEditPath(path);
 
-    console.log("Element being edited:", {
-      tagName: target.tagName,
-      path: path,
-      content:
-        target.innerHTML.substring(0, 50) +
-        (target.innerHTML.length > 50 ? "..." : ""),
-    });
+    // console.log("Element being edited:", {
+    //   tagName: target.tagName,
+    //   path: path,
+    //   content:
+    //     target.innerHTML.substring(0, 50) +
+    //     (target.innerHTML.length > 50 ? "..." : ""),
+    // });
   };
 
   // Handle click outside to save

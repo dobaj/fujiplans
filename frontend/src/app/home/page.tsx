@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { GradButton } from "@/components/GradButton";
 import useAxios from "@/hooks/useAxiosInt";
 import Loader from "@/components/loading/Loader";
+import { NavBar } from "@/components/common/NavBar";
 
 export type PluginCategory = { name: string; active: boolean };
 
@@ -20,22 +21,23 @@ export default function Prompt() {
   async function getResult() {
     const message = toPromptString();
     try {
+      const startTime = performance.now();
       const res = await axios.post(
         "/lessons/getLesson/",
         { message },
         { responseType: "blob" },
       );
+      const endTime = performance.now();
+      console.log(`API response time: ${(endTime - startTime).toFixed(2)} ms`);
+
       const content = await res.data.text();
-      sessionStorage.setItem(
-        "markdownContent",
-        JSON.stringify({ content: content }),
-      );
+      sessionStorage.setItem("HTMLContent", content);
+      sessionStorage.setItem("lesson_id", "");
+      sessionStorage.setItem("favourite", "false");
       router.push("/results");
       setLoading(false);
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoading(false);
     }
   }
 
@@ -135,32 +137,7 @@ export default function Prompt() {
     <main className="min-h-screen bg-background">
       <div className="flex">
         <div className="m-10 mt-2 flex flex-grow flex-col max-h-full">
-          {/* Nav Bar */}
-          <div className="flex flex-row justify-between items-center max-h-16 mb-24">
-            <div className="flex-1 flex">
-              <button className="flex-grow-0">
-                <Image
-                  src="/menuIcon.svg"
-                  alt="Menu"
-                  width={0}
-                  height={0}
-                  className="m-2 w-[48px] h-auto"
-                />
-              </button>
-            </div>
-            <Image
-              src="/logo.svg"
-              alt="Fujiplans Logo"
-              width={0}
-              height={0}
-              className="my-4 self-start w-[300px] h-auto"
-              priority={true}
-            />
-
-            <Button className={"flex-1 justify-end font-bold"}>
-              <div className="mx-3 my-2">about us</div>
-            </Button>
-          </div>
+          <NavBar />
 
           {showForm ? (
             <div className="flex-grow flex flex-col justify-around w-full">
@@ -180,7 +157,7 @@ export default function Prompt() {
                   }}
                 >
                   <div className="flex items-center font-bold text-3xl mb-4 mx-5 my-2">
-                    generate
+                    Generate
                   </div>
                 </GradButton>
               </div>
