@@ -164,6 +164,7 @@ export default function Results() {
                 </Button>
               </HoverAlt>
             </div>
+            {/* Editor */}
             <div className="pl-2 h-full max-h-full flex-grow">
               {/* Replace MDEditor with our new HTMLEditor */}
               <HTMLEditor

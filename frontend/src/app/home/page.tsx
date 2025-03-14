@@ -1,9 +1,7 @@
 "use client";
 import { PromptForm, toPromptString } from "@/components/forms/PromptForm";
 import React, { useState } from "react";
-import Image from "next/image";
 import { PluginsForm } from "@/components/forms/PluginsForm";
-import { Button } from "@/components/common/Button";
 import { useRouter } from "next/navigation";
 import { GradButton } from "@/components/GradButton";
 import useAxios from "@/hooks/useAxiosInt";
