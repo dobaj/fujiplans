@@ -71,7 +71,7 @@ export default function Favourites() {
           <NavBar />
           {favourites.length === 0 ? (
             <div>
-              <h1 className="text-3xl text-gray-500">No favourites :(</h1>
+              <h1 className="text-3xl text-gray-500">No lessons :(</h1>
             </div>
           ) : (
             <div className={"flex w-full min-w-full overflow-hidden"}>

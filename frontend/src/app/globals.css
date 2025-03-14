@@ -143,61 +143,60 @@ li {
 
 .big-card:nth-child(2) {
   transform: translateX(-10%) rotate(-1deg);
-  background-image: url("/pdfanimations/pdf.png");
+  background-image: url("/pdfanimations/pdf1.png");
 }
 
 .big-card:nth-child(4) {
   transform: rotate(2deg);
-  background-image: url("/pdfanimations/pdf.png");
+  background-image: url("/pdfanimations/pdf2.png");
 }
 
 .big-card:nth-child(6) {
   transform: translateX(-6%) rotate(-3deg);
-  background-image: url("/pdfanimations/pdf.png");
+  background-image: url("/pdfanimations/pdf3.png");
 }
 
 .big-card:nth-child(8) {
   transform: translate(10%, 3%) rotate(5deg);
-  background-image: url("/pdfanimations/pdf.png");
+  background-image: url("/pdfanimations/pdf4.png");
 }
 
 .card-group:hover > .big-card:nth-child(2) {
   transform: translate(-75%, 16%) rotate(-24deg);
-  background-image: url("/pdfanimations/pdf.png");
+  background-image: url("/pdfanimations/pdf4.png");
 }
 
 .card-group:hover > .big-card:nth-child(4) {
   transform: translate(-25%, 8%) rotate(-8deg);
-  background-image: url("/pdfanimations/pdf.png");
+  background-image: url("/pdfanimations/pdf5.png");
 }
 
 .card-group:hover > .big-card:nth-child(6) {
   transform: translate(25%, 8%) rotate(8deg);
-  background-image: url("/pdfanimations/pdf.png");
+  background-image: url("/pdfanimations/pdf6.png");
 }
 
 .card-group:hover > .big-card:nth-child(8) {
   transform: translate(75%, 16%) rotate(24deg);
-  background-image: url("/pdfanimations/pdf.png");
+  background-image: url("/pdfanimations/pdf7.png");
 }
 
 .card-group:hover > .little-card:nth-child(1) {
   transform: translate(200%, -160%) rotate(-15deg);
-  background-image: url("/pdfanimations/pdf.png");
+  background-image: url("/pdfanimations/pdf8.png");
 }
 
 .card-group:hover > .little-card:nth-child(3) {
   transform: translate(160%, 170%) rotate(15deg);
-  background-image: url("/pdfanimations/pdf.png");
+  background-image: url("/pdfanimations/pdf9.png");
 }
 
 .card-group:hover > .little-card:nth-child(5) {
   transform: translate(-200%, -170%) rotate(15deg);
-  background-image: url("/pdfanimations/pdf.png");
+  background-image: url("/pdfanimations/pdf10.png");
 }
 
 .card-group:hover > .little-card:nth-child(7) {
   transform: translate(-280%, 140%) rotate(-15deg);
-  background-image: url("/pdfanimations/pdf.png");
+  background-image: url("/pdfanimations/pdf11.png");
 }
-

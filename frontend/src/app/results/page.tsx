@@ -63,6 +63,8 @@ export default function Results() {
 
   useEffect(() => {
     if (router && goBack) {
+      sessionStorage.removeItem("HTMLContent");
+      sessionStorage.removeItem("lesson_id");
       router.back();
     }
   }, [goBack, router]);

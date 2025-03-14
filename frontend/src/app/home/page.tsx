@@ -19,21 +19,19 @@ export default function Prompt() {
   async function getResult() {
     const message = toPromptString();
     try {
-      const startTime = performance.now();
       const res = await axios.post(
         "/lessons/getLesson/",
         { message },
         { responseType: "blob" },
       );
-      const endTime = performance.now();
-      console.log(`API response time: ${(endTime - startTime).toFixed(2)} ms`);
 
       const content = await res.data.text();
+      setLoading(false);
       sessionStorage.setItem("HTMLContent", content);
       sessionStorage.setItem("lesson_id", "");
       // sessionStorage.setItem("favourite", "false");
+      console.log("going to results");
       router.push("/results");
-      setLoading(false);
     } catch (error) {
       console.log(error);
     }
