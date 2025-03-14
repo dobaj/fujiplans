@@ -8,7 +8,7 @@ export type User = {
 };
 
 export type Subject =
-  | "Mathematics"
+  | "Math"
   | "Science"
   | "History"
   | "English"

@@ -84,7 +84,6 @@ class UpdateLesson(View):
 
             title = data.get("title", "Untitled Lesson")
             content = data.get("content", "")
-            favourite = data.get("favourite", False)
             lesson_id = data.get("lesson_id", -1)
 
             if not content:
@@ -92,9 +91,7 @@ class UpdateLesson(View):
 
             lesson = Lesson.objects.filter(id=lesson_id, user=user_id).first()
             if not lesson:
-                lesson = Lesson.objects.create(
-                    user=user, title=title, content=content, favourited=favourite
-                )
+                lesson = Lesson.objects.create(user=user, title=title, content=content)
                 return JsonResponse(
                     {"message": "Lesson created successfully", "lesson_id": lesson.id},
                     status=201,
@@ -102,7 +99,6 @@ class UpdateLesson(View):
             else:
                 lesson.title = title
                 lesson.content = content
-                lesson.favourited = favourite
                 lesson.save()
 
                 return JsonResponse(
@@ -122,8 +118,8 @@ class GetFavouriteLessons(View):
     def get(self, req, payload, *args, **kwargs):
         try:
             user_id = payload["_id"]
-            lessons = Lesson.objects.filter(user=user_id, favourited=True).values(
-                "id", "title", "content", "favourited"
+            lessons = Lesson.objects.filter(user=user_id).values(
+                "id", "title", "content"
             )
 
             return JsonResponse({"favourite_lessons": list(lessons)}, status=200)
@@ -145,7 +141,7 @@ class GetFavouriteLesson(View):
                 # Get a specific lesson if `lesson_id` is provided
                 lesson = (
                     Lesson.objects.filter(id=lesson_id, user=user_id)
-                    .values("id", "title", "content", "favourited")
+                    .values("id", "title", "content")
                     .first()
                 )
 

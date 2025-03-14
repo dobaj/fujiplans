@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { FaHeart } from "react-icons/fa";
+// import { FaHeart } from "react-icons/fa";
 import { CiFilter } from "react-icons/ci";
 import { FaChevronDown } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
@@ -11,6 +11,7 @@ import axios from "@/utils/axios";
 import { useAppSelector } from "@/utils/reduxHooks";
 import { RootState } from "@/redux/store";
 import { Subject } from "@/types/user";
+import { NavBar } from "@/components/common/NavBar";
 
 type PostData = {
   title: string;
@@ -107,7 +108,7 @@ export default function TeacherResourcePlatform() {
   }, [activeTab]);
 
   const subjects: Subject[] = [
-    "Mathematics",
+    "Math",
     "Science",
     "History",
     "English",
@@ -118,28 +119,28 @@ export default function TeacherResourcePlatform() {
     "Foreign Languages",
   ];
 
-  const toggleFavorite = async (id: string) => {
-    const post = posts.find((post) => post._id === id);
-    if (!post) return;
-
-    setPosts((prev) => {
-      const updatedPosts = prev.map((p) =>
-        p._id === id ? { ...p, is_favorited: !p.is_favorited } : p,
-      );
-      return updatedPosts;
-    });
-
-    try {
-      await axios.put("/posts/", {
-        post_id: id,
-        add: !post.is_favorited,
-      });
-
-      console.log("Post favorited", !post.is_favorited);
-    } catch (error) {
-      console.log;
-    }
-  };
+  // const toggleFavorite = async (id: string) => {
+  //   const post = posts.find((post) => post._id === id);
+  //   if (!post) return;
+  //
+  //   setPosts((prev) => {
+  //     const updatedPosts = prev.map((p) =>
+  //       p._id === id ? { ...p, is_favorited: !p.is_favorited } : p,
+  //     );
+  //     return updatedPosts;
+  //   });
+  //
+  //   try {
+  //     await axios.put("/posts/", {
+  //       post_id: id,
+  //       add: !post.is_favorited,
+  //     });
+  //
+  //     console.log("Post favorited", !post.is_favorited);
+  //   } catch (error) {
+  //     console.log;
+  //   }
+  // };
 
   const toggleSubjectFilter = (subject: Subject) => {
     if (selectedSubjects.includes(subject)) {
@@ -156,7 +157,8 @@ export default function TeacherResourcePlatform() {
 
   return (
     <div className="bg-gradient-to-br from-[#F5F1E9] to-[#F5F1E9]/90 h-full w-full">
-      <main className="mx-auto container h-full w-full">
+      <main className="mx-auto container h-full w-full pt-[1rem]">
+        <NavBar />
         <div className="flex border-b border-[#292F36]/20 mb-8">
           <button
             onClick={() => setActiveTab("browse")}
@@ -257,15 +259,15 @@ export default function TeacherResourcePlatform() {
                           {post.subject}
                         </p>
                       </div>
-                      <button
-                        onClick={() => toggleFavorite(post._id)}
-                        className={`p-2 rounded-full ${post.is_favorited ? "text-[#D9918D]" : "text-[#292F36]/30 hover:text-[#D9918D]/70"}`}
-                      >
-                        <FaHeart
-                          fill={post.is_favorited ? "#D9918D" : "gray"}
-                          size={20}
-                        />
-                      </button>
+                      {/* <button */}
+                      {/*   onClick={() => toggleFavorite(post._id)} */}
+                      {/*   className={`p-2 rounded-full ${post.is_favorited ? "text-[#D9918D]" : "text-[#292F36]/30 hover:text-[#D9918D]/70"}`} */}
+                      {/* > */}
+                      {/*   <FaHeart */}
+                      {/*     fill={post.is_favorited ? "#D9918D" : "gray"} */}
+                      {/*     size={20} */}
+                      {/*   /> */}
+                      {/* </button> */}
                     </div>
                     <p className="text-sm mb-4 text-[#292F36]/80 line-clamp-3">
                       {post.description}

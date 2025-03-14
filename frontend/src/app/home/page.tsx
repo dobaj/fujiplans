@@ -33,7 +33,7 @@ export default function Prompt() {
       const content = await res.data.text();
       sessionStorage.setItem("HTMLContent", content);
       sessionStorage.setItem("lesson_id", "");
-      sessionStorage.setItem("favourite", "false");
+      // sessionStorage.setItem("favourite", "false");
       router.push("/results");
       setLoading(false);
     } catch (error) {

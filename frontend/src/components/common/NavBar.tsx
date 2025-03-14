@@ -1,25 +1,33 @@
-import { MdArrowBackIos, MdFavorite } from "react-icons/md";
+import { MdFavorite } from "react-icons/md";
+import { FaPeopleRobbery } from "react-icons/fa6";
+import { IoMdHome } from "react-icons/io";
 import { Button } from "./Button";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-export const NavBar = ({ favourites }: { favourites?: boolean }) => {
+export const NavBar = () => {
   const router = useRouter();
   return (
     <div className="flex flex-row justify-between items-center max-h-40 pb-24">
-      <div className="flex-1 flex">
-        {favourites ? (
-          <button className="flex-grow-0" onClick={() => router.back()}>
-            <MdArrowBackIos className="m-2 w-[32px] h-auto text-gray-600 hover:text-gray-700" />
-          </button>
-        ) : (
-          <button
-            className="flex-grow-0"
-            onClick={() => router.push("/favourites")}
-          >
-            <MdFavorite className="m-2 w-[32px] h-auto text-gray-600 hover:text-gray-700" />
-          </button>
-        )}
+      <div className="flex-1 flex gap-[1rem]">
+        <button
+          onClick={() => router.push("/home")}
+          className="flex-grow-0 ml-5"
+        >
+          <IoMdHome className="m-2 w-[32px] h-auto text-gray-600 hover:text-gray-700" />
+        </button>
+        <button
+          className="flex-grow-0"
+          onClick={() => router.push("/home/favourites")}
+        >
+          <MdFavorite className="m-2 w-[32px] h-auto text-gray-600 hover:text-gray-700" />
+        </button>
+        <button
+          onClick={() => router.push("/home/community")}
+          className="flex-grow-0"
+        >
+          <FaPeopleRobbery className="m-2 w-[32px] h-auto text-gray-600 hover:text-gray-700" />
+        </button>
       </div>
       <button className="mt-4" onClick={() => router.push("/home")}>
         <Image
