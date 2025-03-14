@@ -95,6 +95,7 @@ export default function TeacherResourcePlatform() {
     async function fetchData() {
       try {
         const { data } = await axios.get("/posts");
+        setPosts(data.data);
       } catch (error) {
         console.log(error);
       }
@@ -103,46 +104,9 @@ export default function TeacherResourcePlatform() {
     if (activeTab === "browse") {
       fetchData();
     }
-  });
+  }, [activeTab]);
 
-  // Sample data
-  const samplePosts = [
-    {
-      id: 1,
-      name: "Alex Johnson",
-      school: "Westlake High School",
-      subject: "Mathematics",
-      title: "Quadratic Equations Interactive Lesson",
-      description:
-        "A comprehensive lesson plan that introduces quadratic equations through real-world examples and interactive activities. Includes digital and printable worksheets.",
-      favorites: 24,
-      isFavorited: false,
-    },
-    {
-      id: 2,
-      name: "Maya Rodriguez",
-      school: "Riverside Elementary",
-      subject: "Science",
-      title: "Exploring Ecosystems",
-      description:
-        "This hands-on lesson plan guides students through creating their own miniature ecosystems while learning about biodiversity and environmental balance.",
-      favorites: 31,
-      isFavorited: true,
-    },
-    {
-      id: 3,
-      name: "David Kim",
-      school: "Central Middle School",
-      subject: "History",
-      title: "Ancient Civilizations Compare & Contrast",
-      description:
-        "Students explore similarities and differences between ancient Egyptian, Greek, and Roman civilizations through collaborative research and creative presentations.",
-      favorites: 18,
-      isFavorited: false,
-    },
-  ];
-
-  const subjects = [
+  const subjects: Subject[] = [
     "Mathematics",
     "Science",
     "History",
@@ -168,8 +132,8 @@ export default function TeacherResourcePlatform() {
 
   const filteredPosts =
     selectedSubjects.length > 0
-      ? samplePosts.filter((post) => selectedSubjects.includes(post.subject))
-      : samplePosts;
+      ? posts.filter((post) => selectedSubjects.includes(post.subject))
+      : posts;
 
   return (
     <div className="bg-gradient-to-br from-[#F5F1E9] to-[#F5F1E9]/90 h-full w-full">
@@ -272,7 +236,7 @@ export default function TeacherResourcePlatform() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredPosts.map((post) => (
                 <div
-                  key={post.id}
+                  key={post._id}
                   className="bg-white rounded-xl shadow-md overflow-hidden border border-[#292F36]/10 hover:shadow-lg transition duration-300"
                 >
                   <div className="bg-gradient-to-r from-[#D9918D] to-[#ECF2A2] p-1" />
@@ -286,15 +250,15 @@ export default function TeacherResourcePlatform() {
                           {post.subject}
                         </p>
                       </div>
-                      <button
-                        onClick={() => toggleFavorite(post.id)}
-                        className={`p-2 rounded-full ${post.isFavorited ? "text-[#D9918D]" : "text-[#292F36]/30 hover:text-[#D9918D]/70"}`}
-                      >
-                        <FaHeart
-                          fill={post.isFavorited ? "#D9918D" : "none"}
-                          size={20}
-                        />
-                      </button>
+                      {/* <button */}
+                      {/*   onClick={() => toggleFavorite(post._id)} */}
+                      {/*   className={`p-2 rounded-full ${post.isFavorited ? "text-[#D9918D]" : "text-[#292F36]/30 hover:text-[#D9918D]/70"}`} */}
+                      {/* > */}
+                      {/*   <FaHeart */}
+                      {/*     fill={post.isFavorited ? "#D9918D" : "none"} */}
+                      {/*     size={20} */}
+                      {/*   /> */}
+                      {/* </button> */}
                     </div>
 
                     <p className="text-sm mb-4 text-[#292F36]/80 line-clamp-3">
@@ -304,21 +268,23 @@ export default function TeacherResourcePlatform() {
                     <div className="flex justify-between items-center mt-[2.5rem]">
                       <div className="flex items-center gap-3 mb-4">
                         <div className="w-8 h-8 rounded-full bg-[#ECF2A2] flex items-center justify-center">
-                          {post.name
-                            .split(" ")
-                            .map((n) => n[0])
-                            .join("")}
+                          {post.poster.first_name[0]}
+                          {post.poster.last_name[0]}
                         </div>
-                        <div>
-                          <p className="text-sm font-medium">{post.name}</p>
-                          <p className="text-xs text-[#292F36]/60">
-                            {post.school}
-                          </p>
-                        </div>
+                        {/* <div> */}
+                        {/*   <p className="text-sm font-medium">{post.name}</p> */}
+                        {/*   <p className="text-xs text-[#292F36]/60"> */}
+                        {/*     {post.school} */}
+                        {/*   </p> */}
+                        {/* </div> */}
                       </div>
-                      <button className="bg-gradient-to-r from-[#D9918D] to-[#ECF2A2] text-[#292F36] font-medium px-6 py-3 rounded-lg hover:opacity-90 transition duration-300">
+                      <a
+                        className="bg-gradient-to-r from-[#D9918D] to-[#ECF2A2] text-[#292F36] font-medium px-6 py-3 rounded-lg hover:opacity-90 transition duration-300"
+                        href={post.gcs_url}
+                        target="_blank"
+                      >
                         View Lesson
-                      </button>
+                      </a>
                     </div>
                   </div>
                 </div>
