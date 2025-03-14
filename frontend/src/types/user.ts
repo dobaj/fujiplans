@@ -27,6 +27,7 @@ export type Post = {
   gcs_url: string;
   created_at: string;
   poster: poster;
+  is_favorited: boolean;
 };
 
 type poster = {

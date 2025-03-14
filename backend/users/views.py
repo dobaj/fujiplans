@@ -348,7 +348,6 @@ class FavouritesView(View):
                 favourite = Favourites.objects.create(
                     user=user,
                     pdf_file=upload_result["path"],
-                    original_filename=file_metadata["name"],
                     gcs_url=upload_result["url"],
                     subject=req.POST.get("subject") or "English",
                 )

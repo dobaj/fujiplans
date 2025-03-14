@@ -22,7 +22,6 @@ class Favourites(models.Model):
     _id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="favourites")
     pdf_file = models.CharField(max_length=500, blank=False)
-    original_filename = models.CharField(max_length=255, blank=False)
     subject = models.CharField(max_length=255, blank=False, default="English")
     gcs_url = models.URLField(max_length=1000, blank=False)
 

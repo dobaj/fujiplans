@@ -42,6 +42,7 @@ export default function TeacherResourcePlatform() {
     event.preventDefault();
     event.stopPropagation();
   };
+  console.log(posts);
 
   const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -118,8 +119,27 @@ export default function TeacherResourcePlatform() {
     "Foreign Languages",
   ];
 
-  const toggleFavorite = (id: string) => {
-    console.log(id);
+  const toggleFavorite = async (id: string) => {
+    const post = posts.find((post) => post._id === id);
+    if (!post) return;
+
+    setPosts((prev) => {
+      const updatedPosts = prev.map((p) =>
+        p._id === id ? { ...p, is_favorited: !p.is_favorited } : p,
+      );
+      return updatedPosts;
+    });
+
+    try {
+      await axios.put("/posts/", {
+        post_id: id,
+        add: !post.is_favorited,
+      });
+
+      console.log("Post favorited", !post.is_favorited);
+    } catch (error) {
+      console.log;
+    }
   };
 
   const toggleSubjectFilter = (subject: Subject) => {
@@ -237,46 +257,46 @@ export default function TeacherResourcePlatform() {
               {filteredPosts.map((post) => (
                 <div
                   key={post._id}
-                  className="bg-white rounded-xl shadow-md overflow-hidden border border-[#292F36]/10 hover:shadow-lg transition duration-300"
+                  className="bg-white rounded-xl shadow-md overflow-hidden border border-[#292F36]/10 hover:shadow-lg transition duration-300 flex flex-col h-full"
                 >
                   <div className="bg-gradient-to-r from-[#D9918D] to-[#ECF2A2] p-1" />
-                  <div className="p-5 h-full w-full">
+                  <div className="p-5 flex flex-col h-full w-full">
                     <div className="flex justify-between items-start mb-3">
                       <div>
-                        <h3 className="font-bold text-lg text-[#292F36]">
+                        <h3 className="font-bold text-xl text-[#292F36]">
                           {post.title}
                         </h3>
                         <p className="text-sm text-[#292F36]/70">
                           {post.subject}
                         </p>
                       </div>
-                      {/* <button */}
-                      {/*   onClick={() => toggleFavorite(post._id)} */}
-                      {/*   className={`p-2 rounded-full ${post.isFavorited ? "text-[#D9918D]" : "text-[#292F36]/30 hover:text-[#D9918D]/70"}`} */}
-                      {/* > */}
-                      {/*   <FaHeart */}
-                      {/*     fill={post.isFavorited ? "#D9918D" : "none"} */}
-                      {/*     size={20} */}
-                      {/*   /> */}
-                      {/* </button> */}
+                      <button
+                        onClick={() => toggleFavorite(post._id)}
+                        className={`p-2 rounded-full ${post.is_favorited ? "text-[#D9918D]" : "text-[#292F36]/30 hover:text-[#D9918D]/70"}`}
+                      >
+                        <FaHeart
+                          fill={post.is_favorited ? "#D9918D" : "gray"}
+                          size={20}
+                        />
+                      </button>
                     </div>
-
                     <p className="text-sm mb-4 text-[#292F36]/80 line-clamp-3">
                       {post.description}
                     </p>
-
-                    <div className="flex justify-between items-center mt-[2.5rem]">
-                      <div className="flex items-center gap-3 mb-4">
+                    <div className="flex justify-between items-center mt-auto">
+                      <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-full bg-[#ECF2A2] flex items-center justify-center">
                           {post.poster.first_name[0]}
                           {post.poster.last_name[0]}
                         </div>
-                        {/* <div> */}
-                        {/*   <p className="text-sm font-medium">{post.name}</p> */}
-                        {/*   <p className="text-xs text-[#292F36]/60"> */}
-                        {/*     {post.school} */}
-                        {/*   </p> */}
-                        {/* </div> */}
+                        <div>
+                          <p className="text-sm font-medium">
+                            {post.poster.first_name} {post.poster.last_name}
+                          </p>
+                          <p className="text-xs text-[#292F36]/60">
+                            {post.poster.school}
+                          </p>
+                        </div>
                       </div>
                       <a
                         className="bg-gradient-to-r from-[#D9918D] to-[#ECF2A2] text-[#292F36] font-medium px-6 py-3 rounded-lg hover:opacity-90 transition duration-300"

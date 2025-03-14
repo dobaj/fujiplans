@@ -20,5 +20,9 @@ class Post(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
+    favorited_by = models.ManyToManyField(
+        User, related_name="favorite_posts", blank=True
+    )
+
     class Meta:
         ordering = ["-created_at"]

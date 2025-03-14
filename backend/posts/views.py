@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 from .models import Post
 from users.models import User
 from utils import verify_jwt
+import json
 
 
 class PostView(View):
@@ -61,6 +62,7 @@ class PostView(View):
                     pdf_file=upload_result["path"],  # Store the path in the bucket
                     gcs_url=upload_result["url"],
                     subject=req.POST.get("subject") or user.subject,
+                    title=title,
                 )
 
                 return JsonResponse(
@@ -76,12 +78,39 @@ class PostView(View):
         except Exception as e:
             return JsonResponse({"message": str(e)}, status=400)
 
-    def get(self, req):
+    @verify_jwt
+    def put(self, req, payload):
+        data = json.loads(req.body)
+        user = User.objects.filter(_id=payload["_id"]).first()
+
+        post_id = data.get("post_id")
+        if not post_id:
+            return JsonResponse({"message": "Please provide a post id"}, status=400)
+
+        post = Post.objects.filter(_id=post_id).first()
+
+        if not post:
+            return JsonResponse({"message": "Post not found"}, status=404)
+
+        add = data.get("add")
+
+        if not add:
+            post.favorited_by.remove(user)
+        else:
+            post.favorited_by.add(user)
+
+        return JsonResponse({"message": "Post favorited successfully!"}, status=201)
+
+    @verify_jwt
+    def get(self, req, payload):
+        user = User.objects.filter(_id=payload["_id"]).first()
         try:
             posts = Post.objects.all()
             # Convert posts to a list of dictionaries
             posts_data = []
             for post in posts:
+                # This is so damn unefficient, but we in a rush, idgaf im about to crash out
+                is_favorited = user in post.favorited_by.all()
                 posts_data.append(
                     {
                         "_id": str(post._id),
@@ -90,6 +119,7 @@ class PostView(View):
                         "subject": post.subject,
                         "gcs_url": post.gcs_url,
                         "created_at": post.created_at.isoformat(),
+                        "is_favorited": is_favorited,
                         "poster": {
                             "_id": str(post.user._id),
                             "first_name": post.user.first_name,
