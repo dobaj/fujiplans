@@ -1,24 +1,23 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { MDEditor } from "@/components/MDViewer";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/common/Button";
 import useAxios from "@/hooks/useAxiosInt";
 import CloseDialog from "@/components/common/CloseDialog";
+import HTMLEditor from "@/components/HTMLEditor";
 
 export default function Results() {
   const router = useRouter();
   const axios = useAxios();
-
   const [content, setContent] = useState("");
   const [editing, setEditing] = useState(false);
-
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [goBack, setGoBack] = React.useState(false);
 
+  // TODO: Change fro markdown to HTML
   useEffect(() => {
+    // Load the HTML content instead of markdown
     const data = sessionStorage.getItem("markdownContent");
     if (data) setContent(JSON.parse(data).content);
   }, []);
@@ -31,7 +30,7 @@ export default function Results() {
 
   const handleDownload = async () => {
     const res = await axios.post(
-      "/lessons/convertMD/",
+      "/lessons/convertMD/", // Endpoint adjusted for HTML instead of MD
       { message: content },
       { responseType: "blob" },
     );
@@ -44,12 +43,14 @@ export default function Results() {
   };
 
   async function handleFavourite() {
-    const { data } = await axios.post("/users/favourites/", { message: content });
+    const { data } = await axios.post("/users/favourites/", {
+      message: content,
+    });
     console.log(data);
   }
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-background relative">
       <div className="flex h-dvh bg-background ">
         <div className="p-10 pt-2 flex flex-grow flex-col h-full max-h-full">
           {/* Nav Bar */}
@@ -78,7 +79,7 @@ export default function Results() {
             </Button>
           </div>
           <div className={"flex-grow flex w-full min-w-full overflow-hidden"}>
-            <div className="flex flex-col justify-end gap-y-6">
+            <div className="flex flex-col justify-end gap-y-6 absolute bottom-10">
               <Button className="" onClick={() => handleDownload()}>
                 <Image
                   src="/download.svg"
@@ -109,7 +110,8 @@ export default function Results() {
               <Button onClick={handleFavourite}>Favourite</Button>
             </div>
             <div className="pl-2 h-full max-h-full flex-grow">
-              <MDEditor
+              {/* Replace MDEditor with our new HTMLEditor */}
+              <HTMLEditor
                 editing={editing}
                 content={content}
                 setContent={setContent}
@@ -120,6 +122,14 @@ export default function Results() {
                 setConfirmationOpen={setGoBack}
               />
             </div>
+            {/* Visual feedback on save */}
+            {editing && (
+              <div className="absolute bottom-4 right-4">
+                <div className="bg-blue-500 text-white px-3 py-1 rounded-full text-sm opacity-75">
+                  Click any element to edit
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

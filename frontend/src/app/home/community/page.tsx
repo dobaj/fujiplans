@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { IoIosSearch } from "react-icons/io";
 import { FaHeart } from "react-icons/fa";
 import { CiFilter } from "react-icons/ci";
 import { FaChevronDown } from "react-icons/fa6";
@@ -176,18 +175,6 @@ export default function TeacherResourcePlatform() {
         {activeTab === "browse" ? (
           <>
             <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-8">
-              <div className="relative w-full md:w-1/2">
-                <input
-                  type="text"
-                  placeholder="Search lesson plans..."
-                  className="w-full p-3 pl-10 rounded-lg border border-[#292F36]/20 focus:outline-none focus:ring-2 focus:ring-[#D9918D]"
-                />
-                <IoIosSearch
-                  className="absolute left-3 top-3.5 text-[#292F36]/60"
-                  size={20}
-                />
-              </div>
-
               <div className="relative w-full md:w-auto">
                 <button
                   onClick={() => setFilterOpen(!filterOpen)}
