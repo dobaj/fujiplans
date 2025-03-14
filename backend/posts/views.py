@@ -30,6 +30,12 @@ class PostView(View):
                     {"message": "Please fill out all fields!"}, status=400
                 )
 
+            subject = req.POST.get("subject")
+            if not subject:
+                return JsonResponse(
+                    {"message": "Please fill out all fields!"}, status=400
+                )
+
             if "pdfFile" in req.FILES:
                 pdfFile = req.FILES["pdfFile"]
             else:
@@ -49,7 +55,7 @@ class PostView(View):
                     content_type=file_metadata["type"],
                 )
 
-                post = Post.objects.create(
+                Post.objects.create(
                     user=user,
                     description=description,
                     pdf_file=upload_result["path"],  # Store the path in the bucket

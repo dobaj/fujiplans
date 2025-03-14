@@ -74,12 +74,18 @@ export default function TeacherResourcePlatform() {
     formData.append("title", postData.title);
     formData.append("subject", postData.subject);
     formData.append("description", postData.description);
-    formData.append("file", postData.file!);
+    formData.append("pdfFile", postData.file!);
     formData.append("school", postData.school!);
 
     try {
-      const { data } = await axios.post("/posts", formData);
-      console.log(data);
+      await axios.post("/posts/", formData);
+      setPostData({
+        title: "",
+        subject: "",
+        description: "",
+        file: null,
+        school: user?.school,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -89,7 +95,6 @@ export default function TeacherResourcePlatform() {
     async function fetchData() {
       try {
         const { data } = await axios.get("/posts");
-        console.log(data);
       } catch (error) {
         console.log(error);
       }
@@ -409,13 +414,24 @@ export default function TeacherResourcePlatform() {
                 />
 
                 <div className="border-2 border-dashed border-[#292F36]/20 rounded-lg p-8 text-center hover:bg-[#F5F1E9]/50 transition duration-300 cursor-pointer">
-                  <FiUpload className="mx-auto mb-2 text-[#D9918D]" size={36} />
-                  <p className="text-sm text-[#292F36]/70">
-                    Drag and drop your PDF file here, or click to browse
-                  </p>
-                  <p className="text-xs text-[#292F36]/50 mt-2">
-                    Maximum file size: 20MB
-                  </p>
+                  {!postData.file ? (
+                    <>
+                      <FiUpload
+                        className="mx-auto mb-2 text-[#D9918D]"
+                        size={36}
+                      />
+                      <p className="text-sm text-[#292F36]/70">
+                        Drag and drop your PDF file here, or click to browse
+                      </p>
+                      <p className="text-xs text-[#292F36]/50 mt-2">
+                        Maximum file size: 20MB
+                      </p>
+                    </>
+                  ) : (
+                    <p className="text-sm text-[#292F36]/70">
+                      {postData.file.name}
+                    </p>
+                  )}
                 </div>
               </div>
 
