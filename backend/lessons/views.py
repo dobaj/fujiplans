@@ -107,7 +107,7 @@ class UpdateLesson(View):
             if not lesson:
                 lesson = Lesson.objects.create(user=user, title=title, content=content)
                 return JsonResponse(
-                    {"message": "Lesson created successfully", "lesson_id": lesson.id},
+                    {"message": "Lesson created successfully", "lesson_id": lesson._id},
                     status=201,
                 )
             else:
@@ -132,7 +132,7 @@ class GetFavouriteLessons(View):
         try:
             user_id = payload["_id"]
             lessons = Lesson.objects.filter(user=user_id).values(
-                "id", "title", "content"
+                "_id", "title", "content"
             )
 
             return JsonResponse({"favourite_lessons": list(lessons)}, status=200)
@@ -174,13 +174,14 @@ class DeleteFavouriteLesson(View):
     def delete(self, req, payload, *args, **kwargs):
         try:
             user_id = payload["_id"]
-            lesson_id = req.GET.get("lesson_id")  # Get lesson_id from query parameters
+            data = json.loads(req.body)
+            lesson_id = data.get("lesson_id")
 
             if not lesson_id:
                 return JsonResponse({"error": "Missing lesson_id"}, status=400)
 
             # Try to get the lesson
-            lesson = Lesson.objects.filter(id=lesson_id, user=user_id).first()
+            lesson = Lesson.objects.filter(_id=lesson_id, user=user_id).first()
 
             if not lesson:
                 return JsonResponse({"error": "Lesson not found"}, status=404)
@@ -192,4 +193,3 @@ class DeleteFavouriteLesson(View):
 
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
-

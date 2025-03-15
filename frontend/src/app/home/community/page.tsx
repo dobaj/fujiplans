@@ -10,6 +10,7 @@ import { Post } from "@/types/user";
 import axios from "@/utils/axios";
 import { Subject } from "@/types/user";
 import { NavBar } from "@/components/common/NavBar";
+import Loader from "@/components/loading/Loader";
 
 type PostData = {
   title: string;
@@ -29,6 +30,7 @@ export default function TeacherResourcePlatform() {
     description: "",
     file: null,
   });
+  const [loading, setLoading] = useState(false);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -86,11 +88,14 @@ export default function TeacherResourcePlatform() {
 
   useEffect(() => {
     async function fetchData() {
+      setLoading(true);
       try {
         const { data } = await axios.get("/posts");
         setPosts(data.data);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     }
 
@@ -146,6 +151,10 @@ export default function TeacherResourcePlatform() {
     selectedSubjects.length > 0
       ? posts.filter((post) => selectedSubjects.includes(post.subject))
       : posts;
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="bg-gradient-to-br from-[#F5F1E9] to-[#F5F1E9]/90 h-full w-full">
