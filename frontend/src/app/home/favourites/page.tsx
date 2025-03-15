@@ -62,7 +62,7 @@ export default function Favourites() {
     return <Loader />;
   }
 
-  const decodeHTMLEntities = (text) => {
+  const decodeHTMLEntities = (text: string) => {
     const textArea = document.createElement("textarea");
     textArea.innerHTML = text;
     return textArea.value;

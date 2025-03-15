@@ -3,15 +3,12 @@ import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/utils/reduxHooks";
 import { setToken } from "@/redux/slices/tokenSlice";
 import { addUser } from "@/redux/slices/userSlice";
+import { User } from "@/types/user";
 
 interface OAuthMessageData {
   access_token?: string;
   refresh_token?: string;
-  user?: {
-    _id: string;
-    email: string;
-    name: string;
-  };
+  user?: User;
   error?: boolean;
   oAuthUrl?: string;
 }
