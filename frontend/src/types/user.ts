@@ -4,7 +4,6 @@ export type User = {
   first_name: string;
   last_name: string;
   favourites: favourite[];
-  school: string;
 };
 
 export type Subject =
@@ -34,7 +33,6 @@ type poster = {
   _id: string;
   first_name: string;
   last_name: string;
-  school: string;
 };
 
 type favourite = {

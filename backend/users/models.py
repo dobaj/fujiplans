@@ -11,10 +11,6 @@ class User(models.Model):
     email = models.EmailField(max_length=254, unique=True)
     password = models.CharField(max_length=100, null=True, blank=True, editable=False)
     date = models.DateTimeField(auto_now_add=True)
-    school = models.CharField(max_length=255, blank=False, default="Unknown")
-
-    def __str__(self):
-        return f"ID: {self._id}, first_name: {self.first_name}, last_name: {self.last_name}, Email: {self.email}"
 
 
 # Basically same as Post model lol

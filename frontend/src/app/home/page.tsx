@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { PluginsForm } from "@/components/forms/PluginsForm";
 import { useRouter } from "next/navigation";
 import { GradButton } from "@/components/GradButton";
-import useAxios from "@/hooks/useAxiosInt";
+import axios from "@/utils/axios";
 import Loader from "@/components/loading/Loader";
 import { NavBar } from "@/components/common/NavBar";
 
@@ -14,26 +14,22 @@ export type Plugins = { name: string; elements: PluginCategory[] }[];
 
 export default function Prompt() {
   const router = useRouter();
-  const axios = useAxios();
 
   async function getResult() {
     const message = toPromptString();
     try {
-      const res = await axios.post(
-        "/lessons/getLesson/",
-        { message },
-        { responseType: "blob" },
-      );
+      const res = await axios.post("/lessons/getLesson/", { message });
 
-      const content = await res.data.text();
+      console.log(res.data);
       setLoading(false);
-      sessionStorage.setItem("HTMLContent", content);
-      sessionStorage.setItem("lesson_id", "");
+      sessionStorage.setItem("HTMLContent", res.data.message);
+      sessionStorage.setItem("lesson_id", res.data.lesson_id);
       // sessionStorage.setItem("favourite", "false");
-      console.log("going to results");
       router.push("/results");
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   }
 

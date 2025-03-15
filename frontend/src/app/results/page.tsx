@@ -7,6 +7,7 @@ import useAxios from "@/hooks/useAxiosInt";
 import CloseDialog from "@/components/common/CloseDialog";
 import HTMLEditor from "@/components/HTMLEditor";
 // import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
+import { IoMdSave } from "react-icons/io";
 import { NavBar } from "@/components/common/NavBar";
 
 function HoverAlt({
@@ -43,7 +44,7 @@ export default function Results() {
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [goBack, setGoBack] = React.useState(false);
   // const [favourite, setFavourite] = useState(false);
-  const [lesson_id, setLesson_id] = useState<number | undefined>(undefined);
+  const [lesson_id, setLesson_id] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     const data = sessionStorage.getItem("HTMLContent");
@@ -51,7 +52,7 @@ export default function Results() {
     // const favouriteData = sessionStorage.getItem("favourite");
 
     if (lessonId && lessonId !== "") {
-      setLesson_id(parseInt(lessonId, 10));
+      setLesson_id(lessonId);
     }
     if (data) {
       setContent(data);
@@ -71,13 +72,20 @@ export default function Results() {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   async function updateAPI() {
+    setEditing((prev) => !prev);
+
+    if (!editing) {
+      return;
+    }
     // setFavourite((prev) => !prev);
+    // regex pattern to match an h1 tag for extracting the title
     const h1Pattern = /<h1[^>]*>(.*?)<\/h1>/i;
 
     // Execute the regex to find matches
     const match = content.match(h1Pattern);
 
     // Return the captured group (text inside h1) or null if not found
+    console.log("updateAPI");
     const title = match ? match[1] : "Lesson Plan";
     try {
       const res = await axios.post("/lessons/updateLesson", {
@@ -87,17 +95,12 @@ export default function Results() {
         lesson_id,
       });
       setLesson_id(res.data.lesson_id);
-      sessionStorage.setItem("lesson_id", res.data.toString());
+      sessionStorage.setItem("lesson_id", res.data.lesson_id);
+      sessionStorage.setItem("HTMLContent", content);
     } catch (error) {
       console.error("Error updating lesson:", error);
     }
   }
-
-  useEffect(() => {
-    sessionStorage.setItem("HTMLContent", content);
-    updateAPI();
-    // sessionStorage.setItem("favourite", favourite.toString());
-  }, [content]);
 
   const handleDownload = async () => {
     const res = await axios.post(
@@ -131,18 +134,19 @@ export default function Results() {
                   />
                 </Button>
               </HoverAlt>
-              <HoverAlt alt="Edit">
-                <Button
-                  className=""
-                  onClick={() => setEditing((prev) => !prev)}
-                >
-                  <Image
-                    src="/edit.svg"
-                    alt="Edit"
-                    width={0}
-                    height={0}
-                    className="m-2 w-[4rem] h-auto mx-4 px-4"
-                  />
+              <HoverAlt alt={!editing ? "Edit" : "Save"}>
+                <Button className="" onClick={updateAPI}>
+                  {!editing ? (
+                    <Image
+                      src="/edit.svg"
+                      alt="Edit"
+                      width={0}
+                      height={0}
+                      className="m-2 w-[4rem] h-auto mx-4 px-4"
+                    />
+                  ) : (
+                    <IoMdSave className="m-2 w-[4rem] h-auto mx-4 px-4" />
+                  )}
                 </Button>
               </HoverAlt>
               {/* <HoverAlt alt="Favourite"> */}
@@ -155,7 +159,16 @@ export default function Results() {
               {/*   </Button> */}
               {/* </HoverAlt> */}
               <HoverAlt alt="Back">
-                <Button className="" onClick={() => setDialogOpen(true)}>
+                <Button
+                  className=""
+                  onClick={() => {
+                    if (editing) {
+                      setDialogOpen(true);
+                    } else {
+                      setGoBack(true);
+                    }
+                  }}
+                >
                   <Image
                     src="/back.svg"
                     alt="Go Back"
@@ -174,19 +187,22 @@ export default function Results() {
                 content={content}
                 setContent={setContent}
               />
-              <CloseDialog
-                dialogOpen={dialogOpen}
-                setDialogOpen={setDialogOpen}
-                setConfirmationOpen={setGoBack}
-                text="Are you sure you want to go back? The lesson plan may not be saved."
-                buttonText="Go Back"
-              />
+              {editing && (
+                <CloseDialog
+                  dialogOpen={dialogOpen}
+                  setDialogOpen={setDialogOpen}
+                  setConfirmationOpen={setGoBack}
+                  text="Are you sure you want to go back? The lesson plan may not be saved."
+                  buttonText="Go Back"
+                />
+              )}
             </div>
             {/* Visual feedback on save */}
             {editing && (
               <div className="absolute bottom-12 right-12">
-                <div className="bg-blue-500 text-white px-3 py-1 rounded-full text-sm opacity-75">
-                  Click any element to edit
+                <div className="flex flex-col justify-center items-center bg-blue-500 text-white px-3 py-1 rounded-full text-sm opacity-75">
+                  <span>Click any element to edit</span>
+                  <span>Make sure to save for changes to apply!</span>
                 </div>
               </div>
             )}

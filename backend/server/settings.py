@@ -48,8 +48,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_extensions",
     "users",
-    "lessons",
     "posts",
+    "lessons",
 ]
 
 MIDDLEWARE = [
@@ -156,3 +156,4 @@ CORS_ALLOWED_ORIGINS = [
     "https://localhost:3000",
     "https://www.fujiplans.com",
 ]
+

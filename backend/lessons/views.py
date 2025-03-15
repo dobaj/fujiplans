@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 import json
 from openai import OpenAI
 from utils import html_to_pdf
+import re
 
 load_dotenv()
 
@@ -40,12 +41,25 @@ class GetLessonView(View):
 
             message = response.choices[0].message.content
 
+            user_id = payload["_id"]
+
+            user = User.objects.get(_id=user_id)
+
+            h1_pattern = r"<h1[^>]*>(.*?)</h1>"
+
+            # Execute the regex to find matches
+            match = re.search(h1_pattern, message, re.IGNORECASE)
+
+            # Return the captured group (text inside h1) or default value if not found
+            title = match.group(1) if match else "Lesson Plan"
+
+            lesson = Lesson.objects.create(user=user, title=title, content=message)
+            lesson_id = str(lesson._id)
+
             if message == "Prompt unrelated to lesson planning, please try again.":
                 return JsonResponse({"message": message}, status=400)
 
-            response = HttpResponse(message, content_type="text/md")
-
-            return response
+            return JsonResponse({"message": message, "lesson_id": lesson_id})
 
         except Exception as e:
             # Catch any errors and return them in a response
@@ -89,7 +103,7 @@ class UpdateLesson(View):
             if not content:
                 return JsonResponse({"message": "Content is required"}, status=400)
 
-            lesson = Lesson.objects.filter(id=lesson_id, user=user_id).first()
+            lesson = Lesson.objects.filter(_id=lesson_id, user=user_id).first()
             if not lesson:
                 lesson = Lesson.objects.create(user=user, title=title, content=content)
                 return JsonResponse(
@@ -103,8 +117,7 @@ class UpdateLesson(View):
 
                 return JsonResponse(
                     {
-                        "message": f"Lesson updated successfully + {lesson.favourited}",
-                        "lesson_id": lesson.id,
+                        "lesson_id": lesson._id,
                     },
                     status=201,
                 )
@@ -179,3 +192,4 @@ class DeleteFavouriteLesson(View):
 
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
+

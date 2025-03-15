@@ -124,7 +124,6 @@ class PostView(View):
                             "_id": str(post.user._id),
                             "first_name": post.user.first_name,
                             "last_name": post.user.last_name,
-                            "school": post.user.school,
                         },
                     }
                 )

@@ -13,10 +13,10 @@ export default function Favourites() {
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [deleteLesson, setDeleteLesson] = useState(false);
-  const [deleteId, setDeleteId] = useState<number>(-1);
+  const [deleteId, setDeleteId] = useState<string>("");
 
   const [favourites, setFavourites] = useState<
-    { id: number; title: string; content: string }[]
+    { _id: string; title: string; content: string }[]
   >([]);
   const [lessonIndex, setLessonIndex] = useState<number | undefined>(undefined);
 
@@ -38,30 +38,29 @@ export default function Favourites() {
 
   useEffect(() => {
     if (lessonIndex !== undefined && favourites[lessonIndex]) {
-      console.log(favourites[lessonIndex]);
       const lesson = favourites[lessonIndex];
-      sessionStorage.setItem("lesson_id", lesson.id.toString());
+      sessionStorage.setItem("lesson_id", lesson._id);
       sessionStorage.setItem("HTMLContent", lesson.content);
       // sessionStorage.setItem("favourite", lesson.favourited.toString());
       router.push("/results");
     }
   }, [favourites, lessonIndex, router]);
 
-  useEffect(() => {
-    if (deleteLesson && deleteId > 0) {
-      setDeleteLesson(false);
-      setDeleteId(-1);
-      setDialogOpen(false);
-      axios
-        .delete("/lessons/deleteFavourite", {
-          params: { lesson_id: deleteId },
-        })
-        .then(() => {
-          console.log("deleted", deleteId);
-          getAPI();
-        });
-    }
-  }, [axios, deleteId, deleteLesson, getAPI]);
+  // useEffect(() => {
+  //   if (fav) {
+  //     setDeleteLesson(false);
+  //     setDeleteId(-1);
+  //     setDialogOpen(false);
+  //     axios
+  //       .delete("/lessons/deleteFavourite", {
+  //         params: { lesson_id: deleteId },
+  //       })
+  //       .then(() => {
+  //         console.log("deleted", deleteId);
+  //         getAPI();
+  //       });
+  //   }
+  // }, [axios, deleteId, deleteLesson, getAPI]);
 
   return (
     <main className="min-h-screen bg-background">
@@ -82,52 +81,50 @@ export default function Favourites() {
                   }
                   style={{ gridAutoRows: "1fr" }}
                 >
-                  {favourites
-                    .sort((a, b) => a.id - b.id)
-                    .map(
-                      (
-                        {
-                          title,
-                          id,
-                        }: {
-                          title: string;
-                          id: number;
-                        },
-                        i,
-                      ) => {
-                        return (
-                          <ClickableBox
-                            key={id}
-                            darkMode={false}
-                            onClick={() => {}}
-                          >
-                            <div className="flex w-full justify-between">
-                              <p style={{ color: "" }} className={"pr-4"}>
-                                {title}
-                              </p>
-                              <div className="flex gap-x-1">
-                                <button
-                                  onClick={() => {
-                                    setLessonIndex(i);
-                                  }}
-                                >
-                                  <MdEditSquare className="m-2 w-[32px] h-auto text-gray-600 hover:text-gray-700" />
-                                </button>
-
-                                <button
-                                  onClick={() => {
-                                    setDialogOpen(true);
-                                    setDeleteId(id);
-                                  }}
-                                >
-                                  <MdDelete className="m-2 w-[32px] h-auto text-gray-600 hover:text-gray-700" />
-                                </button>
-                              </div>
-                            </div>
-                          </ClickableBox>
-                        );
+                  {favourites.map(
+                    (
+                      {
+                        title,
+                        _id,
+                      }: {
+                        title: string;
+                        _id: string;
                       },
-                    )}
+                      i,
+                    ) => {
+                      return (
+                        <ClickableBox
+                          key={_id}
+                          darkMode={false}
+                          onClick={() => {}}
+                        >
+                          <div className="flex w-full justify-between">
+                            <p style={{ color: "" }} className={"pr-4"}>
+                              {title}
+                            </p>
+                            <div className="flex gap-x-1">
+                              <button
+                                onClick={() => {
+                                  setLessonIndex(i);
+                                }}
+                              >
+                                <MdEditSquare className="m-2 w-[32px] h-auto text-gray-600 hover:text-gray-700" />
+                              </button>
+
+                              <button
+                                onClick={() => {
+                                  setDialogOpen(true);
+                                  setDeleteId(_id);
+                                }}
+                              >
+                                <MdDelete className="m-2 w-[32px] h-auto text-gray-600 hover:text-gray-700" />
+                              </button>
+                            </div>
+                          </div>
+                        </ClickableBox>
+                      );
+                    },
+                  )}
                 </div>
               </div>
               <CloseDialog

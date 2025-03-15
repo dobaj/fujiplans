@@ -142,7 +142,6 @@ class RegisterView(View):
                 last_name=data["LastName"],
                 password=password,
             )
-
             user.save()
 
             refresh_token = jwt.encode(

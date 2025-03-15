@@ -8,8 +8,6 @@ import { IoMdClose } from "react-icons/io";
 import { FiUpload } from "react-icons/fi";
 import { Post } from "@/types/user";
 import axios from "@/utils/axios";
-import { useAppSelector } from "@/utils/reduxHooks";
-import { RootState } from "@/redux/store";
 import { Subject } from "@/types/user";
 import { NavBar } from "@/components/common/NavBar";
 
@@ -18,12 +16,9 @@ type PostData = {
   subject: Subject;
   description: string;
   file: File | null;
-  school?: string;
 };
 
 export default function TeacherResourcePlatform() {
-  const { user } = useAppSelector((state: RootState) => state.user);
-
   const [activeTab, setActiveTab] = useState("browse");
   const [selectedSubjects, setSelectedSubjects] = useState<Subject[]>([]);
   const [posts, setPosts] = useState<Post[]>([]);
@@ -33,7 +28,6 @@ export default function TeacherResourcePlatform() {
     subject: "",
     description: "",
     file: null,
-    school: user?.school,
   });
 
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -76,7 +70,6 @@ export default function TeacherResourcePlatform() {
     formData.append("subject", postData.subject);
     formData.append("description", postData.description);
     formData.append("pdfFile", postData.file!);
-    formData.append("school", postData.school!);
 
     try {
       await axios.post("/posts/", formData);
@@ -85,7 +78,6 @@ export default function TeacherResourcePlatform() {
         subject: "",
         description: "",
         file: null,
-        school: user?.school,
       });
     } catch (error) {
       console.log(error);
@@ -281,9 +273,6 @@ export default function TeacherResourcePlatform() {
                         <div>
                           <p className="text-sm font-medium">
                             {post.poster.first_name} {post.poster.last_name}
-                          </p>
-                          <p className="text-xs text-[#292F36]/60">
-                            {post.poster.school}
                           </p>
                         </div>
                       </div>
