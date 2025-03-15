@@ -18,34 +18,43 @@ export const PluginsForm = (props: {
 
   const addPlugin = () => {
     if (addName !== "") {
-      const tab = props.plugins[props.selectedTab];
       props.setPlugins((prev) => {
-        prev[props.selectedTab].elements = [
-          ...tab.elements,
-          { name: addName, active: false },
-        ];
-        return prev;
+        // Create a deep copy of the previous state
+        const newPlugins = JSON.parse(JSON.stringify(prev));
+
+        // Add the new element to the appropriate tab
+        newPlugins[props.selectedTab].elements.push({
+          name: addName,
+          active: false,
+        });
+
+        return newPlugins;
       });
       setAddName("");
     }
   };
 
   const changeTab = (newTab: number) => {
-    addPlugin();
+    if (addName !== "") {
+      addPlugin();
+    }
     props.setSelectedTab(newTab);
   };
 
   const changeElement = (name: string) => {
-    if (name !== "" && editingIndex != -1) {
-      const tab = props.plugins[props.selectedTab];
-      const selected = tab.elements[editingIndex].active;
+    if (name !== "" && editingIndex !== -1) {
       props.setPlugins((prev) => {
-        const newArr = [...prev];
-        newArr[props.selectedTab].elements[editingIndex] = {
+        // Create a deep copy of the previous state
+        const newPlugins = JSON.parse(JSON.stringify(prev));
+
+        // Update the element at the editing index
+        const selected = prev[props.selectedTab].elements[editingIndex].active;
+        newPlugins[props.selectedTab].elements[editingIndex] = {
           name: name,
           active: selected,
         };
-        return newArr;
+
+        return newPlugins;
       });
       setEditingIndex(-1);
     }
@@ -53,19 +62,21 @@ export const PluginsForm = (props: {
 
   const toggleActive = (index: number, active: boolean) => {
     props.setPlugins((prev) => {
-      const newArr = [...prev];
-      const element = newArr[props.selectedTab].elements[index];
-      newArr[props.selectedTab].elements[index] = {
-        name: element.name,
-        active: !active,
-      };
-      return newArr;
+      // Create a deep copy of the previous state
+      const newPlugins = JSON.parse(JSON.stringify(prev));
+
+      // Toggle the active state of the element
+      newPlugins[props.selectedTab].elements[index].active = !active;
+
+      return newPlugins;
     });
   };
 
   const goBack = () => {
-    addPlugin();
-    props.setShowForm((prev) => !prev);
+    if (addName !== "") {
+      addPlugin();
+    }
+    props.setShowForm(true);
   };
 
   return (
@@ -81,7 +92,7 @@ export const PluginsForm = (props: {
               <p
                 className="text-3xl m-2 hover:font-semibold hover:cursor-pointer"
                 style={{ fontWeight: props.selectedTab === i ? "bold" : "" }}
-                key={tab.name}
+                key={`tab-${tab.name}`}
                 onClick={() => changeTab(i)}
               >
                 {tab.name}
@@ -101,12 +112,12 @@ export const PluginsForm = (props: {
             className={"grid grid-cols-2 gap-x-12 gap-y-10 h-3/4 items-start"}
             style={{ gridAutoRows: "1fr" }}
           >
-            {props.selectedTab != -1 &&
+            {props.selectedTab !== -1 &&
               props.plugins[props.selectedTab].elements.map(
                 ({ name, active }, i) => {
                   return (
                     <ClickableBox
-                      key={name}
+                      key={`element-${props.selectedTab}-${i}`}
                       darkMode={active}
                       onClick={() => {
                         setEditingIndex(i);
@@ -122,7 +133,7 @@ export const PluginsForm = (props: {
                         }}
                         onBlur={(change) =>
                           changeElement(
-                            (change.target as HTMLElement).innerText
+                            (change.target as HTMLElement).innerText,
                           )
                         }
                         suppressContentEditableWarning={true}
@@ -132,7 +143,7 @@ export const PluginsForm = (props: {
                       </p>
                     </ClickableBox>
                   );
-                }
+                },
               )}
             <ClickableBox darkMode={false} onClick={() => {}}>
               <input
@@ -142,8 +153,10 @@ export const PluginsForm = (props: {
                 onChange={(change) => {
                   setAddName(change.target.value);
                 }}
-                onBlur={() => {
-                  addPlugin();
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && addName !== "") {
+                    addPlugin();
+                  }
                 }}
               />
             </ClickableBox>
