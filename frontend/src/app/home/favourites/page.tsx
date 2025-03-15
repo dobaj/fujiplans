@@ -62,6 +62,12 @@ export default function Favourites() {
     return <Loader />;
   }
 
+  const decodeHTMLEntities = (text) => {
+    const textArea = document.createElement("textarea");
+    textArea.innerHTML = text;
+    return textArea.value;
+  };
+
   return (
     <main className="min-h-screen bg-background">
       <div className="flex h-dvh bg-background ">
@@ -90,7 +96,7 @@ export default function Favourites() {
                       >
                         <div className="flex w-full justify-between items-center">
                           <p style={{ color: "" }} className={"pr-4"}>
-                            {lesson.title}
+                            {decodeHTMLEntities(lesson.title)}
                           </p>
                           <div className="flex gap-x-1">
                             <button onClick={() => editLesson(lesson)}>

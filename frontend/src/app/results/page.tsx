@@ -85,7 +85,6 @@ export default function Results() {
     const match = content.match(h1Pattern);
 
     // Return the captured group (text inside h1) or null if not found
-    console.log("updateAPI");
     const title = match ? match[1] : "Lesson Plan";
     try {
       const res = await axios.post("/lessons/updateLesson", {

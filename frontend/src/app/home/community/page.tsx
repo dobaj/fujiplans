@@ -38,7 +38,6 @@ export default function TeacherResourcePlatform() {
     event.preventDefault();
     event.stopPropagation();
   };
-  console.log(posts);
 
   const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -73,6 +72,8 @@ export default function TeacherResourcePlatform() {
     formData.append("description", postData.description);
     formData.append("pdfFile", postData.file!);
 
+    setLoading(true);
+
     try {
       await axios.post("/posts/", formData);
       setPostData({
@@ -83,6 +84,8 @@ export default function TeacherResourcePlatform() {
       });
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 

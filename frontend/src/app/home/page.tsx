@@ -20,7 +20,6 @@ export default function Prompt() {
     try {
       const res = await axios.post("/lessons/getLesson/", { message });
 
-      console.log(res.data);
       setLoading(false);
       sessionStorage.setItem("HTMLContent", res.data.message);
       sessionStorage.setItem("lesson_id", res.data.lesson_id);
